@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { db, ScanRow } from "@/lib/db";
+import { getDb, ScanRow } from "@/lib/db";
 import { getSession } from "@/lib/session";
 
 const schema = z.object({
@@ -20,12 +20,14 @@ export async function GET() {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
 
-  const rows = db
-    .prepare("SELECT * FROM scans WHERE user_id = ? ORDER BY created_at DESC LIMIT 200")
-    .all(session.userId) as ScanRow[];
+  const sql = await getDb();
+  const { rows } = await sql`
+    SELECT * FROM scans WHERE user_id = ${session.userId} ORDER BY created_at DESC LIMIT 200
+  `;
+  const scans = rows as ScanRow[];
 
   return NextResponse.json({
-    scans: rows.map((r) => ({
+    scans: scans.map((r) => ({
       id: r.id,
       imageName: r.image_name,
       predictedClass: r.predicted_class,
@@ -35,7 +37,7 @@ export async function GET() {
       probabilities: JSON.parse(r.probabilities),
       bodyLocation: r.body_location,
       notes: r.notes,
-      createdAt: r.created_at,
+      createdAt: Number(r.created_at),
     })),
   });
 }
@@ -53,22 +55,16 @@ export async function POST(req: NextRequest) {
   }
 
   const d = parsed.data;
-  db.prepare(
-    `INSERT INTO scans
+  const sql = await getDb();
+  await sql`
+    INSERT INTO scans
       (user_id, image_name, predicted_class, predicted_label, malignant_risk, confidence, probabilities, body_location, notes, created_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-  ).run(
-    session.userId,
-    d.imageName ?? null,
-    d.predictedClass,
-    d.predictedLabel,
-    d.malignantRisk,
-    d.confidence,
-    JSON.stringify(d.probabilities),
-    d.bodyLocation ?? null,
-    d.notes ?? null,
-    Date.now()
-  );
+    VALUES (
+      ${session.userId}, ${d.imageName ?? null}, ${d.predictedClass}, ${d.predictedLabel},
+      ${d.malignantRisk}, ${d.confidence}, ${JSON.stringify(d.probabilities)},
+      ${d.bodyLocation ?? null}, ${d.notes ?? null}, ${Date.now()}
+    )
+  `;
 
   return NextResponse.json({ success: true });
 }

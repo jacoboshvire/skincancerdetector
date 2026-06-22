@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { db, UserRow } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import { hashPassword } from "@/lib/auth";
 
 const schema = z.object({
@@ -18,18 +18,15 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const sql = await getDb();
   const email = parsed.data.email.toLowerCase().trim();
-  const existing = db.prepare("SELECT id FROM users WHERE email = ?").get(email) as
-    | Pick<UserRow, "id">
-    | undefined;
-  if (existing) {
+  const { rows: existing } = await sql`SELECT id FROM users WHERE email = ${email}`;
+  if (existing.length > 0) {
     return NextResponse.json({ error: "An account with this email already exists" }, { status: 409 });
   }
 
   const passwordHash = await hashPassword(parsed.data.password);
-  db.prepare(
-    "INSERT INTO users (email, password_hash, created_at) VALUES (?, ?, ?)"
-  ).run(email, passwordHash, Date.now());
+  await sql`INSERT INTO users (email, password_hash, created_at) VALUES (${email}, ${passwordHash}, ${Date.now()})`;
 
   return NextResponse.json({ success: true });
 }

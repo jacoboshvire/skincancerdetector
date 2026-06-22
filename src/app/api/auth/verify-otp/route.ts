@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { db, UserRow } from "@/lib/db";
+import { getDb, UserRow } from "@/lib/db";
 import { SESSION_COOKIE, signSessionToken } from "@/lib/auth";
 import { verifyOtp, MAX_OTP_ATTEMPTS } from "@/lib/otp";
 
@@ -16,10 +16,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid input" }, { status: 400 });
   }
 
+  const sql = await getDb();
   const email = parsed.data.email.toLowerCase().trim();
-  const user = db.prepare("SELECT * FROM users WHERE email = ?").get(email) as
-    | UserRow
-    | undefined;
+  const { rows } = await sql`SELECT * FROM users WHERE email = ${email}`;
+  const user = rows[0] as UserRow | undefined;
 
   const fail = (message: string, status = 401) =>
     NextResponse.json({ error: message }, { status });
@@ -28,25 +28,23 @@ export async function POST(req: NextRequest) {
     return fail("No verification code pending. Please log in again.");
   }
 
-  if (Date.now() > user.otp_expires_at) {
-    db.prepare("UPDATE users SET otp_hash = NULL, otp_expires_at = NULL WHERE id = ?").run(user.id);
+  if (Date.now() > Number(user.otp_expires_at)) {
+    await sql`UPDATE users SET otp_hash = NULL, otp_expires_at = NULL WHERE id = ${user.id}`;
     return fail("Verification code expired. Please log in again.");
   }
 
   if (user.otp_attempts >= MAX_OTP_ATTEMPTS) {
-    db.prepare("UPDATE users SET otp_hash = NULL, otp_expires_at = NULL WHERE id = ?").run(user.id);
+    await sql`UPDATE users SET otp_hash = NULL, otp_expires_at = NULL WHERE id = ${user.id}`;
     return fail("Too many incorrect attempts. Please log in again.");
   }
 
   const valid = await verifyOtp(parsed.data.code, user.otp_hash);
   if (!valid) {
-    db.prepare("UPDATE users SET otp_attempts = otp_attempts + 1 WHERE id = ?").run(user.id);
+    await sql`UPDATE users SET otp_attempts = otp_attempts + 1 WHERE id = ${user.id}`;
     return fail("Incorrect verification code.");
   }
 
-  db.prepare(
-    "UPDATE users SET otp_hash = NULL, otp_expires_at = NULL, otp_attempts = 0 WHERE id = ?"
-  ).run(user.id);
+  await sql`UPDATE users SET otp_hash = NULL, otp_expires_at = NULL, otp_attempts = 0 WHERE id = ${user.id}`;
 
   const token = signSessionToken({ userId: user.id, email: user.email });
   const res = NextResponse.json({ success: true });

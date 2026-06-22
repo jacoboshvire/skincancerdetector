@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { db, UserRow } from "@/lib/db";
+import { getDb, UserRow } from "@/lib/db";
 import { SESSION_COOKIE, signSessionToken, verifyPassword } from "@/lib/auth";
 import { generateOtpCode, hashOtp, OTP_TTL_MS } from "@/lib/otp";
 import { sendOtpEmail } from "@/lib/email";
@@ -20,10 +20,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid input" }, { status: 400 });
   }
 
+  const sql = await getDb();
   const email = parsed.data.email.toLowerCase().trim();
-  const user = db.prepare("SELECT * FROM users WHERE email = ?").get(email) as
-    | UserRow
-    | undefined;
+  const { rows } = await sql`SELECT * FROM users WHERE email = ${email}`;
+  const user = rows[0] as UserRow | undefined;
 
   // Constant-shaped response whether or not the account exists, to avoid leaking which emails are registered.
   const genericError = NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
@@ -48,9 +48,7 @@ export async function POST(req: NextRequest) {
 
   const code = generateOtpCode();
   const otpHash = await hashOtp(code);
-  db.prepare(
-    "UPDATE users SET otp_hash = ?, otp_expires_at = ?, otp_attempts = 0 WHERE id = ?"
-  ).run(otpHash, Date.now() + OTP_TTL_MS, user.id);
+  await sql`UPDATE users SET otp_hash = ${otpHash}, otp_expires_at = ${Date.now() + OTP_TTL_MS}, otp_attempts = 0 WHERE id = ${user.id}`;
 
   await sendOtpEmail(user.email, code);
 
