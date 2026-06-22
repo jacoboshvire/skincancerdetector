@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Read(//private/tmp/pw-driver/**)",
+      "Bash(node -e ' *)",
+      "Bash(node verify.js)"
+    ]
+  }
+}
