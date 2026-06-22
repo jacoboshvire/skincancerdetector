@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { db, ProfileRow } from "@/lib/db";
+import { getDb, ProfileRow } from "@/lib/db";
 import { getSession } from "@/lib/session";
 
 const schema = z.object({
@@ -17,9 +17,9 @@ export async function GET() {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
 
-  const row = db.prepare("SELECT * FROM profiles WHERE user_id = ?").get(session.userId) as
-    | ProfileRow
-    | undefined;
+  const sql = await getDb();
+  const { rows } = await sql`SELECT * FROM profiles WHERE user_id = ${session.userId}`;
+  const row = rows[0] as ProfileRow | undefined;
 
   return NextResponse.json({
     profile: row
@@ -27,9 +27,9 @@ export async function GET() {
           fullName: row.full_name,
           dateOfBirth: row.date_of_birth,
           sex: row.sex,
-          familyHistorySkinCancer: !!row.family_history_skin_cancer,
+          familyHistorySkinCancer: row.family_history_skin_cancer,
           notes: row.notes,
-          updatedAt: row.updated_at,
+          updatedAt: Number(row.updated_at),
         }
       : null,
   });
@@ -48,25 +48,21 @@ export async function PUT(req: NextRequest) {
   }
 
   const d = parsed.data;
-  db.prepare(
-    `INSERT INTO profiles (user_id, full_name, date_of_birth, sex, family_history_skin_cancer, notes, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?)
-     ON CONFLICT(user_id) DO UPDATE SET
-       full_name = excluded.full_name,
-       date_of_birth = excluded.date_of_birth,
-       sex = excluded.sex,
-       family_history_skin_cancer = excluded.family_history_skin_cancer,
-       notes = excluded.notes,
-       updated_at = excluded.updated_at`
-  ).run(
-    session.userId,
-    d.fullName ?? null,
-    d.dateOfBirth ?? null,
-    d.sex ?? null,
-    d.familyHistorySkinCancer ? 1 : 0,
-    d.notes ?? null,
-    Date.now()
-  );
+  const sql = await getDb();
+  await sql`
+    INSERT INTO profiles (user_id, full_name, date_of_birth, sex, family_history_skin_cancer, notes, updated_at)
+    VALUES (
+      ${session.userId}, ${d.fullName ?? null}, ${d.dateOfBirth ?? null}, ${d.sex ?? null},
+      ${d.familyHistorySkinCancer ?? false}, ${d.notes ?? null}, ${Date.now()}
+    )
+    ON CONFLICT (user_id) DO UPDATE SET
+      full_name = excluded.full_name,
+      date_of_birth = excluded.date_of_birth,
+      sex = excluded.sex,
+      family_history_skin_cancer = excluded.family_history_skin_cancer,
+      notes = excluded.notes,
+      updated_at = excluded.updated_at
+  `;
 
   return NextResponse.json({ success: true });
 }

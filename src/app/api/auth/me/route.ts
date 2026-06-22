@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db, UserRow } from "@/lib/db";
+import { getDb, UserRow } from "@/lib/db";
 import { getSession } from "@/lib/session";
 
 export async function GET() {
@@ -8,9 +8,12 @@ export async function GET() {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
 
-  const user = db.prepare("SELECT * FROM users WHERE id = ?").get(session.userId) as
-    | UserRow
-    | undefined;
+  const sql = await getDb();
+  const { rows } = await sql`SELECT * FROM users WHERE id = ${session.userId}`;
+  const user = rows[0] as UserRow | undefined;
 
-  return NextResponse.json({ email: session.email, createdAt: user?.created_at ?? null });
+  return NextResponse.json({
+    email: session.email,
+    createdAt: user ? Number(user.created_at) : null,
+  });
 }

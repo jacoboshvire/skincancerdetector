@@ -1,74 +1,59 @@
-import Database from "better-sqlite3";
-import path from "path";
+import { sql } from "@vercel/postgres";
 
-const DB_PATH = process.env.DATABASE_PATH || path.join(process.cwd(), "data", "app.db");
+let schemaReady: Promise<void> | null = null;
 
-function init(): Database.Database {
-  const fs = require("fs");
-  fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
+function ensureSchema(): Promise<void> {
+  if (!schemaReady) {
+    schemaReady = (async () => {
+      await sql`
+        CREATE TABLE IF NOT EXISTS users (
+          id SERIAL PRIMARY KEY,
+          email TEXT UNIQUE NOT NULL,
+          password_hash TEXT NOT NULL,
+          otp_hash TEXT,
+          otp_expires_at BIGINT,
+          otp_attempts INTEGER NOT NULL DEFAULT 0,
+          created_at BIGINT NOT NULL
+        )
+      `;
 
-  const db = new Database(DB_PATH);
-  db.pragma("journal_mode = WAL");
+      await sql`
+        CREATE TABLE IF NOT EXISTS scans (
+          id SERIAL PRIMARY KEY,
+          user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+          image_name TEXT,
+          predicted_class TEXT NOT NULL,
+          predicted_label TEXT NOT NULL,
+          malignant_risk DOUBLE PRECISION NOT NULL,
+          confidence DOUBLE PRECISION NOT NULL,
+          probabilities TEXT NOT NULL,
+          body_location TEXT,
+          notes TEXT,
+          created_at BIGINT NOT NULL
+        )
+      `;
 
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS users (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      email TEXT UNIQUE NOT NULL,
-      password_hash TEXT NOT NULL,
-      otp_hash TEXT,
-      otp_expires_at INTEGER,
-      otp_attempts INTEGER NOT NULL DEFAULT 0,
-      created_at INTEGER NOT NULL
-    );
+      await sql`CREATE INDEX IF NOT EXISTS idx_scans_user_id ON scans(user_id)`;
 
-    CREATE TABLE IF NOT EXISTS scans (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-      image_name TEXT,
-      predicted_class TEXT NOT NULL,
-      predicted_label TEXT NOT NULL,
-      malignant_risk REAL NOT NULL,
-      confidence REAL NOT NULL,
-      probabilities TEXT NOT NULL,
-      body_location TEXT,
-      notes TEXT,
-      created_at INTEGER NOT NULL
-    );
-
-    CREATE INDEX IF NOT EXISTS idx_scans_user_id ON scans(user_id);
-
-    CREATE TABLE IF NOT EXISTS profiles (
-      user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
-      full_name TEXT,
-      date_of_birth TEXT,
-      sex TEXT,
-      family_history_skin_cancer INTEGER NOT NULL DEFAULT 0,
-      notes TEXT,
-      updated_at INTEGER NOT NULL
-    );
-  `);
-
-  // Migrate scans tables created before body_location/notes existed.
-  const scanColumns = db.prepare("PRAGMA table_info(scans)").all() as { name: string }[];
-  const scanColumnNames = new Set(scanColumns.map((c) => c.name));
-  if (!scanColumnNames.has("body_location")) {
-    db.exec("ALTER TABLE scans ADD COLUMN body_location TEXT");
+      await sql`
+        CREATE TABLE IF NOT EXISTS profiles (
+          user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+          full_name TEXT,
+          date_of_birth TEXT,
+          sex TEXT,
+          family_history_skin_cancer BOOLEAN NOT NULL DEFAULT FALSE,
+          notes TEXT,
+          updated_at BIGINT NOT NULL
+        )
+      `;
+    })();
   }
-  if (!scanColumnNames.has("notes")) {
-    db.exec("ALTER TABLE scans ADD COLUMN notes TEXT");
-  }
-
-  return db;
+  return schemaReady;
 }
 
-declare global {
-  // eslint-disable-next-line no-var
-  var __db: Database.Database | undefined;
-}
-
-export const db = globalThis.__db ?? init();
-if (process.env.NODE_ENV !== "production") {
-  globalThis.__db = db;
+export async function getDb() {
+  await ensureSchema();
+  return sql;
 }
 
 export interface UserRow {
@@ -100,7 +85,7 @@ export interface ProfileRow {
   full_name: string | null;
   date_of_birth: string | null;
   sex: string | null;
-  family_history_skin_cancer: number;
+  family_history_skin_cancer: boolean;
   notes: string | null;
   updated_at: number;
 }
