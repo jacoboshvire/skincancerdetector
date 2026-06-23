@@ -218,6 +218,45 @@ export default function DashboardClient({ email }: { email: string }) {
                 className="mt-4 text-sm"
               />
             </div>
+
+            <div className="mt-4 space-y-2">
+              <div>
+                <label className="block text-xs font-medium mb-1" htmlFor="bodyLocation">
+                  Location on body (optional)
+                </label>
+                <select
+                  id="bodyLocation"
+                  value={bodyLocation}
+                  onChange={(e) => setBodyLocation(e.target.value)}
+                  className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+                >
+                  <option value="">Not specified</option>
+                  {BODY_LOCATIONS.map((loc) => (
+                    <option key={loc} value={loc}>
+                      {loc}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-medium mb-1" htmlFor="notes">
+                  Symptom notes (optional)
+                </label>
+                <textarea
+                  id="notes"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  rows={2}
+                  placeholder="e.g. itchy, recently changed size or color"
+                  className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+                />
+                <p className="text-xs text-black/50 dark:text-white/50 mt-1">
+                  Factored into the result below alongside the image — things like recent
+                  change, bleeding, or itching matter even if a photo looks benign.
+                </p>
+              </div>
+            </div>
+
             <div className="mt-4 flex gap-2">
               <button
                 onClick={onAnalyze}
