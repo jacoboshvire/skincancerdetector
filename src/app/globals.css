@@ -3,9 +3,17 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
   --primary: #0d9488;
   --primary-foreground: #ffffff;
   --primary-soft: #ccfbf1;
+
+  --accent-blue: #2563eb;
+  --accent-purple: #7c3aed;
+  --accent-pink: #db2777;
+  --accent-red: #dc2626;
+  --accent-amber: #d97706;
+  --accent-green: #16a34a;
 }
 
 @theme inline {
@@ -14,7 +22,13 @@
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary-soft: var(--primary-soft);
-  --font-sans: var(--font-geist-sans);
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-purple: var(--accent-purple);
+  --color-accent-pink: var(--accent-pink);
+  --color-accent-red: var(--accent-red);
+  --color-accent-amber: var(--accent-amber);
+  --color-accent-green: var(--accent-green);
+  --font-sans: var(--font-poppins);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -22,14 +36,22 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+
     --primary: #2dd4bf;
     --primary-foreground: #042f2e;
     --primary-soft: #115e59;
+
+    --accent-blue: #60a5fa;
+    --accent-purple: #a78bfa;
+    --accent-pink: #f472b6;
+    --accent-red: #f87171;
+    --accent-amber: #fbbf24;
+    --accent-green: #4ade80;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
