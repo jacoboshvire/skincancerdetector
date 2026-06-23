@@ -230,13 +230,13 @@ export default function ProfileClient({ email }: { email: string }) {
               <div className="flex rounded-md border border-foreground/15 overflow-hidden text-sm">
                 <button
                   onClick={() => setFilter("all")}
-                  className={`px-3 py-1 ${filter === "all" ? "bg-primary text-primary-foreground" : ""}`}
+                  className={`px-3 py-1 ${filter === "all" ? "bg-primary text-primary-foreground" : "hover:bg-foreground/5"}`}
                 >
                   All
                 </button>
                 <button
                   onClick={() => setFilter("favorites")}
-                  className={`px-3 py-1 ${filter === "favorites" ? "bg-primary text-primary-foreground" : ""}`}
+                  className={`px-3 py-1 ${filter === "favorites" ? "bg-accent-pink text-white" : "hover:bg-foreground/5"}`}
                 >
                   Favorites
                 </button>
