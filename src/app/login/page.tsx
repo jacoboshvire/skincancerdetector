@@ -50,8 +50,15 @@ function LoginForm() {
   }
 
   return (
-    <div className="flex flex-1 items-center justify-center px-6 py-16">
-      <div className="w-full max-w-sm">
+    <div className="relative flex flex-1 items-center justify-center px-6 py-16 overflow-hidden">
+      <div aria-hidden className="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-primary/15 blur-3xl animate-blob" />
+      <div aria-hidden className="absolute bottom-0 right-0 w-80 h-80 rounded-full bg-accent-purple/15 blur-3xl animate-blob-slow" />
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="relative w-full max-w-sm rounded-2xl glass-card p-8 shadow-xl"
+      >
         <h1 className="text-2xl font-bold mb-1">Log in</h1>
         <p className="text-sm text-foreground/60 mb-6">
           {justRegistered
