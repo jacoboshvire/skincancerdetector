@@ -16,7 +16,7 @@ export default function HeartButton({
       aria-label={active ? "Remove from favorites" : "Add to favorites"}
       title={active ? "Remove from favorites" : "Add to favorites"}
       className={`transition-colors ${
-        active ? "text-pink-500" : "text-black/30 dark:text-white/30 hover:text-pink-400"
+        active ? "text-accent-pink" : "text-black/30 dark:text-white/30 hover:text-accent-pink"
       }`}
     >
       <svg

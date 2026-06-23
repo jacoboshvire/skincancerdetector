@@ -86,8 +86,8 @@ function VerifyOtpForm() {
               className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm tracking-widest text-center text-lg"
             />
           </div>
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          {info && <p className="text-sm text-green-600">{info}</p>}
+          {error && <p className="text-sm text-accent-red">{error}</p>}
+          {info && <p className="text-sm text-accent-green">{info}</p>}
           <button
             type="submit"
             disabled={loading || code.length !== 6}

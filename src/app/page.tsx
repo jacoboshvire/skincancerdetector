@@ -4,8 +4,8 @@ const FEATURES = [
   {
     title: "On-device inference",
     body: "Images are classified directly in your browser with TensorFlow.js — photos never leave your device unless you choose to save a result to your history.",
-    color: "border-blue-500/30 bg-blue-500/5",
-    titleColor: "text-blue-700 dark:text-blue-400",
+    color: "border-accent-blue/30 bg-accent-blue/5",
+    titleColor: "text-accent-blue",
   },
   {
     title: "Trained on HAM10000",
@@ -16,8 +16,8 @@ const FEATURES = [
   {
     title: "Secured with JWT + MFA",
     body: "Accounts are protected by password + email one-time-code verification, with short-lived JWT sessions stored in httpOnly cookies.",
-    color: "border-purple-500/30 bg-purple-500/5",
-    titleColor: "text-purple-700 dark:text-purple-400",
+    color: "border-accent-purple/30 bg-accent-purple/5",
+    titleColor: "text-accent-purple",
   },
 ];
 
@@ -79,7 +79,7 @@ export default function LandingPage() {
         </section>
 
         <section className="max-w-5xl mx-auto px-6 py-12">
-          <div className="rounded-lg border border-amber-500/40 bg-amber-500/10 p-6 text-sm leading-relaxed">
+          <div className="rounded-lg border border-accent-amber/40 bg-accent-amber/10 p-6 text-sm leading-relaxed">
             <strong className="block mb-1">Not a medical device.</strong>
             SkinScan is an educational demonstration of applying machine
             learning to dermoscopic images. It is not FDA-cleared, has not

@@ -70,7 +70,7 @@ export default function RegisterPage() {
             />
             <p className="text-xs text-black/50 dark:text-white/50 mt-1">At least 8 characters.</p>
           </div>
-          {error && <p className="text-sm text-red-600">{error}</p>}
+          {error && <p className="text-sm text-accent-red">{error}</p>}
           <button
             type="submit"
             disabled={loading}

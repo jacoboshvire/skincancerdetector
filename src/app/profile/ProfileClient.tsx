@@ -131,8 +131,8 @@ export default function ProfileClient({ email }: { email: string }) {
           </p>
         </section>
 
-        <section className="rounded-xl border border-purple-500/20 bg-purple-500/5 p-5">
-          <h2 className="font-semibold mb-3 text-purple-700 dark:text-purple-400">Medical record</h2>
+        <section className="rounded-xl border border-accent-purple/20 bg-accent-purple/5 p-5">
+          <h2 className="font-semibold mb-3 text-accent-purple">Medical record</h2>
           <p className="text-sm text-black/60 dark:text-white/60 mb-4">
             Optional background information to give context to your scan
             history. Stored with your account only — never sent to the
@@ -208,11 +208,11 @@ export default function ProfileClient({ email }: { email: string }) {
               <button
                 type="submit"
                 disabled={savingProfile}
-                className="rounded-md bg-purple-600 text-white px-4 py-2 text-sm font-medium hover:bg-purple-700 disabled:opacity-50"
+                className="rounded-md bg-accent-purple text-white px-4 py-2 text-sm font-medium hover:bg-accent-purple disabled:opacity-50"
               >
                 {savingProfile ? "Saving…" : "Save"}
               </button>
-              {savedProfile && <span className="ml-3 text-sm text-green-600">Saved.</span>}
+              {savedProfile && <span className="ml-3 text-sm text-accent-green">Saved.</span>}
             </form>
           )}
         </section>
@@ -271,7 +271,7 @@ export default function ProfileClient({ email }: { email: string }) {
                     key={scan.id}
                     className={`rounded-lg border p-4 ${
                       flagged
-                        ? "border-red-500/40 bg-red-500/5"
+                        ? "border-accent-red/40 bg-accent-red/5"
                         : "border-black/10 dark:border-white/10"
                     }`}
                   >
@@ -282,10 +282,10 @@ export default function ProfileClient({ email }: { email: string }) {
                           <p className="font-medium">
                             {scan.predictedLabel}{" "}
                             {imageMalignant && (
-                              <span className="text-red-600 text-xs font-medium">(malignant)</span>
+                              <span className="text-accent-red text-xs font-medium">(malignant)</span>
                             )}
                             {!imageMalignant && symptomFlagged && (
-                              <span className="text-red-600 text-xs font-medium">(symptoms flagged)</span>
+                              <span className="text-accent-red text-xs font-medium">(symptoms flagged)</span>
                             )}
                           </p>
                           <p className="text-sm text-black/60 dark:text-white/60">

@@ -165,7 +165,7 @@ export default function ScanClient({ email }: { email: string }) {
         <h1 className="text-2xl font-bold mb-6">Scan a lesion</h1>
 
         {modelStatus === "missing" && (
-          <div className="mb-8 rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm">
+          <div className="mb-8 rounded-lg border border-accent-amber/40 bg-accent-amber/10 p-4 text-sm">
             <strong className="block mb-1">No trained model found.</strong>
             Run the training pipeline in <code>scripts/train_model</code> to
             generate <code>public/model/model.json</code> before analyzing
@@ -173,13 +173,13 @@ export default function ScanClient({ email }: { email: string }) {
           </div>
         )}
         {modelStatus === "error" && (
-          <div className="mb-8 rounded-lg border border-red-500/40 bg-red-500/10 p-4 text-sm">
+          <div className="mb-8 rounded-lg border border-accent-red/40 bg-accent-red/10 p-4 text-sm">
             <strong className="block mb-1">Failed to load model.</strong>
             {modelError}
           </div>
         )}
 
-        <div className="mb-8 rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm">
+        <div className="mb-8 rounded-lg border border-accent-amber/40 bg-accent-amber/10 p-4 text-sm">
           This tool is for educational purposes only and is not a substitute
           for professional medical diagnosis.
         </div>
@@ -278,17 +278,17 @@ export default function ScanClient({ email }: { email: string }) {
               <div className="space-y-4">
                 <div
                   className={`rounded-lg p-4 border ${
-                    isConcern ? "border-red-500/40 bg-red-500/10" : "border-green-500/40 bg-green-500/10"
+                    isConcern ? "border-accent-red/40 bg-accent-red/10" : "border-accent-green/40 bg-accent-green/10"
                   }`}
                 >
                   {top!.cls.malignant ? (
                     <p className="text-sm text-black/60 dark:text-white/60">Top prediction</p>
                   ) : symptomAssessment.flagged ? (
-                    <p className="font-semibold text-red-700 dark:text-red-400">
+                    <p className="font-semibold text-accent-red">
                       ⚠ Image looks benign, but reported symptoms warrant a check-up
                     </p>
                   ) : (
-                    <p className="font-semibold text-green-700 dark:text-green-400">
+                    <p className="font-semibold text-accent-green">
                       ✓ Healthy skin
                     </p>
                   )}
@@ -314,14 +314,14 @@ export default function ScanClient({ email }: { email: string }) {
                         <span>
                           {cls.label}{" "}
                           {cls.malignant && (
-                            <span className="text-red-600 text-xs font-medium">(malignant)</span>
+                            <span className="text-accent-red text-xs font-medium">(malignant)</span>
                           )}
                         </span>
                         <span>{((probabilities[i] ?? 0) * 100).toFixed(1)}%</span>
                       </div>
                       <div className="h-1.5 rounded bg-black/10 dark:bg-white/10 overflow-hidden">
                         <div
-                          className={`h-full ${cls.malignant ? "bg-red-500" : "bg-green-500"}`}
+                          className={`h-full ${cls.malignant ? "bg-accent-red" : "bg-accent-green"}`}
                           style={{ width: `${(probabilities[i] ?? 0) * 100}%` }}
                         />
                       </div>
@@ -337,7 +337,7 @@ export default function ScanClient({ email }: { email: string }) {
                   {saving ? "Saving…" : "Save to medical record"}
                 </button>
                 {saved && (
-                  <p className="text-sm text-green-600">
+                  <p className="text-sm text-accent-green">
                     Saved. View your full history on your{" "}
                     <Link href="/profile" className="underline">
                       profile page
