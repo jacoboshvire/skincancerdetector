@@ -37,6 +37,7 @@ export async function GET() {
       probabilities: JSON.parse(r.probabilities),
       bodyLocation: r.body_location,
       notes: r.notes,
+      favorite: r.favorite,
       createdAt: Number(r.created_at),
     })),
   });
