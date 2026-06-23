@@ -4,14 +4,20 @@ const FEATURES = [
   {
     title: "On-device inference",
     body: "Images are classified directly in your browser with TensorFlow.js — photos never leave your device unless you choose to save a result to your history.",
+    color: "border-blue-500/30 bg-blue-500/5",
+    titleColor: "text-blue-700 dark:text-blue-400",
   },
   {
     title: "Trained on HAM10000",
     body: "The model is fine-tuned from MobileNetV2 on the HAM10000 dataset, 10,015 dermoscopic images across 7 lesion categories, the standard public benchmark for this task.",
+    color: "border-primary/30 bg-primary-soft/20",
+    titleColor: "text-primary",
   },
   {
     title: "Secured with JWT + MFA",
     body: "Accounts are protected by password + email one-time-code verification, with short-lived JWT sessions stored in httpOnly cookies.",
+    color: "border-purple-500/30 bg-purple-500/5",
+    titleColor: "text-purple-700 dark:text-purple-400",
   },
 ];
 
@@ -20,14 +26,16 @@ export default function LandingPage() {
     <div className="flex flex-col min-h-screen">
       <header className="border-b border-black/10 dark:border-white/10">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <span className="font-semibold text-lg">SkinScan</span>
+          <span className="font-semibold text-lg flex items-center gap-1.5">
+            <span className="text-primary">●</span> SkinScan
+          </span>
           <nav className="flex gap-4 text-sm">
             <Link href="/login" className="px-3 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/10">
               Log in
             </Link>
             <Link
               href="/register"
-              className="px-3 py-1.5 rounded bg-foreground text-background hover:opacity-90"
+              className="px-3 py-1.5 rounded bg-primary text-primary-foreground hover:opacity-90"
             >
               Sign up
             </Link>
@@ -36,7 +44,7 @@ export default function LandingPage() {
       </header>
 
       <main className="flex-1">
-        <section className="max-w-5xl mx-auto px-6 py-20 text-center">
+        <section className="max-w-5xl mx-auto px-6 py-20 text-center bg-gradient-to-b from-primary-soft/30 to-transparent">
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
             Early-stage skin lesion screening, powered by your browser
           </h1>
@@ -48,7 +56,7 @@ export default function LandingPage() {
           <div className="mt-8 flex gap-3 justify-center">
             <Link
               href="/register"
-              className="px-5 py-2.5 rounded-md bg-foreground text-background font-medium hover:opacity-90"
+              className="px-5 py-2.5 rounded-md bg-primary text-primary-foreground font-medium hover:opacity-90"
             >
               Get started
             </Link>
@@ -63,8 +71,8 @@ export default function LandingPage() {
 
         <section className="max-w-5xl mx-auto px-6 py-12 grid sm:grid-cols-3 gap-6">
           {FEATURES.map((f) => (
-            <div key={f.title} className="rounded-lg border border-black/10 dark:border-white/10 p-6">
-              <h2 className="font-semibold mb-2">{f.title}</h2>
+            <div key={f.title} className={`rounded-lg border p-6 ${f.color}`}>
+              <h2 className={`font-semibold mb-2 ${f.titleColor}`}>{f.title}</h2>
               <p className="text-sm text-black/70 dark:text-white/70">{f.body}</p>
             </div>
           ))}
