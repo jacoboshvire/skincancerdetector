@@ -249,7 +249,13 @@ export default function DashboardClient({ email }: { email: string }) {
                       : "border-green-500/40 bg-green-500/10"
                   }`}
                 >
-                  <p className="text-sm text-black/60 dark:text-white/60">Top prediction</p>
+                  {top!.cls.malignant ? (
+                    <p className="text-sm text-black/60 dark:text-white/60">Top prediction</p>
+                  ) : (
+                    <p className="font-semibold text-green-700 dark:text-green-400">
+                      ✓ Healthy skin
+                    </p>
+                  )}
                   <p className="font-semibold">{top!.cls.label}</p>
                   <p className="text-sm mt-1">
                     Confidence: {(top!.confidence * 100).toFixed(1)}% · Overall
