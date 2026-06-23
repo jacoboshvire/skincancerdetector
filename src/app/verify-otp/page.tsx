@@ -96,13 +96,15 @@ function VerifyOtpForm() {
           </div>
           {error && <p className="text-sm text-accent-red">{error}</p>}
           {info && <p className="text-sm text-accent-green">{info}</p>}
-          <button
+          <motion.button
             type="submit"
             disabled={loading || code.length !== 6}
-            className="w-full rounded-md bg-primary text-primary-foreground py-2.5 font-medium hover:opacity-90 disabled:opacity-60"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full rounded-md bg-primary text-primary-foreground py-2.5 font-medium hover:opacity-90 disabled:opacity-60 shadow-md shadow-primary/20"
           >
             {loading ? "Verifying…" : "Verify"}
-          </button>
+          </motion.button>
         </form>
         <button
           onClick={onResend}
@@ -111,7 +113,7 @@ function VerifyOtpForm() {
         >
           {resending ? "Sending…" : "Resend code"}
         </button>
-      </div>
+      </motion.div>
     </div>
   );
 }
