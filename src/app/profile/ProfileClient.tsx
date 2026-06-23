@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { HAM10000_CLASSES } from "@/lib/modelClasses";
+import { assessSymptoms } from "@/lib/symptomRisk";
 
 interface ScanRecord {
   id: number;
