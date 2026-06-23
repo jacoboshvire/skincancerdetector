@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import type * as tf from "@tensorflow/tfjs";
 import { loadModel, predictFromImage, isModelAvailable } from "@/lib/clientModel";
 import { HAM10000_CLASSES, malignantRiskFromProbabilities, topPrediction } from "@/lib/modelClasses";
+import { assessSymptoms } from "@/lib/symptomRisk";
 
 interface ScanRecord {
   id: number;
