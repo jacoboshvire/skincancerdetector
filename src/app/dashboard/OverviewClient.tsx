@@ -122,9 +122,9 @@ export default function OverviewClient({ email }: { email: string }) {
           transition={{ staggerChildren: 0.08, delayChildren: 0.1 }}
           className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10"
         >
-          <StatCard color="blue" label="Total scans" value={loading ? "…" : history.length} />
+          <StatCard color="gray" label="Total scans" value={loading ? "…" : history.length} />
           <StatCard color="red" label="Flagged for follow-up" value={loading ? "…" : flagged.length} />
-          <StatCard color="pink" label="Favorites" value={loading ? "…" : favorites.length} />
+          <StatCard color="gray" label="Favorites" value={loading ? "…" : favorites.length} />
           <StatCard
             color="purple"
             label="Medical record"
