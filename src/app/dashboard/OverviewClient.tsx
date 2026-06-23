@@ -67,37 +67,37 @@ export default function OverviewClient({ email }: { email: string }) {
   const profileComplete = !!profile?.fullName;
 
   return (
-  <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen">
       <AppHeader email={email} />
 
-  <main className="flex-1 max-w-5xl mx-auto px-6 py-10 w-full">
-  <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
+      <main className="flex-1 max-w-5xl mx-auto px-6 py-10 w-full">
+        <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
           <div>
-  <h1 className="text-2xl font-bold">Welcome back</h1>
-  <p className="text-black/60 dark:text-white/60 text-sm">{email}</p>
+            <h1 className="text-2xl font-bold">Welcome back</h1>
+            <p className="text-black/60 dark:text-white/60 text-sm">{email}</p>
           </div>
           <Link
             href="/dashboard/scan"
-  className="rounded-md bg-primary text-primary-foreground px-5 py-2.5 font-medium hover:opacity-90"
+            className="rounded-md bg-primary text-primary-foreground px-5 py-2.5 font-medium hover:opacity-90"
           >
             + New scan
           </Link>
         </div>
 
         {!loading && flagged.length > 0 && (
-  <div className="mb-8 rounded-lg border border-accent-red/40 bg-accent-red/10 p-4 text-sm">
-  <strong className="block mb-1">
+          <div className="mb-8 rounded-lg border border-red-500/40 bg-red-500/10 p-4 text-sm">
+            <strong className="block mb-1">
               {flagged.length} scan{flagged.length === 1 ? "" : "s"} flagged for follow-up.
             </strong>
             Based on image classification and/or reported symptoms. Review them on your{" "}
-  <Link href="/profile" className="underline">
+            <Link href="/profile" className="underline">
               profile page
             </Link>
             , and consider seeing a dermatologist.
           </div>
         )}
 
-  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
           <StatCard color="blue" label="Total scans" value={loading ? "…" : history.length} />
           <StatCard color="red" label="Flagged for follow-up" value={loading ? "…" : flagged.length} />
           <StatCard color="pink" label="Favorites" value={loading ? "…" : favorites.length} />
@@ -109,38 +109,38 @@ export default function OverviewClient({ email }: { email: string }) {
           />
         </div>
 
-  <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8">
           <section>
-  <div className="flex items-baseline justify-between mb-3">
-  <h2 className="font-semibold">Recent activity</h2>
-  <Link href="/profile" className="text-sm text-primary underline">
+            <div className="flex items-baseline justify-between mb-3">
+              <h2 className="font-semibold">Recent activity</h2>
+              <Link href="/profile" className="text-sm text-primary underline">
                 View all
               </Link>
             </div>
             {loading ? (
-  <p className="text-sm text-black/50 dark:text-white/50">Loading…</p>
+              <p className="text-sm text-black/50 dark:text-white/50">Loading…</p>
             ) : recent.length === 0 ? (
-  <p className="text-sm text-black/50 dark:text-white/50">
+              <p className="text-sm text-black/50 dark:text-white/50">
                 No scans yet.{" "}
-  <Link href="/dashboard/scan" className="underline text-primary">
+                <Link href="/dashboard/scan" className="underline text-primary">
                   Analyze your first photo
                 </Link>
                 .
               </p>
             ) : (
-  <ul className="space-y-2">
+              <ul className="space-y-2">
                 {recent.map((scan) => (
                   <li
                     key={scan.id}
-  className={`flex items-center justify-between gap-3 rounded-lg border p-3 text-sm ${
+                    className={`flex items-center justify-between gap-3 rounded-lg border p-3 text-sm ${
                       isFlagged(scan)
-                        ? "border-accent-red/30 bg-accent-red/5"
+                        ? "border-red-500/30 bg-red-500/5"
                         : "border-black/10 dark:border-white/10"
                     }`}
                   >
                     <div>
-  <p className="font-medium">{scan.predictedLabel}</p>
-  <p className="text-black/50 dark:text-white/50">
+                      <p className="font-medium">{scan.predictedLabel}</p>
+                      <p className="text-black/50 dark:text-white/50">
                         {new Date(scan.createdAt).toLocaleDateString()}
                         {scan.bodyLocation && <> · {scan.bodyLocation}</>}
                       </p>
@@ -153,45 +153,45 @@ export default function OverviewClient({ email }: { email: string }) {
           </section>
 
           <section>
-  <h2 className="font-semibold mb-3">Quick links</h2>
-  <div className="space-y-3">
+            <h2 className="font-semibold mb-3">Quick links</h2>
+            <div className="space-y-3">
               <Link
                 href="/dashboard/scan"
-  className="block rounded-lg border border-primary/30 bg-primary-soft/20 p-4 hover:bg-primary-soft/30"
+                className="block rounded-lg border border-primary/30 bg-primary-soft/20 p-4 hover:bg-primary-soft/30"
               >
-  <p className="font-medium text-primary">Analyze a new photo</p>
-  <p className="text-sm text-black/60 dark:text-white/60">
+                <p className="font-medium text-primary">Analyze a new photo</p>
+                <p className="text-sm text-black/60 dark:text-white/60">
                   Upload a lesion image for on-device classification.
                 </p>
               </Link>
               <Link
                 href="/profile"
-  className="block rounded-lg border border-accent-purple/30 bg-accent-purple/5 p-4 hover:bg-accent-purple/10"
+                className="block rounded-lg border border-purple-500/30 bg-purple-500/5 p-4 hover:bg-purple-500/10"
               >
-  <p className="font-medium text-accent-purple ">
+                <p className="font-medium text-purple-700 dark:text-purple-400">
                   {profileComplete ? "Edit your medical record" : "Complete your medical record"}
                 </p>
-  <p className="text-sm text-black/60 dark:text-white/60">
+                <p className="text-sm text-black/60 dark:text-white/60">
                   Background details (name, DOB, family history) for context on your history.
                 </p>
               </Link>
               <div
-  className={`rounded-lg border p-4 ${
+                className={`rounded-lg border p-4 ${
                   modelReady
-                    ? "border-accent-green/30 bg-accent-green/5"
-                    : "border-accent-amber/30 bg-accent-amber/5"
+                    ? "border-green-500/30 bg-green-500/5"
+                    : "border-amber-500/30 bg-amber-500/5"
                 }`}
               >
                 <p
-  className={`font-medium ${
+                  className={`font-medium ${
                     modelReady
-                      ? "text-accent-green "
-                      : "text-accent-amber "
+                      ? "text-green-700 dark:text-green-400"
+                      : "text-amber-700 dark:text-amber-400"
                   }`}
                 >
                   {modelReady === null ? "Checking model…" : modelReady ? "Model ready" : "Model not trained yet"}
                 </p>
-  <p className="text-sm text-black/60 dark:text-white/60">
+                <p className="text-sm text-black/60 dark:text-white/60">
                   {modelReady
                     ? "TensorFlow.js classifier is loaded and ready to analyze images."
                     : "Run the training pipeline in scripts/train_model — see the README."}
@@ -206,10 +206,10 @@ export default function OverviewClient({ email }: { email: string }) {
 }
 
 const STAT_COLORS = {
-  blue: "border-accent-blue/30 bg-accent-blue/10 text-accent-blue ",
-  red: "border-accent-red/30 bg-accent-red/10 text-accent-red ",
-  pink: "border-accent-pink/30 bg-accent-pink/10 text-accent-pink ",
-  purple: "border-accent-purple/30 bg-accent-purple/10 text-accent-purple ",
+  blue: "border-blue-500/30 bg-blue-500/10 text-blue-700 dark:text-blue-400",
+  red: "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400",
+  pink: "border-pink-500/30 bg-pink-500/10 text-pink-700 dark:text-pink-400",
+  purple: "border-purple-500/30 bg-purple-500/10 text-purple-700 dark:text-purple-400",
 };
 
 function StatCard({
@@ -224,9 +224,9 @@ function StatCard({
   href?: string;
 }) {
   const content = (
-  <div className={`rounded-xl border p-4 ${STAT_COLORS[color]}`}>
-  <p className="text-2xl font-bold">{value}</p>
-  <p className="text-sm mt-1 text-black/60 dark:text-white/60">{label}</p>
+    <div className={`rounded-xl border p-4 ${STAT_COLORS[color]}`}>
+      <p className="text-2xl font-bold">{value}</p>
+      <p className="text-sm mt-1 text-black/60 dark:text-white/60">{label}</p>
     </div>
   );
   return href ? <Link href={href}>{content}</Link> : content;
