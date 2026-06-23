@@ -33,15 +33,15 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex flex-1 items-center justify-center px-6 py-16">
-      <div className="w-full max-w-sm">
-        <h1 className="text-2xl font-bold mb-1">Create your account</h1>
-        <p className="text-sm text-black/60 dark:text-white/60 mb-6">
+  <div className="flex flex-1 items-center justify-center px-6 py-16">
+  <div className="w-full max-w-sm">
+  <h1 className="text-2xl font-bold mb-1">Create your account</h1>
+  <p className="text-sm text-black/60 dark:text-white/60 mb-6">
           You&apos;ll verify your email with a one-time code after logging in.
         </p>
-        <form onSubmit={onSubmit} className="space-y-4">
+  <form onSubmit={onSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1" htmlFor="email">
+  <label className="block text-sm font-medium mb-1" htmlFor="email">
               Email
             </label>
             <input
@@ -51,11 +51,11 @@ export default function RegisterPage() {
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+  className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1" htmlFor="password">
+  <label className="block text-sm font-medium mb-1" htmlFor="password">
               Password
             </label>
             <input
@@ -66,22 +66,22 @@ export default function RegisterPage() {
               autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+  className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
             />
-            <p className="text-xs text-black/50 dark:text-white/50 mt-1">At least 8 characters.</p>
+  <p className="text-xs text-black/50 dark:text-white/50 mt-1">At least 8 characters.</p>
           </div>
-          {error && <p className="text-sm text-red-600">{error}</p>}
+  {error && <p className="text-sm text-accent-red">{error}</p>}
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-md bg-primary text-primary-foreground py-2.5 font-medium hover:opacity-90 disabled:opacity-60"
+  className="w-full rounded-md bg-primary text-primary-foreground py-2.5 font-medium hover:opacity-90 disabled:opacity-60"
           >
             {loading ? "Creating account…" : "Sign up"}
           </button>
         </form>
-        <p className="text-sm text-center mt-6 text-black/60 dark:text-white/60">
+  <p className="text-sm text-center mt-6 text-black/60 dark:text-white/60">
           Already have an account?{" "}
-          <Link href="/login" className="font-medium text-foreground underline">
+  <Link href="/login" className="font-medium text-foreground underline">
             Log in
           </Link>
         </p>

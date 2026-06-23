@@ -15,8 +15,8 @@ export default function HeartButton({
       onClick={onToggle}
       aria-label={active ? "Remove from favorites" : "Add to favorites"}
       title={active ? "Remove from favorites" : "Add to favorites"}
-      className={`transition-colors ${
-        active ? "text-pink-500" : "text-black/30 dark:text-white/30 hover:text-pink-400"
+  className={`transition-colors ${
+        active ? "text-accent-pink" : "text-black/30 dark:text-white/30 hover:text-accent-pink"
       }`}
     >
       <svg
@@ -24,7 +24,7 @@ export default function HeartButton({
         fill={active ? "currentColor" : "none"}
         stroke="currentColor"
         strokeWidth={2}
-        className={size === "sm" ? "w-4 h-4" : "w-5 h-5"}
+  className={size === "sm" ? "w-4 h-4" : "w-5 h-5"}
       >
         <path
           strokeLinecap="round"
