@@ -449,8 +449,13 @@ export default function ScanClient({ email }: { email: string }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {history.map((scan) => (
-                    <tr key={scan.id} className="border-b border-foreground/5 hover:bg-foreground/5 transition-colors">
+                  {history.map((scan, i) => (
+                    <tr
+                      key={scan.id}
+                      className={`border-b border-foreground/5 hover:bg-foreground/10 transition-colors ${
+                        i % 2 === 1 ? "bg-foreground/5" : ""
+                      }`}
+                    >
                       <td className="py-2 pr-4">
                         <HeartButton
                           size="sm"
