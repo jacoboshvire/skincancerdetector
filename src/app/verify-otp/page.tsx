@@ -91,7 +91,7 @@ function VerifyOtpForm() {
           <button
             type="submit"
             disabled={loading || code.length !== 6}
-            className="w-full rounded-md bg-foreground text-background py-2.5 font-medium disabled:opacity-60"
+            className="w-full rounded-md bg-primary text-primary-foreground py-2.5 font-medium hover:opacity-90 disabled:opacity-60"
           >
             {loading ? "Verifying…" : "Verify"}
           </button>
