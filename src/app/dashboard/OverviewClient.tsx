@@ -201,9 +201,9 @@ export default function OverviewClient({ email }: { email: string }) {
               <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/profile"
-                  className="block rounded-xl border border-accent-purple/30 bg-accent-purple/5 p-4 hover:shadow-lg hover:shadow-accent-purple/15 transition-shadow"
+                  className="block rounded-xl border border-foreground/15 bg-foreground/5 p-4 hover:shadow-lg hover:shadow-foreground/10 transition-shadow"
                 >
-                  <p className="font-medium text-accent-purple">
+                  <p className="font-medium text-foreground">
                     {profileComplete ? "Edit your medical record" : "Complete your medical record"}
                   </p>
                   <p className="text-sm text-foreground/60">
