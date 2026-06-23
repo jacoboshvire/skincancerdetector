@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/session";
-import DashboardClient from "./DashboardClient";
+import OverviewClient from "./OverviewClient";
 
 export default async function DashboardPage() {
   const session = await getSession();
@@ -8,5 +8,5 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  return <DashboardClient email={session.email} />;
+  return <OverviewClient email={session.email} />;
 }
