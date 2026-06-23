@@ -20,7 +20,7 @@ export default function AppHeader({ email }: { email: string }) {
   }
 
   return (
-    <header className="border-b border-foreground/10 bg-gradient-to-r from-primary-soft/40 to-transparent">
+    <header className="border-b border-black/10 dark:border-white/10 bg-gradient-to-r from-primary-soft/40 to-transparent">
       <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <span className="font-semibold text-lg flex items-center gap-1.5">
@@ -36,7 +36,7 @@ export default function AppHeader({ email }: { email: string }) {
                   className={`px-3 py-1.5 rounded-md transition-colors ${
                     active
                       ? "bg-primary text-primary-foreground font-medium"
-                      : "hover:bg-foreground/5"
+                      : "hover:bg-black/5 dark:hover:bg-white/10"
                   }`}
                 >
                   {link.label}
@@ -46,10 +46,10 @@ export default function AppHeader({ email }: { email: string }) {
           </nav>
         </div>
         <div className="flex items-center gap-4 text-sm">
-          <span className="text-foreground/60">{email}</span>
+          <span className="text-black/60 dark:text-white/60">{email}</span>
           <button
             onClick={onLogout}
-            className="px-3 py-1.5 rounded border border-foreground/15 hover:bg-foreground/5"
+            className="px-3 py-1.5 rounded border border-black/15 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/10"
           >
             Log out
           </button>
