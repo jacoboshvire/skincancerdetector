@@ -13,8 +13,8 @@ const FEATURES = [
   {
     title: "Trained on HAM10000",
     body: "The model is fine-tuned from MobileNetV2 on the HAM10000 dataset, 10,015 dermoscopic images across 7 lesion categories, the standard public benchmark for this task.",
-    color: "border-primary/30 bg-primary-soft/20",
-    titleColor: "text-primary",
+    color: "border-foreground/15 bg-foreground/5",
+    titleColor: "text-foreground",
   },
   {
     title: "Secured with JWT + MFA",
