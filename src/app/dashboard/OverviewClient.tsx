@@ -74,7 +74,7 @@ export default function OverviewClient({ email }: { email: string }) {
         <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
           <div>
             <h1 className="text-2xl font-bold">Welcome back</h1>
-            <p className="text-black/60 dark:text-white/60 text-sm">{email}</p>
+            <p className="text-foreground/60 text-sm">{email}</p>
           </div>
           <Link
             href="/dashboard/scan"
@@ -118,9 +118,9 @@ export default function OverviewClient({ email }: { email: string }) {
               </Link>
             </div>
             {loading ? (
-              <p className="text-sm text-black/50 dark:text-white/50">Loading…</p>
+              <p className="text-sm text-foreground/50">Loading…</p>
             ) : recent.length === 0 ? (
-              <p className="text-sm text-black/50 dark:text-white/50">
+              <p className="text-sm text-foreground/50">
                 No scans yet.{" "}
                 <Link href="/dashboard/scan" className="underline text-primary">
                   Analyze your first photo
@@ -135,12 +135,12 @@ export default function OverviewClient({ email }: { email: string }) {
                     className={`flex items-center justify-between gap-3 rounded-lg border p-3 text-sm ${
                       isFlagged(scan)
                         ? "border-accent-red/30 bg-accent-red/5"
-                        : "border-black/10 dark:border-white/10"
+                        : "border-foreground/10"
                     }`}
                   >
                     <div>
                       <p className="font-medium">{scan.predictedLabel}</p>
-                      <p className="text-black/50 dark:text-white/50">
+                      <p className="text-foreground/50">
                         {new Date(scan.createdAt).toLocaleDateString()}
                         {scan.bodyLocation && <> · {scan.bodyLocation}</>}
                       </p>
@@ -160,7 +160,7 @@ export default function OverviewClient({ email }: { email: string }) {
                 className="block rounded-lg border border-primary/30 bg-primary-soft/20 p-4 hover:bg-primary-soft/30"
               >
                 <p className="font-medium text-primary">Analyze a new photo</p>
-                <p className="text-sm text-black/60 dark:text-white/60">
+                <p className="text-sm text-foreground/60">
                   Upload a lesion image for on-device classification.
                 </p>
               </Link>
@@ -171,7 +171,7 @@ export default function OverviewClient({ email }: { email: string }) {
                 <p className="font-medium text-accent-purple">
                   {profileComplete ? "Edit your medical record" : "Complete your medical record"}
                 </p>
-                <p className="text-sm text-black/60 dark:text-white/60">
+                <p className="text-sm text-foreground/60">
                   Background details (name, DOB, family history) for context on your history.
                 </p>
               </Link>
@@ -191,7 +191,7 @@ export default function OverviewClient({ email }: { email: string }) {
                 >
                   {modelReady === null ? "Checking model…" : modelReady ? "Model ready" : "Model not trained yet"}
                 </p>
-                <p className="text-sm text-black/60 dark:text-white/60">
+                <p className="text-sm text-foreground/60">
                   {modelReady
                     ? "TensorFlow.js classifier is loaded and ready to analyze images."
                     : "Run the training pipeline in scripts/train_model — see the README."}
@@ -226,7 +226,7 @@ function StatCard({
   const content = (
     <div className={`rounded-xl border p-4 ${STAT_COLORS[color]}`}>
       <p className="text-2xl font-bold">{value}</p>
-      <p className="text-sm mt-1 text-black/60 dark:text-white/60">{label}</p>
+      <p className="text-sm mt-1 text-foreground/60">{label}</p>
     </div>
   );
   return href ? <Link href={href}>{content}</Link> : content;

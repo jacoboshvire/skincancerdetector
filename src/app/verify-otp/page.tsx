@@ -63,7 +63,7 @@ function VerifyOtpForm() {
     <div className="flex flex-1 items-center justify-center px-6 py-16">
       <div className="w-full max-w-sm">
         <h1 className="text-2xl font-bold mb-1">Enter verification code</h1>
-        <p className="text-sm text-black/60 dark:text-white/60 mb-6">
+        <p className="text-sm text-foreground/60 mb-6">
           We sent a 6-digit code to <span className="font-medium">{email}</span>.
           In development without SMTP configured, check your server logs for
           the code.
@@ -83,7 +83,7 @@ function VerifyOtpForm() {
               autoComplete="one-time-code"
               value={code}
               onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
-              className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm tracking-widest text-center text-lg"
+              className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm tracking-widest text-center text-lg"
             />
           </div>
           {error && <p className="text-sm text-accent-red">{error}</p>}
