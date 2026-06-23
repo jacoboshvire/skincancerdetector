@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import AppHeader from "@/components/AppHeader";
+import HeartButton from "@/components/HeartButton";
 import { HAM10000_CLASSES } from "@/lib/modelClasses";
 import { assessSymptoms } from "@/lib/symptomRisk";
 
@@ -16,6 +17,7 @@ interface ScanRecord {
   probabilities: number[];
   bodyLocation: string | null;
   notes: string | null;
+  favorite: boolean;
   createdAt: number;
 }
 
@@ -36,8 +38,6 @@ const SEX_OPTIONS = [
 ];
 
 export default function ProfileClient({ email }: { email: string }) {
-  const router = useRouter();
-
   const [createdAt, setCreatedAt] = useState<number | null>(null);
   const [history, setHistory] = useState<ScanRecord[]>([]);
   const [historyLoading, setHistoryLoading] = useState(true);
@@ -50,6 +50,7 @@ export default function ProfileClient({ email }: { email: string }) {
   const [profileLoading, setProfileLoading] = useState(true);
   const [savingProfile, setSavingProfile] = useState(false);
   const [savedProfile, setSavedProfile] = useState(false);
+  const [filter, setFilter] = useState<"all" | "favorites">("all");
 
   useEffect(() => {
     fetch("/api/auth/me")
@@ -98,10 +99,15 @@ export default function ProfileClient({ email }: { email: string }) {
     }
   }
 
-  async function onLogout() {
-    await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/");
-    router.refresh();
+  async function onToggleFavorite(scan: ScanRecord) {
+    setHistory((prev) =>
+      prev.map((s) => (s.id === scan.id ? { ...s, favorite: !s.favorite } : s))
+    );
+    await fetch(`/api/scans/${scan.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ favorite: !scan.favorite }),
+    });
   }
 
   function isFlagged(scan: ScanRecord): boolean {
@@ -110,26 +116,11 @@ export default function ProfileClient({ email }: { email: string }) {
   }
 
   const malignantCount = history.filter(isFlagged).length;
+  const visibleHistory = filter === "favorites" ? history.filter((s) => s.favorite) : history;
 
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="border-b border-black/10 dark:border-white/10">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <span className="font-semibold text-lg">SkinScan</span>
-          <div className="flex items-center gap-4 text-sm">
-            <Link href="/dashboard" className="px-3 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/10">
-              Dashboard
-            </Link>
-            <span className="text-black/60 dark:text-white/60">{email}</span>
-            <button
-              onClick={onLogout}
-              className="px-3 py-1.5 rounded border border-black/15 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/10"
-            >
-              Log out
-            </button>
-          </div>
-        </div>
-      </header>
+      <AppHeader email={email} />
 
       <main className="flex-1 max-w-5xl mx-auto px-6 py-10 w-full space-y-12">
         <section>
@@ -140,8 +131,8 @@ export default function ProfileClient({ email }: { email: string }) {
           </p>
         </section>
 
-        <section>
-          <h2 className="font-semibold mb-3">Medical record</h2>
+        <section className="rounded-xl border border-purple-500/20 bg-purple-500/5 p-5">
+          <h2 className="font-semibold mb-3 text-purple-700 dark:text-purple-400">Medical record</h2>
           <p className="text-sm text-black/60 dark:text-white/60 mb-4">
             Optional background information to give context to your scan
             history. Stored with your account only — never sent to the
@@ -217,7 +208,7 @@ export default function ProfileClient({ email }: { email: string }) {
               <button
                 type="submit"
                 disabled={savingProfile}
-                className="rounded-md bg-foreground text-background px-4 py-2 text-sm font-medium disabled:opacity-50"
+                className="rounded-md bg-purple-600 text-white px-4 py-2 text-sm font-medium hover:bg-purple-700 disabled:opacity-50"
               >
                 {savingProfile ? "Saving…" : "Save"}
               </button>
@@ -227,29 +218,51 @@ export default function ProfileClient({ email }: { email: string }) {
         </section>
 
         <section>
-          <div className="flex items-baseline justify-between mb-3">
+          <div className="flex items-baseline justify-between mb-3 flex-wrap gap-2">
             <h2 className="font-semibold">Medical history</h2>
-            {!historyLoading && history.length > 0 && (
-              <p className="text-sm text-black/60 dark:text-white/60">
-                {history.length} scan{history.length === 1 ? "" : "s"} ·{" "}
-                {malignantCount} flagged for follow-up
-              </p>
-            )}
+            <div className="flex items-center gap-3">
+              {!historyLoading && history.length > 0 && (
+                <p className="text-sm text-black/60 dark:text-white/60">
+                  {history.length} scan{history.length === 1 ? "" : "s"} ·{" "}
+                  {malignantCount} flagged for follow-up
+                </p>
+              )}
+              <div className="flex rounded-md border border-black/15 dark:border-white/20 overflow-hidden text-sm">
+                <button
+                  onClick={() => setFilter("all")}
+                  className={`px-3 py-1 ${filter === "all" ? "bg-primary text-primary-foreground" : ""}`}
+                >
+                  All
+                </button>
+                <button
+                  onClick={() => setFilter("favorites")}
+                  className={`px-3 py-1 ${filter === "favorites" ? "bg-primary text-primary-foreground" : ""}`}
+                >
+                  Favorites
+                </button>
+              </div>
+            </div>
           </div>
 
           {historyLoading ? (
             <p className="text-sm text-black/50 dark:text-white/50">Loading…</p>
-          ) : history.length === 0 ? (
+          ) : visibleHistory.length === 0 ? (
             <p className="text-sm text-black/50 dark:text-white/50">
-              No scans saved yet. Analyze and save a scan from the{" "}
-              <Link href="/dashboard" className="underline">
-                dashboard
-              </Link>{" "}
-              to build your history.
+              {filter === "favorites" ? (
+                "No favorited scans yet."
+              ) : (
+                <>
+                  No scans saved yet. Analyze and save a scan from the{" "}
+                  <Link href="/dashboard/scan" className="underline">
+                    scan tool
+                  </Link>{" "}
+                  to build your history.
+                </>
+              )}
             </p>
           ) : (
             <div className="space-y-3">
-              {history.map((scan) => {
+              {visibleHistory.map((scan) => {
                 const imageMalignant = HAM10000_CLASSES.find((c) => c.code === scan.predictedClass)?.malignant;
                 const symptomFlagged = assessSymptoms(scan.notes).flagged;
                 const flagged = imageMalignant || symptomFlagged;
@@ -263,21 +276,24 @@ export default function ProfileClient({ email }: { email: string }) {
                     }`}
                   >
                     <div className="flex items-start justify-between flex-wrap gap-2">
-                      <div>
-                        <p className="font-medium">
-                          {scan.predictedLabel}{" "}
-                          {imageMalignant && (
-                            <span className="text-red-600 text-xs font-medium">(malignant)</span>
-                          )}
-                          {!imageMalignant && symptomFlagged && (
-                            <span className="text-red-600 text-xs font-medium">(symptoms flagged)</span>
-                          )}
-                        </p>
-                        <p className="text-sm text-black/60 dark:text-white/60">
-                          {new Date(scan.createdAt).toLocaleString()}
-                          {scan.bodyLocation && <> · {scan.bodyLocation}</>}
-                          {scan.imageName && <> · {scan.imageName}</>}
-                        </p>
+                      <div className="flex items-start gap-2">
+                        <HeartButton active={scan.favorite} onToggle={() => onToggleFavorite(scan)} />
+                        <div>
+                          <p className="font-medium">
+                            {scan.predictedLabel}{" "}
+                            {imageMalignant && (
+                              <span className="text-red-600 text-xs font-medium">(malignant)</span>
+                            )}
+                            {!imageMalignant && symptomFlagged && (
+                              <span className="text-red-600 text-xs font-medium">(symptoms flagged)</span>
+                            )}
+                          </p>
+                          <p className="text-sm text-black/60 dark:text-white/60">
+                            {new Date(scan.createdAt).toLocaleString()}
+                            {scan.bodyLocation && <> · {scan.bodyLocation}</>}
+                            {scan.imageName && <> · {scan.imageName}</>}
+                          </p>
+                        </div>
                       </div>
                       <p className="text-sm text-right">
                         Confidence {(scan.confidence * 100).toFixed(1)}%
