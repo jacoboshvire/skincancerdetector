@@ -185,7 +185,7 @@ export default function ScanClient({ email }: { email: string }) {
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
-          <section className="rounded-xl border border-black/10 dark:border-white/10 p-5">
+          <section className="rounded-xl border border-foreground/10 p-5">
             <h2 className="font-semibold mb-3 text-primary">Upload a lesion photo</h2>
             <div className="rounded-lg border border-dashed border-primary/30 bg-primary-soft/20 p-6 text-center">
               {imagePreview ? (
@@ -198,7 +198,7 @@ export default function ScanClient({ email }: { email: string }) {
                   className="max-h-64 mx-auto rounded-md object-contain"
                 />
               ) : (
-                <p className="text-sm text-black/50 dark:text-white/50 py-12">
+                <p className="text-sm text-foreground/50 py-12">
                   No image selected
                 </p>
               )}
@@ -220,7 +220,7 @@ export default function ScanClient({ email }: { email: string }) {
                   id="bodyLocation"
                   value={bodyLocation}
                   onChange={(e) => setBodyLocation(e.target.value)}
-                  className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+                  className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm"
                 >
                   <option value="">Not specified</option>
                   {BODY_LOCATIONS.map((loc) => (
@@ -240,9 +240,9 @@ export default function ScanClient({ email }: { email: string }) {
                   onChange={(e) => setNotes(e.target.value)}
                   rows={2}
                   placeholder="e.g. itchy, recently changed size or color"
-                  className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+                  className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm"
                 />
-                <p className="text-xs text-black/50 dark:text-white/50 mt-1">
+                <p className="text-xs text-foreground/50 mt-1">
                   Factored into the result below alongside the image — things like recent
                   change, bleeding, or itching matter even if a photo looks benign.
                 </p>
@@ -261,17 +261,17 @@ export default function ScanClient({ email }: { email: string }) {
                 onClick={onReset}
                 disabled={!imagePreview}
                 title="Clear the current image and result"
-                className="rounded-md border border-black/15 dark:border-white/20 px-4 py-2.5 text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-50"
+                className="rounded-md border border-foreground/15 px-4 py-2.5 text-sm font-medium hover:bg-foreground/5 disabled:opacity-50"
               >
                 Reset
               </button>
             </div>
           </section>
 
-          <section className="rounded-xl border border-black/10 dark:border-white/10 p-5">
+          <section className="rounded-xl border border-foreground/10 p-5">
             <h2 className="font-semibold mb-3 text-primary">Result</h2>
             {!probabilities ? (
-              <p className="text-sm text-black/50 dark:text-white/50">
+              <p className="text-sm text-foreground/50">
                 Upload and analyze an image to see results here.
               </p>
             ) : (
@@ -282,7 +282,7 @@ export default function ScanClient({ email }: { email: string }) {
                   }`}
                 >
                   {top!.cls.malignant ? (
-                    <p className="text-sm text-black/60 dark:text-white/60">Top prediction</p>
+                    <p className="text-sm text-foreground/60">Top prediction</p>
                   ) : symptomAssessment.flagged ? (
                     <p className="font-semibold text-red-700 dark:text-red-400">
                       ⚠ Image looks benign, but reported symptoms warrant a check-up
@@ -319,7 +319,7 @@ export default function ScanClient({ email }: { email: string }) {
                         </span>
                         <span>{((probabilities[i] ?? 0) * 100).toFixed(1)}%</span>
                       </div>
-                      <div className="h-1.5 rounded bg-black/10 dark:bg-white/10 overflow-hidden">
+                      <div className="h-1.5 rounded bg-foreground/10 overflow-hidden">
                         <div
                           className={`h-full ${cls.malignant ? "bg-red-500" : "bg-green-500"}`}
                           style={{ width: `${(probabilities[i] ?? 0) * 100}%` }}
@@ -353,14 +353,14 @@ export default function ScanClient({ email }: { email: string }) {
         <section className="mt-12">
           <h2 className="font-semibold mb-3">Scan history</h2>
           {historyLoading ? (
-            <p className="text-sm text-black/50 dark:text-white/50">Loading…</p>
+            <p className="text-sm text-foreground/50">Loading…</p>
           ) : history.length === 0 ? (
-            <p className="text-sm text-black/50 dark:text-white/50">No saved scans yet.</p>
+            <p className="text-sm text-foreground/50">No saved scans yet.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-left text-black/50 dark:text-white/50 border-b border-black/10 dark:border-white/10">
+                  <tr className="text-left text-foreground/50 border-b border-foreground/10">
                     <th className="py-2 pr-4"></th>
                     <th className="py-2 pr-4">Date</th>
                     <th className="py-2 pr-4">Location</th>
@@ -372,7 +372,7 @@ export default function ScanClient({ email }: { email: string }) {
                 </thead>
                 <tbody>
                   {history.map((scan) => (
-                    <tr key={scan.id} className="border-b border-black/5 dark:border-white/5">
+                    <tr key={scan.id} className="border-b border-foreground/5">
                       <td className="py-2 pr-4">
                         <HeartButton
                           size="sm"
@@ -392,7 +392,7 @@ export default function ScanClient({ email }: { email: string }) {
               </table>
             </div>
           )}
-          <p className="mt-3 text-sm text-black/50 dark:text-white/50">
+          <p className="mt-3 text-sm text-foreground/50">
             See your full medical history, including symptom notes, on your{" "}
             <Link href="/profile" className="underline">
               profile page
