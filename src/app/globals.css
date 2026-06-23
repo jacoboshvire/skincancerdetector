@@ -55,3 +55,37 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
+
+.gradient-text {
+  background-image: linear-gradient(90deg, var(--primary), var(--accent-purple), var(--accent-pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.glass-card {
+  background: color-mix(in srgb, var(--background) 55%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
+}
+
+.glass-header {
+  background: color-mix(in srgb, var(--background) 65%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@keyframes blob-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(4%, -6%) scale(1.08); }
+  66% { transform: translate(-3%, 4%) scale(0.95); }
+}
+
+.animate-blob {
+  animation: blob-float 18s ease-in-out infinite;
+}
+
+.animate-blob-slow {
+  animation: blob-float 26s ease-in-out infinite reverse;
+}
