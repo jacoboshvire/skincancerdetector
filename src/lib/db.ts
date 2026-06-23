@@ -29,10 +29,12 @@ function ensureSchema(): Promise<void> {
           probabilities TEXT NOT NULL,
           body_location TEXT,
           notes TEXT,
+          favorite BOOLEAN NOT NULL DEFAULT FALSE,
           created_at BIGINT NOT NULL
         )
       `;
 
+      await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS favorite BOOLEAN NOT NULL DEFAULT FALSE`;
       await sql`CREATE INDEX IF NOT EXISTS idx_scans_user_id ON scans(user_id)`;
 
       await sql`
