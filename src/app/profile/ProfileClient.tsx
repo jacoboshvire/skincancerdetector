@@ -304,7 +304,7 @@ export default function ProfileClient({ email }: { email: string }) {
           ) : (
             <motion.div layout className="space-y-3">
               <AnimatePresence initial={false}>
-                {visibleHistory.map((scan) => {
+                {visibleHistory.map((scan, i) => {
                   const imageMalignant = HAM10000_CLASSES.find((c) => c.code === scan.predictedClass)?.malignant;
                   const symptomFlagged = assessSymptoms(scan.notes).flagged;
                   const flagged = imageMalignant || symptomFlagged;
@@ -320,6 +320,8 @@ export default function ProfileClient({ email }: { email: string }) {
                       className={`rounded-xl border p-4 transition-shadow hover:shadow-md ${
                         flagged
                           ? "border-accent-red/40 bg-accent-red/5"
+                          : i % 2 === 1
+                          ? "border-foreground/10 bg-foreground/5"
                           : "border-foreground/10"
                       }`}
                     >
