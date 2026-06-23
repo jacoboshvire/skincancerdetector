@@ -104,9 +104,12 @@ export default function ProfileClient({ email }: { email: string }) {
     router.refresh();
   }
 
-  const malignantCount = history.filter(
-    (s) => HAM10000_CLASSES.find((c) => c.code === s.predictedClass)?.malignant
-  ).length;
+  function isFlagged(scan: ScanRecord): boolean {
+    const imageMalignant = HAM10000_CLASSES.find((c) => c.code === scan.predictedClass)?.malignant;
+    return !!imageMalignant || assessSymptoms(scan.notes).flagged;
+  }
+
+  const malignantCount = history.filter(isFlagged).length;
 
   return (
     <div className="flex flex-col min-h-screen">
