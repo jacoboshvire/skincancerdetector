@@ -83,7 +83,7 @@ function VerifyOtpForm() {
               autoComplete="one-time-code"
               value={code}
               onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
-              className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm tracking-widest text-center text-lg"
+              className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm tracking-widest text-center text-lg focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50"
             />
           </div>
           {error && <p className="text-sm text-accent-red">{error}</p>}
