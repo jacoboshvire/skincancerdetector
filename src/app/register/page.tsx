@@ -79,13 +79,15 @@ export default function RegisterPage() {
             <p className="text-xs text-foreground/50 mt-1">At least 8 characters.</p>
           </div>
           {error && <p className="text-sm text-accent-red">{error}</p>}
-          <button
+          <motion.button
             type="submit"
             disabled={loading}
-            className="w-full rounded-md bg-primary text-primary-foreground py-2.5 font-medium hover:opacity-90 disabled:opacity-60"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full rounded-md bg-primary text-primary-foreground py-2.5 font-medium hover:opacity-90 disabled:opacity-60 shadow-md shadow-primary/20"
           >
             {loading ? "Creating account…" : "Sign up"}
-          </button>
+          </motion.button>
         </form>
         <p className="text-sm text-center mt-6 text-foreground/60">
           Already have an account?{" "}
@@ -93,7 +95,7 @@ export default function RegisterPage() {
             Log in
           </Link>
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 }
