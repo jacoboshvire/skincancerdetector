@@ -82,6 +82,16 @@ export default function DashboardClient({ email }: { email: string }) {
     setImagePreview(url);
   }
 
+  function onReset() {
+    setImagePreview(null);
+    setImageName(null);
+    setProbabilities(null);
+    setBodyLocation("");
+    setNotes("");
+    setSaved(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
   const onAnalyze = useCallback(async () => {
     if (!imageRef.current || modelStatus !== "ready") return;
     setAnalyzing(true);
