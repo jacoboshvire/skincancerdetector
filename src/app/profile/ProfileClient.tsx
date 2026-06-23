@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import AppHeader from "@/components/AppHeader";
 import HeartButton from "@/components/HeartButton";
 import { HAM10000_CLASSES } from "@/lib/modelClasses";
@@ -123,15 +124,24 @@ export default function ProfileClient({ email }: { email: string }) {
       <AppHeader email={email} />
 
       <main className="flex-1 max-w-5xl mx-auto px-6 py-10 w-full space-y-12">
-        <section>
+        <motion.section
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+        >
           <h1 className="text-2xl font-bold mb-1">Profile</h1>
           <p className="text-sm text-foreground/60">
             {email}
             {createdAt && <> · Member since {new Date(createdAt).toLocaleDateString()}</>}
           </p>
-        </section>
+        </motion.section>
 
-        <section className="rounded-xl border border-accent-purple/20 bg-accent-purple/5 p-5">
+        <motion.section
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.05 }}
+          className="rounded-2xl border border-accent-purple/20 bg-accent-purple/5 p-5 shadow-sm"
+        >
           <h2 className="font-semibold mb-3 text-accent-purple">Medical record</h2>
           <p className="text-sm text-foreground/60 mb-4">
             Optional background information to give context to your scan
@@ -205,19 +215,36 @@ export default function ProfileClient({ email }: { email: string }) {
                   className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-purple/40 focus:border-accent-purple/50"
                 />
               </div>
-              <button
+              <motion.button
                 type="submit"
                 disabled={savingProfile}
-                className="rounded-md bg-accent-purple text-white px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="rounded-md bg-accent-purple text-white px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 shadow-md shadow-accent-purple/20"
               >
                 {savingProfile ? "Saving…" : "Save"}
-              </button>
-              {savedProfile && <span className="ml-3 text-sm text-accent-green">Saved.</span>}
+              </motion.button>
+              <AnimatePresence>
+                {savedProfile && (
+                  <motion.span
+                    initial={{ opacity: 0, x: -6 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="ml-3 text-sm text-accent-green"
+                  >
+                    Saved.
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </form>
           )}
-        </section>
+        </motion.section>
 
-        <section>
+        <motion.section
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+        >
           <div className="flex items-baseline justify-between mb-3 flex-wrap gap-2">
             <h2 className="font-semibold">Medical history</h2>
             <div className="flex items-center gap-3">
@@ -227,17 +254,31 @@ export default function ProfileClient({ email }: { email: string }) {
                   {malignantCount} flagged for follow-up
                 </p>
               )}
-              <div className="flex rounded-md border border-foreground/15 overflow-hidden text-sm">
+              <div className="relative flex rounded-md border border-foreground/15 overflow-hidden text-sm">
                 <button
                   onClick={() => setFilter("all")}
-                  className={`px-3 py-1 ${filter === "all" ? "bg-primary text-primary-foreground" : "hover:bg-foreground/5"}`}
+                  className={`relative px-3 py-1 transition-colors ${filter === "all" ? "text-primary-foreground" : "hover:bg-foreground/5"}`}
                 >
+                  {filter === "all" && (
+                    <motion.span
+                      layoutId="filter-pill"
+                      className="absolute inset-0 bg-primary -z-10"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
+                    />
+                  )}
                   All
                 </button>
                 <button
                   onClick={() => setFilter("favorites")}
-                  className={`px-3 py-1 ${filter === "favorites" ? "bg-accent-pink text-white" : "hover:bg-foreground/5"}`}
+                  className={`relative px-3 py-1 transition-colors ${filter === "favorites" ? "text-white" : "hover:bg-foreground/5"}`}
                 >
+                  {filter === "favorites" && (
+                    <motion.span
+                      layoutId="filter-pill"
+                      className="absolute inset-0 bg-accent-pink -z-10"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
+                    />
+                  )}
                   Favorites
                 </button>
               </div>
@@ -261,57 +302,65 @@ export default function ProfileClient({ email }: { email: string }) {
               )}
             </p>
           ) : (
-            <div className="space-y-3">
-              {visibleHistory.map((scan) => {
-                const imageMalignant = HAM10000_CLASSES.find((c) => c.code === scan.predictedClass)?.malignant;
-                const symptomFlagged = assessSymptoms(scan.notes).flagged;
-                const flagged = imageMalignant || symptomFlagged;
-                return (
-                  <div
-                    key={scan.id}
-                    className={`rounded-lg border p-4 ${
-                      flagged
-                        ? "border-accent-red/40 bg-accent-red/5"
-                        : "border-foreground/10"
-                    }`}
-                  >
-                    <div className="flex items-start justify-between flex-wrap gap-2">
-                      <div className="flex items-start gap-2">
-                        <HeartButton active={scan.favorite} onToggle={() => onToggleFavorite(scan)} />
-                        <div>
-                          <p className="font-medium">
-                            {scan.predictedLabel}{" "}
-                            {imageMalignant && (
-                              <span className="text-accent-red text-xs font-medium">(malignant)</span>
-                            )}
-                            {!imageMalignant && symptomFlagged && (
-                              <span className="text-accent-red text-xs font-medium">(symptoms flagged)</span>
-                            )}
-                          </p>
-                          <p className="text-sm text-foreground/60">
-                            {new Date(scan.createdAt).toLocaleString()}
-                            {scan.bodyLocation && <> · {scan.bodyLocation}</>}
-                            {scan.imageName && <> · {scan.imageName}</>}
-                          </p>
+            <motion.div layout className="space-y-3">
+              <AnimatePresence initial={false}>
+                {visibleHistory.map((scan) => {
+                  const imageMalignant = HAM10000_CLASSES.find((c) => c.code === scan.predictedClass)?.malignant;
+                  const symptomFlagged = assessSymptoms(scan.notes).flagged;
+                  const flagged = imageMalignant || symptomFlagged;
+                  return (
+                    <motion.div
+                      key={scan.id}
+                      layout
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.97 }}
+                      transition={{ duration: 0.25 }}
+                      whileHover={{ x: 2 }}
+                      className={`rounded-xl border p-4 transition-shadow hover:shadow-md ${
+                        flagged
+                          ? "border-accent-red/40 bg-accent-red/5"
+                          : "border-foreground/10"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between flex-wrap gap-2">
+                        <div className="flex items-start gap-2">
+                          <HeartButton active={scan.favorite} onToggle={() => onToggleFavorite(scan)} />
+                          <div>
+                            <p className="font-medium">
+                              {scan.predictedLabel}{" "}
+                              {imageMalignant && (
+                                <span className="text-accent-red text-xs font-medium">(malignant)</span>
+                              )}
+                              {!imageMalignant && symptomFlagged && (
+                                <span className="text-accent-red text-xs font-medium">(symptoms flagged)</span>
+                              )}
+                            </p>
+                            <p className="text-sm text-foreground/60">
+                              {new Date(scan.createdAt).toLocaleString()}
+                              {scan.bodyLocation && <> · {scan.bodyLocation}</>}
+                              {scan.imageName && <> · {scan.imageName}</>}
+                            </p>
+                          </div>
                         </div>
+                        <p className="text-sm text-right">
+                          Confidence {(scan.confidence * 100).toFixed(1)}%
+                          <br />
+                          Malignant risk {(scan.malignantRisk * 100).toFixed(1)}%
+                        </p>
                       </div>
-                      <p className="text-sm text-right">
-                        Confidence {(scan.confidence * 100).toFixed(1)}%
-                        <br />
-                        Malignant risk {(scan.malignantRisk * 100).toFixed(1)}%
-                      </p>
-                    </div>
-                    {scan.notes && (
-                      <p className="mt-2 text-sm text-foreground/70">
-                        <span className="font-medium">Symptom notes:</span> {scan.notes}
-                      </p>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+                      {scan.notes && (
+                        <p className="mt-2 text-sm text-foreground/70">
+                          <span className="font-medium">Symptom notes:</span> {scan.notes}
+                        </p>
+                      )}
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            </motion.div>
           )}
-        </section>
+        </motion.section>
       </main>
     </div>
   );
