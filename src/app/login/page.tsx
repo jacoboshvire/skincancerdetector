@@ -52,7 +52,7 @@ function LoginForm() {
     <div className="flex flex-1 items-center justify-center px-6 py-16">
       <div className="w-full max-w-sm">
         <h1 className="text-2xl font-bold mb-1">Log in</h1>
-        <p className="text-sm text-black/60 dark:text-white/60 mb-6">
+        <p className="text-sm text-foreground/60 mb-6">
           {justRegistered
             ? "Account created. Log in to continue."
             : "We'll send a one-time code to your email after your password is verified."}
@@ -69,7 +69,7 @@ function LoginForm() {
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+              className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm"
             />
           </div>
           <div>
@@ -83,7 +83,7 @@ function LoginForm() {
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+              className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm"
             />
           </div>
           {error && <p className="text-sm text-accent-red">{error}</p>}
@@ -95,7 +95,7 @@ function LoginForm() {
             {loading ? "Checking…" : "Continue"}
           </button>
         </form>
-        <p className="text-sm text-center mt-6 text-black/60 dark:text-white/60">
+        <p className="text-sm text-center mt-6 text-foreground/60">
           Don&apos;t have an account?{" "}
           <Link href="/register" className="font-medium text-foreground underline">
             Sign up

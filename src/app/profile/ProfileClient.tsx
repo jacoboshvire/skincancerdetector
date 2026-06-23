@@ -125,7 +125,7 @@ export default function ProfileClient({ email }: { email: string }) {
       <main className="flex-1 max-w-5xl mx-auto px-6 py-10 w-full space-y-12">
         <section>
           <h1 className="text-2xl font-bold mb-1">Profile</h1>
-          <p className="text-sm text-black/60 dark:text-white/60">
+          <p className="text-sm text-foreground/60">
             {email}
             {createdAt && <> · Member since {new Date(createdAt).toLocaleDateString()}</>}
           </p>
@@ -133,13 +133,13 @@ export default function ProfileClient({ email }: { email: string }) {
 
         <section className="rounded-xl border border-accent-purple/20 bg-accent-purple/5 p-5">
           <h2 className="font-semibold mb-3 text-accent-purple">Medical record</h2>
-          <p className="text-sm text-black/60 dark:text-white/60 mb-4">
+          <p className="text-sm text-foreground/60 mb-4">
             Optional background information to give context to your scan
             history. Stored with your account only — never sent to the
             classifier.
           </p>
           {profileLoading ? (
-            <p className="text-sm text-black/50 dark:text-white/50">Loading…</p>
+            <p className="text-sm text-foreground/50">Loading…</p>
           ) : (
             <form onSubmit={onSaveProfile} className="space-y-4 max-w-md">
               <div>
@@ -151,7 +151,7 @@ export default function ProfileClient({ email }: { email: string }) {
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+                  className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -164,7 +164,7 @@ export default function ProfileClient({ email }: { email: string }) {
                     type="date"
                     value={dateOfBirth}
                     onChange={(e) => setDateOfBirth(e.target.value)}
-                    className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+                    className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm"
                   />
                 </div>
                 <div>
@@ -175,7 +175,7 @@ export default function ProfileClient({ email }: { email: string }) {
                     id="sex"
                     value={sex}
                     onChange={(e) => setSex(e.target.value)}
-                    className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+                    className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm"
                   >
                     {SEX_OPTIONS.map((opt) => (
                       <option key={opt.value} value={opt.value}>
@@ -202,7 +202,7 @@ export default function ProfileClient({ email }: { email: string }) {
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   rows={3}
-                  className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+                  className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm"
                 />
               </div>
               <button
@@ -222,12 +222,12 @@ export default function ProfileClient({ email }: { email: string }) {
             <h2 className="font-semibold">Medical history</h2>
             <div className="flex items-center gap-3">
               {!historyLoading && history.length > 0 && (
-                <p className="text-sm text-black/60 dark:text-white/60">
+                <p className="text-sm text-foreground/60">
                   {history.length} scan{history.length === 1 ? "" : "s"} ·{" "}
                   {malignantCount} flagged for follow-up
                 </p>
               )}
-              <div className="flex rounded-md border border-black/15 dark:border-white/20 overflow-hidden text-sm">
+              <div className="flex rounded-md border border-foreground/15 overflow-hidden text-sm">
                 <button
                   onClick={() => setFilter("all")}
                   className={`px-3 py-1 ${filter === "all" ? "bg-primary text-primary-foreground" : ""}`}
@@ -245,9 +245,9 @@ export default function ProfileClient({ email }: { email: string }) {
           </div>
 
           {historyLoading ? (
-            <p className="text-sm text-black/50 dark:text-white/50">Loading…</p>
+            <p className="text-sm text-foreground/50">Loading…</p>
           ) : visibleHistory.length === 0 ? (
-            <p className="text-sm text-black/50 dark:text-white/50">
+            <p className="text-sm text-foreground/50">
               {filter === "favorites" ? (
                 "No favorited scans yet."
               ) : (
@@ -272,7 +272,7 @@ export default function ProfileClient({ email }: { email: string }) {
                     className={`rounded-lg border p-4 ${
                       flagged
                         ? "border-accent-red/40 bg-accent-red/5"
-                        : "border-black/10 dark:border-white/10"
+                        : "border-foreground/10"
                     }`}
                   >
                     <div className="flex items-start justify-between flex-wrap gap-2">
@@ -288,7 +288,7 @@ export default function ProfileClient({ email }: { email: string }) {
                               <span className="text-accent-red text-xs font-medium">(symptoms flagged)</span>
                             )}
                           </p>
-                          <p className="text-sm text-black/60 dark:text-white/60">
+                          <p className="text-sm text-foreground/60">
                             {new Date(scan.createdAt).toLocaleString()}
                             {scan.bodyLocation && <> · {scan.bodyLocation}</>}
                             {scan.imageName && <> · {scan.imageName}</>}
@@ -302,7 +302,7 @@ export default function ProfileClient({ email }: { email: string }) {
                       </p>
                     </div>
                     {scan.notes && (
-                      <p className="mt-2 text-sm text-black/70 dark:text-white/70">
+                      <p className="mt-2 text-sm text-foreground/70">
                         <span className="font-medium">Symptom notes:</span> {scan.notes}
                       </p>
                     )}

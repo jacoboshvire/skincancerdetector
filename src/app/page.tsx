@@ -24,13 +24,13 @@ const FEATURES = [
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="border-b border-black/10 dark:border-white/10">
+      <header className="border-b border-foreground/10">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <span className="font-semibold text-lg flex items-center gap-1.5">
             <span className="text-primary">●</span> SkinScan
           </span>
           <nav className="flex gap-4 text-sm">
-            <Link href="/login" className="px-3 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/10">
+            <Link href="/login" className="px-3 py-1.5 rounded hover:bg-foreground/5">
               Log in
             </Link>
             <Link
@@ -48,7 +48,7 @@ export default function LandingPage() {
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
             Early-stage skin lesion screening, powered by your browser
           </h1>
-          <p className="mt-6 text-lg text-black/70 dark:text-white/70 max-w-2xl mx-auto">
+          <p className="mt-6 text-lg text-foreground/70 max-w-2xl mx-auto">
             Upload a photo of a skin lesion and get an instant, on-device risk
             assessment across the seven HAM10000 lesion categories — including
             melanoma, basal cell carcinoma, and actinic keratoses.
@@ -62,7 +62,7 @@ export default function LandingPage() {
             </Link>
             <Link
               href="/login"
-              className="px-5 py-2.5 rounded-md border border-black/15 dark:border-white/20 font-medium hover:bg-black/5 dark:hover:bg-white/10"
+              className="px-5 py-2.5 rounded-md border border-foreground/15 font-medium hover:bg-foreground/5"
             >
               I already have an account
             </Link>
@@ -73,7 +73,7 @@ export default function LandingPage() {
           {FEATURES.map((f) => (
             <div key={f.title} className={`rounded-lg border p-6 ${f.color}`}>
               <h2 className={`font-semibold mb-2 ${f.titleColor}`}>{f.title}</h2>
-              <p className="text-sm text-black/70 dark:text-white/70">{f.body}</p>
+              <p className="text-sm text-foreground/70">{f.body}</p>
             </div>
           ))}
         </section>
@@ -90,7 +90,7 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <footer className="border-t border-black/10 dark:border-white/10 py-6 text-center text-sm text-black/60 dark:text-white/60">
+      <footer className="border-t border-foreground/10 py-6 text-center text-sm text-foreground/60">
         Built with Next.js &amp; TensorFlow.js · Model trained on the HAM10000
         dataset
       </footer>
