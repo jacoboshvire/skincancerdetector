@@ -79,6 +79,7 @@ export interface ScanRow {
   probabilities: string;
   body_location: string | null;
   notes: string | null;
+  favorite: boolean;
   created_at: number;
 }
 
