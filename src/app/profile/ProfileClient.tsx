@@ -151,7 +151,7 @@ export default function ProfileClient({ email }: { email: string }) {
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm"
+                  className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-purple/40 focus:border-accent-purple/50"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -164,7 +164,7 @@ export default function ProfileClient({ email }: { email: string }) {
                     type="date"
                     value={dateOfBirth}
                     onChange={(e) => setDateOfBirth(e.target.value)}
-                    className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm"
+                    className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-purple/40 focus:border-accent-purple/50"
                   />
                 </div>
                 <div>
@@ -175,7 +175,7 @@ export default function ProfileClient({ email }: { email: string }) {
                     id="sex"
                     value={sex}
                     onChange={(e) => setSex(e.target.value)}
-                    className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm"
+                    className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-purple/40 focus:border-accent-purple/50"
                   >
                     {SEX_OPTIONS.map((opt) => (
                       <option key={opt.value} value={opt.value}>
@@ -202,7 +202,7 @@ export default function ProfileClient({ email }: { email: string }) {
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   rows={3}
-                  className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm"
+                  className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-purple/40 focus:border-accent-purple/50"
                 />
               </div>
               <button

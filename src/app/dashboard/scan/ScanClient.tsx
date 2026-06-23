@@ -220,7 +220,7 @@ export default function ScanClient({ email }: { email: string }) {
                   id="bodyLocation"
                   value={bodyLocation}
                   onChange={(e) => setBodyLocation(e.target.value)}
-                  className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm"
+                  className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50"
                 >
                   <option value="">Not specified</option>
                   {BODY_LOCATIONS.map((loc) => (
@@ -240,7 +240,7 @@ export default function ScanClient({ email }: { email: string }) {
                   onChange={(e) => setNotes(e.target.value)}
                   rows={2}
                   placeholder="e.g. itchy, recently changed size or color"
-                  className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm"
+                  className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50"
                 />
                 <p className="text-xs text-foreground/50 mt-1">
                   Factored into the result below alongside the image — things like recent
