@@ -247,13 +247,15 @@ export default function DashboardClient({ email }: { email: string }) {
               <div className="space-y-4">
                 <div
                   className={`rounded-lg p-4 border ${
-                    top!.cls.malignant
-                      ? "border-red-500/40 bg-red-500/10"
-                      : "border-green-500/40 bg-green-500/10"
+                    isConcern ? "border-red-500/40 bg-red-500/10" : "border-green-500/40 bg-green-500/10"
                   }`}
                 >
                   {top!.cls.malignant ? (
                     <p className="text-sm text-black/60 dark:text-white/60">Top prediction</p>
+                  ) : symptomAssessment.flagged ? (
+                    <p className="font-semibold text-red-700 dark:text-red-400">
+                      ⚠ Image looks benign, but reported symptoms warrant a check-up
+                    </p>
                   ) : (
                     <p className="font-semibold text-green-700 dark:text-green-400">
                       ✓ Healthy skin
@@ -264,6 +266,14 @@ export default function DashboardClient({ email }: { email: string }) {
                     Confidence: {(top!.confidence * 100).toFixed(1)}% · Overall
                     malignant-category risk: {(malignantRisk! * 100).toFixed(1)}%
                   </p>
+                  {symptomAssessment.flagged && (
+                    <p className="text-sm mt-2">
+                      Symptom notes mention:{" "}
+                      <span className="font-medium">{symptomAssessment.matchedKeywords.join(", ")}</span>
+                      . A single photo can't show change over time — these are classic reasons to
+                      get a lesion checked regardless of how it looks in one image.
+                    </p>
+                  )}
                 </div>
 
                 <ul className="space-y-2">
