@@ -215,13 +215,23 @@ export default function DashboardClient({ email }: { email: string }) {
                 className="mt-4 text-sm"
               />
             </div>
-            <button
-              onClick={onAnalyze}
-              disabled={!imagePreview || modelStatus !== "ready" || analyzing}
-              className="mt-4 w-full rounded-md bg-foreground text-background py-2.5 font-medium disabled:opacity-50"
-            >
-              {analyzing ? "Analyzing…" : "Analyze image"}
-            </button>
+            <div className="mt-4 flex gap-2">
+              <button
+                onClick={onAnalyze}
+                disabled={!imagePreview || modelStatus !== "ready" || analyzing}
+                className="flex-1 rounded-md bg-foreground text-background py-2.5 font-medium disabled:opacity-50"
+              >
+                {analyzing ? "Analyzing…" : "Analyze image"}
+              </button>
+              <button
+                onClick={onReset}
+                disabled={!imagePreview}
+                title="Clear the current image and result"
+                className="rounded-md border border-black/15 dark:border-white/20 px-4 py-2.5 text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-50"
+              >
+                Reset
+              </button>
+            </div>
           </section>
 
           <section>
