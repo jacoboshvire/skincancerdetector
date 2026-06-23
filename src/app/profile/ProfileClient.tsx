@@ -232,7 +232,7 @@ export default function ProfileClient({ email }: { email: string }) {
             {!historyLoading && history.length > 0 && (
               <p className="text-sm text-black/60 dark:text-white/60">
                 {history.length} scan{history.length === 1 ? "" : "s"} ·{" "}
-                {malignantCount} flagged malignant-category
+                {malignantCount} flagged for follow-up
               </p>
             )}
           </div>
