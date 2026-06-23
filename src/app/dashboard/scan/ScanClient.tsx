@@ -158,36 +158,36 @@ export default function ScanClient({ email }: { email: string }) {
   const isConcern = probabilities ? top!.cls.malignant || symptomAssessment.flagged : false;
 
   return (
-    <div className="flex flex-col min-h-screen">
+  <div className="flex flex-col min-h-screen">
       <AppHeader email={email} />
 
-      <main className="flex-1 max-w-5xl mx-auto px-6 py-10 w-full">
-        <h1 className="text-2xl font-bold mb-6">Scan a lesion</h1>
+  <main className="flex-1 max-w-5xl mx-auto px-6 py-10 w-full">
+  <h1 className="text-2xl font-bold mb-6">Scan a lesion</h1>
 
         {modelStatus === "missing" && (
-          <div className="mb-8 rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm">
-            <strong className="block mb-1">No trained model found.</strong>
+  <div className="mb-8 rounded-lg border border-accent-amber/40 bg-accent-amber/10 p-4 text-sm">
+  <strong className="block mb-1">No trained model found.</strong>
             Run the training pipeline in <code>scripts/train_model</code> to
             generate <code>public/model/model.json</code> before analyzing
             images. See the README for instructions.
           </div>
         )}
         {modelStatus === "error" && (
-          <div className="mb-8 rounded-lg border border-red-500/40 bg-red-500/10 p-4 text-sm">
-            <strong className="block mb-1">Failed to load model.</strong>
+  <div className="mb-8 rounded-lg border border-accent-red/40 bg-accent-red/10 p-4 text-sm">
+  <strong className="block mb-1">Failed to load model.</strong>
             {modelError}
           </div>
         )}
 
-        <div className="mb-8 rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm">
+  <div className="mb-8 rounded-lg border border-accent-amber/40 bg-accent-amber/10 p-4 text-sm">
           This tool is for educational purposes only and is not a substitute
           for professional medical diagnosis.
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          <section className="rounded-xl border border-black/10 dark:border-white/10 p-5">
-            <h2 className="font-semibold mb-3 text-primary">Upload a lesion photo</h2>
-            <div className="rounded-lg border border-dashed border-primary/30 bg-primary-soft/20 p-6 text-center">
+  <div className="grid md:grid-cols-2 gap-8">
+  <section className="rounded-xl border border-black/10 dark:border-white/10 p-5">
+  <h2 className="font-semibold mb-3 text-primary">Upload a lesion photo</h2>
+  <div className="rounded-lg border border-dashed border-primary/30 bg-primary-soft/20 p-6 text-center">
               {imagePreview ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -195,10 +195,10 @@ export default function ScanClient({ email }: { email: string }) {
                   src={imagePreview}
                   alt="Selected lesion"
                   crossOrigin="anonymous"
-                  className="max-h-64 mx-auto rounded-md object-contain"
+  className="max-h-64 mx-auto rounded-md object-contain"
                 />
               ) : (
-                <p className="text-sm text-black/50 dark:text-white/50 py-12">
+  <p className="text-sm text-black/50 dark:text-white/50 py-12">
                   No image selected
                 </p>
               )}
@@ -207,20 +207,20 @@ export default function ScanClient({ email }: { email: string }) {
                 type="file"
                 accept="image/*"
                 onChange={onFileChange}
-                className="mt-4 text-sm"
+  className="mt-4 text-sm"
               />
             </div>
 
-            <div className="mt-4 space-y-2">
+  <div className="mt-4 space-y-2">
               <div>
-                <label className="block text-xs font-medium mb-1" htmlFor="bodyLocation">
+  <label className="block text-xs font-medium mb-1" htmlFor="bodyLocation">
                   Location on body (optional)
                 </label>
                 <select
                   id="bodyLocation"
                   value={bodyLocation}
                   onChange={(e) => setBodyLocation(e.target.value)}
-                  className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+  className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
                 >
                   <option value="">Not specified</option>
                   {BODY_LOCATIONS.map((loc) => (
@@ -231,7 +231,7 @@ export default function ScanClient({ email }: { email: string }) {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-medium mb-1" htmlFor="notes">
+  <label className="block text-xs font-medium mb-1" htmlFor="notes">
                   Symptom notes (optional)
                 </label>
                 <textarea
@@ -240,20 +240,20 @@ export default function ScanClient({ email }: { email: string }) {
                   onChange={(e) => setNotes(e.target.value)}
                   rows={2}
                   placeholder="e.g. itchy, recently changed size or color"
-                  className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+  className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
                 />
-                <p className="text-xs text-black/50 dark:text-white/50 mt-1">
+  <p className="text-xs text-black/50 dark:text-white/50 mt-1">
                   Factored into the result below alongside the image — things like recent
                   change, bleeding, or itching matter even if a photo looks benign.
                 </p>
               </div>
             </div>
 
-            <div className="mt-4 flex gap-2">
+  <div className="mt-4 flex gap-2">
               <button
                 onClick={onAnalyze}
                 disabled={!imagePreview || modelStatus !== "ready" || analyzing}
-                className="flex-1 rounded-md bg-primary text-primary-foreground py-2.5 font-medium disabled:opacity-50 hover:opacity-90"
+  className="flex-1 rounded-md bg-primary text-primary-foreground py-2.5 font-medium disabled:opacity-50 hover:opacity-90"
               >
                 {analyzing ? "Analyzing…" : "Analyze image"}
               </button>
@@ -261,67 +261,67 @@ export default function ScanClient({ email }: { email: string }) {
                 onClick={onReset}
                 disabled={!imagePreview}
                 title="Clear the current image and result"
-                className="rounded-md border border-black/15 dark:border-white/20 px-4 py-2.5 text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-50"
+  className="rounded-md border border-black/15 dark:border-white/20 px-4 py-2.5 text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-50"
               >
                 Reset
               </button>
             </div>
           </section>
 
-          <section className="rounded-xl border border-black/10 dark:border-white/10 p-5">
-            <h2 className="font-semibold mb-3 text-primary">Result</h2>
+  <section className="rounded-xl border border-black/10 dark:border-white/10 p-5">
+  <h2 className="font-semibold mb-3 text-primary">Result</h2>
             {!probabilities ? (
-              <p className="text-sm text-black/50 dark:text-white/50">
+  <p className="text-sm text-black/50 dark:text-white/50">
                 Upload and analyze an image to see results here.
               </p>
             ) : (
-              <div className="space-y-4">
+  <div className="space-y-4">
                 <div
-                  className={`rounded-lg p-4 border ${
-                    isConcern ? "border-red-500/40 bg-red-500/10" : "border-green-500/40 bg-green-500/10"
+  className={`rounded-lg p-4 border ${
+                    isConcern ? "border-accent-red/40 bg-accent-red/10" : "border-accent-green/40 bg-accent-green/10"
                   }`}
                 >
                   {top!.cls.malignant ? (
-                    <p className="text-sm text-black/60 dark:text-white/60">Top prediction</p>
+  <p className="text-sm text-black/60 dark:text-white/60">Top prediction</p>
                   ) : symptomAssessment.flagged ? (
-                    <p className="font-semibold text-red-700 dark:text-red-400">
+  <p className="font-semibold text-accent-red ">
                       ⚠ Image looks benign, but reported symptoms warrant a check-up
                     </p>
                   ) : (
-                    <p className="font-semibold text-green-700 dark:text-green-400">
+  <p className="font-semibold text-accent-green ">
                       ✓ Healthy skin
                     </p>
                   )}
-                  <p className="font-semibold">{top!.cls.label}</p>
-                  <p className="text-sm mt-1">
+  <p className="font-semibold">{top!.cls.label}</p>
+  <p className="text-sm mt-1">
                     Confidence: {(top!.confidence * 100).toFixed(1)}% · Overall
                     malignant-category risk: {(malignantRisk! * 100).toFixed(1)}%
                   </p>
                   {symptomAssessment.flagged && (
-                    <p className="text-sm mt-2">
+  <p className="text-sm mt-2">
                       Symptom notes mention:{" "}
-                      <span className="font-medium">{symptomAssessment.matchedKeywords.join(", ")}</span>
+  <span className="font-medium">{symptomAssessment.matchedKeywords.join(", ")}</span>
                       . A single photo can't show change over time — these are classic reasons to
                       get a lesion checked regardless of how it looks in one image.
                     </p>
                   )}
                 </div>
 
-                <ul className="space-y-2">
+  <ul className="space-y-2">
                   {HAM10000_CLASSES.map((cls, i) => (
-                    <li key={cls.code} className="text-sm">
-                      <div className="flex justify-between mb-1">
+  <li key={cls.code} className="text-sm">
+  <div className="flex justify-between mb-1">
                         <span>
                           {cls.label}{" "}
                           {cls.malignant && (
-                            <span className="text-red-600 text-xs font-medium">(malignant)</span>
+  <span className="text-accent-red text-xs font-medium">(malignant)</span>
                           )}
                         </span>
                         <span>{((probabilities[i] ?? 0) * 100).toFixed(1)}%</span>
                       </div>
-                      <div className="h-1.5 rounded bg-black/10 dark:bg-white/10 overflow-hidden">
+  <div className="h-1.5 rounded bg-black/10 dark:bg-white/10 overflow-hidden">
                         <div
-                          className={`h-full ${cls.malignant ? "bg-red-500" : "bg-green-500"}`}
+  className={`h-full ${cls.malignant ? "bg-accent-red" : "bg-accent-green"}`}
                           style={{ width: `${(probabilities[i] ?? 0) * 100}%` }}
                         />
                       </div>
@@ -332,14 +332,14 @@ export default function ScanClient({ email }: { email: string }) {
                 <button
                   onClick={onSaveResult}
                   disabled={saving}
-                  className="w-full rounded-md border border-primary/40 text-primary py-2 text-sm font-medium hover:bg-primary-soft/30 disabled:opacity-50"
+  className="w-full rounded-md border border-primary/40 text-primary py-2 text-sm font-medium hover:bg-primary-soft/30 disabled:opacity-50"
                 >
                   {saving ? "Saving…" : "Save to medical record"}
                 </button>
                 {saved && (
-                  <p className="text-sm text-green-600">
+  <p className="text-sm text-accent-green">
                     Saved. View your full history on your{" "}
-                    <Link href="/profile" className="underline">
+  <Link href="/profile" className="underline">
                       profile page
                     </Link>
                     .
@@ -350,51 +350,51 @@ export default function ScanClient({ email }: { email: string }) {
           </section>
         </div>
 
-        <section className="mt-12">
-          <h2 className="font-semibold mb-3">Scan history</h2>
+  <section className="mt-12">
+  <h2 className="font-semibold mb-3">Scan history</h2>
           {historyLoading ? (
-            <p className="text-sm text-black/50 dark:text-white/50">Loading…</p>
+  <p className="text-sm text-black/50 dark:text-white/50">Loading…</p>
           ) : history.length === 0 ? (
-            <p className="text-sm text-black/50 dark:text-white/50">No saved scans yet.</p>
+  <p className="text-sm text-black/50 dark:text-white/50">No saved scans yet.</p>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+  <div className="overflow-x-auto">
+  <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-left text-black/50 dark:text-white/50 border-b border-black/10 dark:border-white/10">
-                    <th className="py-2 pr-4"></th>
-                    <th className="py-2 pr-4">Date</th>
-                    <th className="py-2 pr-4">Location</th>
-                    <th className="py-2 pr-4">Image</th>
-                    <th className="py-2 pr-4">Prediction</th>
-                    <th className="py-2 pr-4">Confidence</th>
-                    <th className="py-2 pr-4">Malignant risk</th>
+  <tr className="text-left text-black/50 dark:text-white/50 border-b border-black/10 dark:border-white/10">
+  <th className="py-2 pr-4"></th>
+  <th className="py-2 pr-4">Date</th>
+  <th className="py-2 pr-4">Location</th>
+  <th className="py-2 pr-4">Image</th>
+  <th className="py-2 pr-4">Prediction</th>
+  <th className="py-2 pr-4">Confidence</th>
+  <th className="py-2 pr-4">Malignant risk</th>
                   </tr>
                 </thead>
                 <tbody>
                   {history.map((scan) => (
-                    <tr key={scan.id} className="border-b border-black/5 dark:border-white/5">
-                      <td className="py-2 pr-4">
+  <tr key={scan.id} className="border-b border-black/5 dark:border-white/5">
+  <td className="py-2 pr-4">
                         <HeartButton
                           size="sm"
                           active={scan.favorite}
                           onToggle={() => onToggleFavorite(scan)}
                         />
                       </td>
-                      <td className="py-2 pr-4">{new Date(scan.createdAt).toLocaleString()}</td>
-                      <td className="py-2 pr-4">{scan.bodyLocation ?? "—"}</td>
-                      <td className="py-2 pr-4">{scan.imageName ?? "—"}</td>
-                      <td className="py-2 pr-4">{scan.predictedLabel}</td>
-                      <td className="py-2 pr-4">{(scan.confidence * 100).toFixed(1)}%</td>
-                      <td className="py-2 pr-4">{(scan.malignantRisk * 100).toFixed(1)}%</td>
+  <td className="py-2 pr-4">{new Date(scan.createdAt).toLocaleString()}</td>
+  <td className="py-2 pr-4">{scan.bodyLocation ?? "—"}</td>
+  <td className="py-2 pr-4">{scan.imageName ?? "—"}</td>
+  <td className="py-2 pr-4">{scan.predictedLabel}</td>
+  <td className="py-2 pr-4">{(scan.confidence * 100).toFixed(1)}%</td>
+  <td className="py-2 pr-4">{(scan.malignantRisk * 100).toFixed(1)}%</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           )}
-          <p className="mt-3 text-sm text-black/50 dark:text-white/50">
+  <p className="mt-3 text-sm text-black/50 dark:text-white/50">
             See your full medical history, including symptom notes, on your{" "}
-            <Link href="/profile" className="underline">
+  <Link href="/profile" className="underline">
               profile page
             </Link>
             .

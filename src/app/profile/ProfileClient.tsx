@@ -119,31 +119,31 @@ export default function ProfileClient({ email }: { email: string }) {
   const visibleHistory = filter === "favorites" ? history.filter((s) => s.favorite) : history;
 
   return (
-    <div className="flex flex-col min-h-screen">
+  <div className="flex flex-col min-h-screen">
       <AppHeader email={email} />
 
-      <main className="flex-1 max-w-5xl mx-auto px-6 py-10 w-full space-y-12">
+  <main className="flex-1 max-w-5xl mx-auto px-6 py-10 w-full space-y-12">
         <section>
-          <h1 className="text-2xl font-bold mb-1">Profile</h1>
-          <p className="text-sm text-black/60 dark:text-white/60">
+  <h1 className="text-2xl font-bold mb-1">Profile</h1>
+  <p className="text-sm text-black/60 dark:text-white/60">
             {email}
             {createdAt && <> · Member since {new Date(createdAt).toLocaleDateString()}</>}
           </p>
         </section>
 
-        <section className="rounded-xl border border-purple-500/20 bg-purple-500/5 p-5">
-          <h2 className="font-semibold mb-3 text-purple-700 dark:text-purple-400">Medical record</h2>
-          <p className="text-sm text-black/60 dark:text-white/60 mb-4">
+  <section className="rounded-xl border border-accent-purple/20 bg-accent-purple/5 p-5">
+  <h2 className="font-semibold mb-3 text-accent-purple ">Medical record</h2>
+  <p className="text-sm text-black/60 dark:text-white/60 mb-4">
             Optional background information to give context to your scan
             history. Stored with your account only — never sent to the
             classifier.
           </p>
           {profileLoading ? (
-            <p className="text-sm text-black/50 dark:text-white/50">Loading…</p>
+  <p className="text-sm text-black/50 dark:text-white/50">Loading…</p>
           ) : (
-            <form onSubmit={onSaveProfile} className="space-y-4 max-w-md">
+  <form onSubmit={onSaveProfile} className="space-y-4 max-w-md">
               <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="fullName">
+  <label className="block text-sm font-medium mb-1" htmlFor="fullName">
                   Full name
                 </label>
                 <input
@@ -151,12 +151,12 @@ export default function ProfileClient({ email }: { email: string }) {
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+  className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+  <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1" htmlFor="dob">
+  <label className="block text-sm font-medium mb-1" htmlFor="dob">
                     Date of birth
                   </label>
                   <input
@@ -164,18 +164,18 @@ export default function ProfileClient({ email }: { email: string }) {
                     type="date"
                     value={dateOfBirth}
                     onChange={(e) => setDateOfBirth(e.target.value)}
-                    className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+  className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1" htmlFor="sex">
+  <label className="block text-sm font-medium mb-1" htmlFor="sex">
                     Sex
                   </label>
                   <select
                     id="sex"
                     value={sex}
                     onChange={(e) => setSex(e.target.value)}
-                    className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+  className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
                   >
                     {SEX_OPTIONS.map((opt) => (
                       <option key={opt.value} value={opt.value}>
@@ -185,7 +185,7 @@ export default function ProfileClient({ email }: { email: string }) {
                   </select>
                 </div>
               </div>
-              <label className="flex items-center gap-2 text-sm">
+  <label className="flex items-center gap-2 text-sm">
                 <input
                   type="checkbox"
                   checked={familyHistory}
@@ -194,7 +194,7 @@ export default function ProfileClient({ email }: { email: string }) {
                 Family history of skin cancer
               </label>
               <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="profileNotes">
+  <label className="block text-sm font-medium mb-1" htmlFor="profileNotes">
                   Other notes (allergies, conditions, etc.)
                 </label>
                 <textarea
@@ -202,41 +202,41 @@ export default function ProfileClient({ email }: { email: string }) {
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   rows={3}
-                  className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
+  className="w-full rounded-md border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm"
                 />
               </div>
               <button
                 type="submit"
                 disabled={savingProfile}
-                className="rounded-md bg-purple-600 text-white px-4 py-2 text-sm font-medium hover:bg-purple-700 disabled:opacity-50"
+  className="rounded-md bg-accent-purple text-white px-4 py-2 text-sm font-medium hover:bg-accent-purple disabled:opacity-50"
               >
                 {savingProfile ? "Saving…" : "Save"}
               </button>
-              {savedProfile && <span className="ml-3 text-sm text-green-600">Saved.</span>}
+  {savedProfile && <span className="ml-3 text-sm text-accent-green">Saved.</span>}
             </form>
           )}
         </section>
 
         <section>
-          <div className="flex items-baseline justify-between mb-3 flex-wrap gap-2">
-            <h2 className="font-semibold">Medical history</h2>
-            <div className="flex items-center gap-3">
+  <div className="flex items-baseline justify-between mb-3 flex-wrap gap-2">
+  <h2 className="font-semibold">Medical history</h2>
+  <div className="flex items-center gap-3">
               {!historyLoading && history.length > 0 && (
-                <p className="text-sm text-black/60 dark:text-white/60">
+  <p className="text-sm text-black/60 dark:text-white/60">
                   {history.length} scan{history.length === 1 ? "" : "s"} ·{" "}
                   {malignantCount} flagged for follow-up
                 </p>
               )}
-              <div className="flex rounded-md border border-black/15 dark:border-white/20 overflow-hidden text-sm">
+  <div className="flex rounded-md border border-black/15 dark:border-white/20 overflow-hidden text-sm">
                 <button
                   onClick={() => setFilter("all")}
-                  className={`px-3 py-1 ${filter === "all" ? "bg-primary text-primary-foreground" : ""}`}
+  className={`px-3 py-1 ${filter === "all" ? "bg-primary text-primary-foreground" : ""}`}
                 >
                   All
                 </button>
                 <button
                   onClick={() => setFilter("favorites")}
-                  className={`px-3 py-1 ${filter === "favorites" ? "bg-primary text-primary-foreground" : ""}`}
+  className={`px-3 py-1 ${filter === "favorites" ? "bg-primary text-primary-foreground" : ""}`}
                 >
                   Favorites
                 </button>
@@ -245,15 +245,15 @@ export default function ProfileClient({ email }: { email: string }) {
           </div>
 
           {historyLoading ? (
-            <p className="text-sm text-black/50 dark:text-white/50">Loading…</p>
+  <p className="text-sm text-black/50 dark:text-white/50">Loading…</p>
           ) : visibleHistory.length === 0 ? (
-            <p className="text-sm text-black/50 dark:text-white/50">
+  <p className="text-sm text-black/50 dark:text-white/50">
               {filter === "favorites" ? (
                 "No favorited scans yet."
               ) : (
                 <>
                   No scans saved yet. Analyze and save a scan from the{" "}
-                  <Link href="/dashboard/scan" className="underline">
+  <Link href="/dashboard/scan" className="underline">
                     scan tool
                   </Link>{" "}
                   to build your history.
@@ -261,7 +261,7 @@ export default function ProfileClient({ email }: { email: string }) {
               )}
             </p>
           ) : (
-            <div className="space-y-3">
+  <div className="space-y-3">
               {visibleHistory.map((scan) => {
                 const imageMalignant = HAM10000_CLASSES.find((c) => c.code === scan.predictedClass)?.malignant;
                 const symptomFlagged = assessSymptoms(scan.notes).flagged;
@@ -269,41 +269,41 @@ export default function ProfileClient({ email }: { email: string }) {
                 return (
                   <div
                     key={scan.id}
-                    className={`rounded-lg border p-4 ${
+  className={`rounded-lg border p-4 ${
                       flagged
-                        ? "border-red-500/40 bg-red-500/5"
+                        ? "border-accent-red/40 bg-accent-red/5"
                         : "border-black/10 dark:border-white/10"
                     }`}
                   >
-                    <div className="flex items-start justify-between flex-wrap gap-2">
-                      <div className="flex items-start gap-2">
+  <div className="flex items-start justify-between flex-wrap gap-2">
+  <div className="flex items-start gap-2">
                         <HeartButton active={scan.favorite} onToggle={() => onToggleFavorite(scan)} />
                         <div>
-                          <p className="font-medium">
+  <p className="font-medium">
                             {scan.predictedLabel}{" "}
                             {imageMalignant && (
-                              <span className="text-red-600 text-xs font-medium">(malignant)</span>
+  <span className="text-accent-red text-xs font-medium">(malignant)</span>
                             )}
                             {!imageMalignant && symptomFlagged && (
-                              <span className="text-red-600 text-xs font-medium">(symptoms flagged)</span>
+  <span className="text-accent-red text-xs font-medium">(symptoms flagged)</span>
                             )}
                           </p>
-                          <p className="text-sm text-black/60 dark:text-white/60">
+  <p className="text-sm text-black/60 dark:text-white/60">
                             {new Date(scan.createdAt).toLocaleString()}
                             {scan.bodyLocation && <> · {scan.bodyLocation}</>}
                             {scan.imageName && <> · {scan.imageName}</>}
                           </p>
                         </div>
                       </div>
-                      <p className="text-sm text-right">
+  <p className="text-sm text-right">
                         Confidence {(scan.confidence * 100).toFixed(1)}%
                         <br />
                         Malignant risk {(scan.malignantRisk * 100).toFixed(1)}%
                       </p>
                     </div>
                     {scan.notes && (
-                      <p className="mt-2 text-sm text-black/70 dark:text-white/70">
-                        <span className="font-medium">Symptom notes:</span> {scan.notes}
+  <p className="mt-2 text-sm text-black/70 dark:text-white/70">
+  <span className="font-medium">Symptom notes:</span> {scan.notes}
                       </p>
                     )}
                   </div>
