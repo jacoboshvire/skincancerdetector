@@ -250,12 +250,14 @@ export default function ProfileClient({ email }: { email: string }) {
           ) : (
             <div className="space-y-3">
               {history.map((scan) => {
-                const malignant = HAM10000_CLASSES.find((c) => c.code === scan.predictedClass)?.malignant;
+                const imageMalignant = HAM10000_CLASSES.find((c) => c.code === scan.predictedClass)?.malignant;
+                const symptomFlagged = assessSymptoms(scan.notes).flagged;
+                const flagged = imageMalignant || symptomFlagged;
                 return (
                   <div
                     key={scan.id}
                     className={`rounded-lg border p-4 ${
-                      malignant
+                      flagged
                         ? "border-red-500/40 bg-red-500/5"
                         : "border-black/10 dark:border-white/10"
                     }`}
@@ -264,8 +266,11 @@ export default function ProfileClient({ email }: { email: string }) {
                       <div>
                         <p className="font-medium">
                           {scan.predictedLabel}{" "}
-                          {malignant && (
+                          {imageMalignant && (
                             <span className="text-red-600 text-xs font-medium">(malignant)</span>
+                          )}
+                          {!imageMalignant && symptomFlagged && (
+                            <span className="text-red-600 text-xs font-medium">(symptoms flagged)</span>
                           )}
                         </p>
                         <p className="text-sm text-black/60 dark:text-white/60">
