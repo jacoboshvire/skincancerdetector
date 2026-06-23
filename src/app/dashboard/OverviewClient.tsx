@@ -158,7 +158,7 @@ export default function OverviewClient({ email }: { email: string }) {
                 transition={{ staggerChildren: 0.06 }}
                 className="space-y-2"
               >
-                {recent.map((scan) => (
+                {recent.map((scan, i) => (
                   <motion.li
                     key={scan.id}
                     variants={fadeUp}
@@ -167,6 +167,8 @@ export default function OverviewClient({ email }: { email: string }) {
                     className={`flex items-center justify-between gap-3 rounded-lg border p-3 text-sm transition-shadow hover:shadow-md ${
                       isFlagged(scan)
                         ? "border-accent-red/30 bg-accent-red/5"
+                        : i % 2 === 1
+                        ? "border-foreground/10 bg-foreground/5"
                         : "border-foreground/10"
                     }`}
                   >
