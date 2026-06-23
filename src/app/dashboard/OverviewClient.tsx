@@ -85,7 +85,7 @@ export default function OverviewClient({ email }: { email: string }) {
         </div>
 
         {!loading && flagged.length > 0 && (
-          <div className="mb-8 rounded-lg border border-red-500/40 bg-red-500/10 p-4 text-sm">
+          <div className="mb-8 rounded-lg border border-accent-red/40 bg-accent-red/10 p-4 text-sm">
             <strong className="block mb-1">
               {flagged.length} scan{flagged.length === 1 ? "" : "s"} flagged for follow-up.
             </strong>
@@ -134,7 +134,7 @@ export default function OverviewClient({ email }: { email: string }) {
                     key={scan.id}
                     className={`flex items-center justify-between gap-3 rounded-lg border p-3 text-sm ${
                       isFlagged(scan)
-                        ? "border-red-500/30 bg-red-500/5"
+                        ? "border-accent-red/30 bg-accent-red/5"
                         : "border-black/10 dark:border-white/10"
                     }`}
                   >
@@ -166,9 +166,9 @@ export default function OverviewClient({ email }: { email: string }) {
               </Link>
               <Link
                 href="/profile"
-                className="block rounded-lg border border-purple-500/30 bg-purple-500/5 p-4 hover:bg-purple-500/10"
+                className="block rounded-lg border border-accent-purple/30 bg-accent-purple/5 p-4 hover:bg-accent-purple/10"
               >
-                <p className="font-medium text-purple-700 dark:text-purple-400">
+                <p className="font-medium text-accent-purple">
                   {profileComplete ? "Edit your medical record" : "Complete your medical record"}
                 </p>
                 <p className="text-sm text-black/60 dark:text-white/60">
@@ -178,15 +178,15 @@ export default function OverviewClient({ email }: { email: string }) {
               <div
                 className={`rounded-lg border p-4 ${
                   modelReady
-                    ? "border-green-500/30 bg-green-500/5"
-                    : "border-amber-500/30 bg-amber-500/5"
+                    ? "border-accent-green/30 bg-accent-green/5"
+                    : "border-accent-amber/30 bg-accent-amber/5"
                 }`}
               >
                 <p
                   className={`font-medium ${
                     modelReady
-                      ? "text-green-700 dark:text-green-400"
-                      : "text-amber-700 dark:text-amber-400"
+                      ? "text-accent-green"
+                      : "text-accent-amber"
                   }`}
                 >
                   {modelReady === null ? "Checking model…" : modelReady ? "Model ready" : "Model not trained yet"}
@@ -206,10 +206,10 @@ export default function OverviewClient({ email }: { email: string }) {
 }
 
 const STAT_COLORS = {
-  blue: "border-blue-500/30 bg-blue-500/10 text-blue-700 dark:text-blue-400",
-  red: "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400",
-  pink: "border-pink-500/30 bg-pink-500/10 text-pink-700 dark:text-pink-400",
-  purple: "border-purple-500/30 bg-purple-500/10 text-purple-700 dark:text-purple-400",
+  blue: "border-accent-blue/30 bg-accent-blue/10 text-accent-blue",
+  red: "border-accent-red/30 bg-accent-red/10 text-accent-red",
+  pink: "border-accent-pink/30 bg-accent-pink/10 text-accent-pink",
+  purple: "border-accent-purple/30 bg-accent-purple/10 text-accent-purple",
 };
 
 function StatCard({
