@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type * as tf from "@tensorflow/tfjs";
+import { motion, AnimatePresence } from "framer-motion";
 import AppHeader from "@/components/AppHeader";
 import HeartButton from "@/components/HeartButton";
 import { loadModel, predictFromImage, isModelAvailable } from "@/lib/clientModel";
@@ -162,10 +163,17 @@ export default function ScanClient({ email }: { email: string }) {
       <AppHeader email={email} />
 
       <main className="flex-1 max-w-5xl mx-auto px-6 py-10 w-full">
-        <h1 className="text-2xl font-bold mb-6">Scan a lesion</h1>
+        <motion.h1
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="text-2xl font-bold mb-6"
+        >
+          Scan a lesion
+        </motion.h1>
 
         {modelStatus === "missing" && (
-          <div className="mb-8 rounded-lg border border-accent-amber/40 bg-accent-amber/10 p-4 text-sm">
+          <div className="mb-8 rounded-xl border border-accent-amber/40 bg-accent-amber/10 p-4 text-sm">
             <strong className="block mb-1">No trained model found.</strong>
             Run the training pipeline in <code>scripts/train_model</code> to
             generate <code>public/model/model.json</code> before analyzing
@@ -173,35 +181,57 @@ export default function ScanClient({ email }: { email: string }) {
           </div>
         )}
         {modelStatus === "error" && (
-          <div className="mb-8 rounded-lg border border-accent-red/40 bg-accent-red/10 p-4 text-sm">
+          <div className="mb-8 rounded-xl border border-accent-red/40 bg-accent-red/10 p-4 text-sm">
             <strong className="block mb-1">Failed to load model.</strong>
             {modelError}
           </div>
         )}
 
-        <div className="mb-8 rounded-lg border border-accent-amber/40 bg-accent-amber/10 p-4 text-sm">
+        <div className="mb-8 rounded-xl border border-accent-amber/40 bg-accent-amber/10 p-4 text-sm">
           This tool is for educational purposes only and is not a substitute
           for professional medical diagnosis.
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
-          <section className="rounded-xl border border-foreground/10 p-5">
+          <motion.section
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.05 }}
+            className="rounded-2xl border border-foreground/10 p-5 shadow-sm"
+          >
             <h2 className="font-semibold mb-3 text-primary">Upload a lesion photo</h2>
-            <div className="rounded-lg border border-dashed border-primary/30 bg-primary-soft/20 p-6 text-center">
-              {imagePreview ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  ref={imageRef}
-                  src={imagePreview}
-                  alt="Selected lesion"
-                  crossOrigin="anonymous"
-                  className="max-h-64 mx-auto rounded-md object-contain"
-                />
-              ) : (
-                <p className="text-sm text-foreground/50 py-12">
-                  No image selected
-                </p>
-              )}
+            <motion.div
+              animate={imagePreview ? { borderColor: "var(--primary)" } : {}}
+              className="rounded-xl border border-dashed border-primary/30 bg-primary-soft/20 p-6 text-center"
+            >
+              <AnimatePresence mode="wait">
+                {imagePreview ? (
+                  <motion.div
+                    key="preview"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      ref={imageRef}
+                      src={imagePreview}
+                      alt="Selected lesion"
+                      crossOrigin="anonymous"
+                      className="max-h-64 mx-auto rounded-md object-contain"
+                    />
+                  </motion.div>
+                ) : (
+                  <motion.p
+                    key="empty"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="text-sm text-foreground/50 py-12"
+                  >
+                    No image selected
+                  </motion.p>
+                )}
+              </AnimatePresence>
               <input
                 ref={fileInputRef}
                 type="file"
@@ -209,7 +239,7 @@ export default function ScanClient({ email }: { email: string }) {
                 onChange={onFileChange}
                 className="mt-4 text-sm"
               />
-            </div>
+            </motion.div>
 
             <div className="mt-4 space-y-2">
               <div>
@@ -250,104 +280,152 @@ export default function ScanClient({ email }: { email: string }) {
             </div>
 
             <div className="mt-4 flex gap-2">
-              <button
+              <motion.button
                 onClick={onAnalyze}
                 disabled={!imagePreview || modelStatus !== "ready" || analyzing}
-                className="flex-1 rounded-md bg-primary text-primary-foreground py-2.5 font-medium disabled:opacity-50 hover:opacity-90"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex-1 rounded-md bg-primary text-primary-foreground py-2.5 font-medium disabled:opacity-50 hover:opacity-90 shadow-md shadow-primary/20"
               >
-                {analyzing ? "Analyzing…" : "Analyze image"}
-              </button>
-              <button
+                {analyzing ? (
+                  <span className="inline-flex items-center gap-2 justify-center">
+                    <motion.span
+                      className="w-3.5 h-3.5 rounded-full border-2 border-primary-foreground/40 border-t-primary-foreground"
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+                    />
+                    Analyzing…
+                  </span>
+                ) : (
+                  "Analyze image"
+                )}
+              </motion.button>
+              <motion.button
                 onClick={onReset}
                 disabled={!imagePreview}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 title="Clear the current image and result"
                 className="rounded-md border border-foreground/15 px-4 py-2.5 text-sm font-medium hover:bg-foreground/5 disabled:opacity-50"
               >
                 Reset
-              </button>
+              </motion.button>
             </div>
-          </section>
+          </motion.section>
 
-          <section className="rounded-xl border border-foreground/10 p-5">
+          <motion.section
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="rounded-2xl border border-foreground/10 p-5 shadow-sm"
+          >
             <h2 className="font-semibold mb-3 text-primary">Result</h2>
-            {!probabilities ? (
-              <p className="text-sm text-foreground/50">
-                Upload and analyze an image to see results here.
-              </p>
-            ) : (
-              <div className="space-y-4">
-                <div
-                  className={`rounded-lg p-4 border ${
-                    isConcern ? "border-accent-red/40 bg-accent-red/10" : "border-accent-green/40 bg-accent-green/10"
-                  }`}
+            <AnimatePresence mode="wait">
+              {!probabilities ? (
+                <motion.p
+                  key="empty-result"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="text-sm text-foreground/50"
                 >
-                  {top!.cls.malignant ? (
-                    <p className="text-sm text-foreground/60">Top prediction</p>
-                  ) : symptomAssessment.flagged ? (
-                    <p className="font-semibold text-accent-red">
-                      ⚠ Image looks benign, but reported symptoms warrant a check-up
-                    </p>
-                  ) : (
-                    <p className="font-semibold text-accent-green">
-                      ✓ Healthy skin
-                    </p>
-                  )}
-                  <p className="font-semibold">{top!.cls.label}</p>
-                  <p className="text-sm mt-1">
-                    Confidence: {(top!.confidence * 100).toFixed(1)}% · Overall
-                    malignant-category risk: {(malignantRisk! * 100).toFixed(1)}%
-                  </p>
-                  {symptomAssessment.flagged && (
-                    <p className="text-sm mt-2">
-                      Symptom notes mention:{" "}
-                      <span className="font-medium">{symptomAssessment.matchedKeywords.join(", ")}</span>
-                      . A single photo can't show change over time — these are classic reasons to
-                      get a lesion checked regardless of how it looks in one image.
-                    </p>
-                  )}
-                </div>
-
-                <ul className="space-y-2">
-                  {HAM10000_CLASSES.map((cls, i) => (
-                    <li key={cls.code} className="text-sm">
-                      <div className="flex justify-between mb-1">
-                        <span>
-                          {cls.label}{" "}
-                          {cls.malignant && (
-                            <span className="text-accent-red text-xs font-medium">(malignant)</span>
-                          )}
-                        </span>
-                        <span>{((probabilities[i] ?? 0) * 100).toFixed(1)}%</span>
-                      </div>
-                      <div className="h-1.5 rounded bg-foreground/10 overflow-hidden">
-                        <div
-                          className={`h-full ${cls.malignant ? "bg-accent-red" : "bg-accent-green"}`}
-                          style={{ width: `${(probabilities[i] ?? 0) * 100}%` }}
-                        />
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-
-                <button
-                  onClick={onSaveResult}
-                  disabled={saving}
-                  className="w-full rounded-md border border-primary/40 text-primary py-2 text-sm font-medium hover:bg-primary-soft/30 disabled:opacity-50"
+                  Upload and analyze an image to see results here.
+                </motion.p>
+              ) : (
+                <motion.div
+                  key="result"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className="space-y-4"
                 >
-                  {saving ? "Saving…" : "Save to medical record"}
-                </button>
-                {saved && (
-                  <p className="text-sm text-accent-green">
-                    Saved. View your full history on your{" "}
-                    <Link href="/profile" className="underline">
-                      profile page
-                    </Link>
-                    .
-                  </p>
-                )}
-              </div>
-            )}
-          </section>
+                  <motion.div
+                    initial={{ scale: 0.97 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className={`rounded-xl p-4 border ${
+                      isConcern ? "border-accent-red/40 bg-accent-red/10" : "border-accent-green/40 bg-accent-green/10"
+                    }`}
+                  >
+                    {top!.cls.malignant ? (
+                      <p className="text-sm text-foreground/60">Top prediction</p>
+                    ) : symptomAssessment.flagged ? (
+                      <p className="font-semibold text-accent-red">
+                        ⚠ Image looks benign, but reported symptoms warrant a check-up
+                      </p>
+                    ) : (
+                      <p className="font-semibold text-accent-green">
+                        ✓ Healthy skin
+                      </p>
+                    )}
+                    <p className="font-semibold">{top!.cls.label}</p>
+                    <p className="text-sm mt-1">
+                      Confidence: {(top!.confidence * 100).toFixed(1)}% · Overall
+                      malignant-category risk: {(malignantRisk! * 100).toFixed(1)}%
+                    </p>
+                    {symptomAssessment.flagged && (
+                      <p className="text-sm mt-2">
+                        Symptom notes mention:{" "}
+                        <span className="font-medium">{symptomAssessment.matchedKeywords.join(", ")}</span>
+                        . A single photo can't show change over time — these are classic reasons to
+                        get a lesion checked regardless of how it looks in one image.
+                      </p>
+                    )}
+                  </motion.div>
+
+                  <ul className="space-y-2">
+                    {HAM10000_CLASSES.map((cls, i) => (
+                      <li key={cls.code} className="text-sm">
+                        <div className="flex justify-between mb-1">
+                          <span>
+                            {cls.label}{" "}
+                            {cls.malignant && (
+                              <span className="text-accent-red text-xs font-medium">(malignant)</span>
+                            )}
+                          </span>
+                          <span>{((probabilities[i] ?? 0) * 100).toFixed(1)}%</span>
+                        </div>
+                        <div className="h-1.5 rounded bg-foreground/10 overflow-hidden">
+                          <motion.div
+                            className={`h-full ${cls.malignant ? "bg-accent-red" : "bg-accent-green"}`}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${(probabilities[i] ?? 0) * 100}%` }}
+                            transition={{ duration: 0.6, delay: i * 0.04, ease: "easeOut" }}
+                          />
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <motion.button
+                    onClick={onSaveResult}
+                    disabled={saving}
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full rounded-md border border-primary/40 text-primary py-2 text-sm font-medium hover:bg-primary-soft/30 disabled:opacity-50"
+                  >
+                    {saving ? "Saving…" : "Save to medical record"}
+                  </motion.button>
+                  <AnimatePresence>
+                    {saved && (
+                      <motion.p
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="text-sm text-accent-green"
+                      >
+                        Saved. View your full history on your{" "}
+                        <Link href="/profile" className="underline">
+                          profile page
+                        </Link>
+                        .
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.section>
         </div>
 
         <section className="mt-12">
@@ -372,7 +450,7 @@ export default function ScanClient({ email }: { email: string }) {
                 </thead>
                 <tbody>
                   {history.map((scan) => (
-                    <tr key={scan.id} className="border-b border-foreground/5">
+                    <tr key={scan.id} className="border-b border-foreground/5 hover:bg-foreground/5 transition-colors">
                       <td className="py-2 pr-4">
                         <HeartButton
                           size="sm"
