@@ -37,7 +37,7 @@ export default function OverviewClient({ email }: { email: string }) {
   const [history, setHistory] = useState<ScanRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [modelReady, setModelReady] = useState<boolean | null>(null);
+  const [modelsReady, setModelsReady] = useState<number | null>(null);
 
   useEffect(() => {
     fetch("/api/scans")
@@ -49,7 +49,9 @@ export default function OverviewClient({ email }: { email: string }) {
       .then((res) => res.json())
       .then((data) => setProfile(data.profile));
 
-    isModelAvailable().then(setModelReady);
+    Promise.all(MODEL_REGISTRY.map((m) => isModelAvailable(m.id))).then((results) =>
+      setModelsReady(results.filter(Boolean).length)
+    );
   }, []);
 
   function isFlagged(scan: ScanRecord): boolean {
@@ -216,11 +218,13 @@ export default function OverviewClient({ email }: { email: string }) {
                 className="rounded-xl border border-foreground/15 bg-foreground/5 p-4"
               >
                 <p className="font-medium text-foreground">
-                  {modelReady === null ? "Checking model…" : modelReady ? "Model ready" : "Model not trained yet"}
+                  {modelsReady === null
+                    ? "Checking models…"
+                    : `${modelsReady}/${MODEL_REGISTRY.length} models ready`}
                 </p>
                 <p className="text-sm text-foreground/60">
-                  {modelReady
-                    ? "TensorFlow.js classifier is loaded and ready to analyze images."
+                  {modelsReady
+                    ? "Switch between available models on the scan page."
                     : "Run the training pipeline in scripts/train_model — see the README."}
                 </p>
               </motion.div>
