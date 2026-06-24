@@ -1,6 +1,9 @@
-This directory is where the trained TensorFlow.js model is loaded from at
-runtime (`/model/model.json` + weight shard `.bin` files).
+This directory is where trained TensorFlow.js models are loaded from at
+runtime, one subdirectory per architecture (`<arch>/model.json` + weight
+shard `.bin` files), e.g. `mobilenetv2/` and `efficientnetb0/`.
 
-It is intentionally empty in the repository — run the training pipeline in
-`scripts/train_model/` to generate `model.json` and the weight shards here.
-See the top-level README for instructions.
+The list of architectures the app knows about lives in
+`src/lib/modelRegistry.ts` — add an entry there for any new subdirectory you
+generate. Run the training pipeline in `scripts/train_model/` to produce
+each one (`MODEL_ARCH=<id> python train.py && MODEL_ARCH=<id> python
+convert_to_tfjs.py`). See `scripts/train_model/README.md` for details.
