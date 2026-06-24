@@ -188,9 +188,9 @@ export default function OverviewClient({ email }: { email: string }) {
               <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/dashboard/scan"
-                  className="block rounded-xl border border-primary/30 bg-primary-soft/20 p-4 hover:shadow-lg hover:shadow-primary/15 transition-shadow"
+                  className="block rounded-xl border border-foreground/15 bg-foreground/5 p-4 hover:shadow-lg hover:shadow-foreground/10 transition-shadow"
                 >
-                  <p className="font-medium text-primary">Analyze a new photo</p>
+                  <p className="font-medium text-foreground">Analyze a new photo</p>
                   <p className="text-sm text-foreground/60">
                     Upload a lesion image for on-device classification.
                   </p>
