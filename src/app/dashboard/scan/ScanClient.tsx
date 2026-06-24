@@ -156,7 +156,6 @@ export default function ScanClient({ email }: { email: string }) {
   const top = probabilities ? topPrediction(probabilities) : null;
   const malignantRisk = probabilities ? malignantRiskFromProbabilities(probabilities) : null;
   const symptomAssessment = assessSymptoms(notes);
-  const isConcern = probabilities ? top!.cls.malignant || symptomAssessment.flagged : false;
 
   return (
     <div className="flex flex-col min-h-screen">
