@@ -1,15 +1,20 @@
 """
-Transfer-learning training script: fine-tunes MobileNetV2 (ImageNet weights)
+Transfer-learning training script: fine-tunes a pretrained ImageNet backbone
 on the HAM10000 skin lesion dataset, using manifest_train.csv / manifest_val.csv
 produced by prepare_data.py.
 
-Preprocessing here MUST match src/lib/clientModel.ts on the frontend:
-images are resized to 224x224 and scaled to [-1, 1] (pixel/127.5 - 1).
+Preprocessing here MUST match src/lib/clientModel.ts on the frontend, and
+differs per architecture (see MODEL_ARCHS below):
+  - mobilenetv2: pixels resized to 224x224 and scaled to [-1, 1] (pixel/127.5 - 1)
+  - efficientnetb0: pixels resized to 224x224, left in raw [0, 255] range
+    (EfficientNetB0 has built-in Rescaling/Normalization layers, so external
+    scaling here would double-normalize and produce garbage predictions)
 
 Usage:
-    python train.py
+    MODEL_ARCH=mobilenetv2 python train.py   (default)
+    MODEL_ARCH=efficientnetb0 python train.py
 Output:
-    model.h5 in this directory (consumed by convert_to_tfjs.py)
+    model_<arch>.h5 in this directory (consumed by convert_to_tfjs.py)
 """
 import os
 
@@ -38,7 +43,31 @@ BATCH_SIZE = 32
 NUM_CLASSES = 7
 HEAD_EPOCHS = 5
 FINE_TUNE_EPOCHS = 10
-FINE_TUNE_AT_LAYER = 100  # unfreeze MobileNetV2 layers from this index onward
+
+MODEL_ARCH = os.environ.get("MODEL_ARCH", "mobilenetv2").lower()
+
+# Per-architecture config: the Keras application class to use as the frozen
+# backbone, whether the client/training pipeline must manually rescale
+# pixels to [-1, 1] (MobileNetV2-style) or leave them raw 0-255 (EfficientNet
+# has its own built-in Rescaling+Normalization layers), and roughly what
+# fraction of the backbone to keep frozen during the fine-tuning pass.
+MODEL_ARCHS = {
+    "mobilenetv2": {
+        "build_base": tf.keras.applications.MobileNetV2,
+        "rescale": True,
+        "fine_tune_frozen_fraction": 0.65,
+    },
+    "efficientnetb0": {
+        "build_base": tf.keras.applications.EfficientNetB0,
+        "rescale": False,
+        "fine_tune_frozen_fraction": 0.65,
+    },
+}
+
+if MODEL_ARCH not in MODEL_ARCHS:
+    raise ValueError(f"Unknown MODEL_ARCH={MODEL_ARCH!r}; choose one of {list(MODEL_ARCHS)}")
+
+ARCH_CONFIG = MODEL_ARCHS[MODEL_ARCH]
 
 HERE = Path(__file__).parent
 
@@ -58,7 +87,8 @@ def make_dataset(df: pd.DataFrame, training: bool) -> tf.data.Dataset:
         image = tf.io.decode_jpeg(image, channels=3)
         image = tf.image.resize(image, [IMG_SIZE, IMG_SIZE])
         image = tf.cast(image, tf.float32)
-        image = (image / 127.5) - 1.0  # match client-side normalization
+        if ARCH_CONFIG["rescale"]:
+            image = (image / 127.5) - 1.0  # match client-side normalization
         return image, label
 
     ds = ds.map(load_image, num_parallel_calls=tf.data.AUTOTUNE)
@@ -80,7 +110,7 @@ def make_dataset(df: pd.DataFrame, training: bool) -> tf.data.Dataset:
 
 
 def build_model() -> tf.keras.Model:
-    base = tf.keras.applications.MobileNetV2(
+    base = ARCH_CONFIG["build_base"](
         input_shape=(IMG_SIZE, IMG_SIZE, 3),
         include_top=False,
         weights="imagenet",
@@ -97,6 +127,8 @@ def build_model() -> tf.keras.Model:
 
 
 def main():
+    print(f"=== Training architecture: {MODEL_ARCH} ===")
+
     train_df = load_manifest("manifest_train.csv")
     val_df = load_manifest("manifest_val.csv")
 
@@ -127,9 +159,11 @@ def main():
         class_weight=class_weight,
     )
 
-    print(f"\n--- Fine-tuning top layers of MobileNetV2 for {FINE_TUNE_EPOCHS} epochs ---")
+    fine_tune_at_layer = int(len(base.layers) * ARCH_CONFIG["fine_tune_frozen_fraction"])
+    print(f"\n--- Fine-tuning top layers of {MODEL_ARCH} for {FINE_TUNE_EPOCHS} epochs "
+          f"(unfreezing layers {fine_tune_at_layer}-{len(base.layers)}) ---")
     base.trainable = True
-    for layer in base.layers[:FINE_TUNE_AT_LAYER]:
+    for layer in base.layers[:fine_tune_at_layer]:
         layer.trainable = False
 
     model.compile(
@@ -144,7 +178,7 @@ def main():
         class_weight=class_weight,
     )
 
-    out_path = HERE / "model.h5"
+    out_path = HERE / f"model_{MODEL_ARCH}.h5"
     model.save(out_path)
     print(f"\nSaved trained model to {out_path}")
 
