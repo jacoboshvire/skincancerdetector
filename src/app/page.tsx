@@ -7,8 +7,8 @@ const FEATURES = [
   {
     title: "On-device inference",
     body: "Images are classified directly in your browser with TensorFlow.js — photos never leave your device unless you choose to save a result to your history.",
-    color: "border-accent-blue/30 bg-accent-blue/5",
-    titleColor: "text-accent-blue",
+    color: "border-foreground/15 bg-foreground/5",
+    titleColor: "text-foreground",
   },
   {
     title: "Trained on HAM10000",
@@ -19,8 +19,8 @@ const FEATURES = [
   {
     title: "Secured with JWT + MFA",
     body: "Accounts are protected by password + email one-time-code verification, with short-lived JWT sessions stored in httpOnly cookies.",
-    color: "border-accent-purple/30 bg-accent-purple/5",
-    titleColor: "text-accent-purple",
+    color: "border-foreground/15 bg-foreground/5",
+    titleColor: "text-foreground",
   },
 ];
 
