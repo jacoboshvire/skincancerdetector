@@ -8,6 +8,7 @@ import AppHeader from "@/components/AppHeader";
 import HeartButton from "@/components/HeartButton";
 import { loadModel, predictFromImage, isModelAvailable } from "@/lib/clientModel";
 import { HAM10000_CLASSES, malignantRiskFromProbabilities, topPrediction } from "@/lib/modelClasses";
+import { MODEL_REGISTRY, DEFAULT_MODEL_ID, getModelInfo } from "@/lib/modelRegistry";
 import { assessSymptoms } from "@/lib/symptomRisk";
 
 interface ScanRecord {
@@ -21,10 +22,13 @@ interface ScanRecord {
   bodyLocation: string | null;
   notes: string | null;
   favorite: boolean;
+  model: string;
   createdAt: number;
 }
 
 type ModelStatus = "checking" | "missing" | "loading" | "ready" | "error";
+
+const MODEL_STORAGE_KEY = "skinscan-model-id";
 
 const BODY_LOCATIONS = [
   "Head / neck",
@@ -42,12 +46,14 @@ export default function ScanClient({ email }: { email: string }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
+  const [modelId, setModelId] = useState(DEFAULT_MODEL_ID);
   const [modelStatus, setModelStatus] = useState<ModelStatus>("checking");
   const [modelError, setModelError] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageName, setImageName] = useState<string | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
   const [probabilities, setProbabilities] = useState<number[] | null>(null);
+  const [resultModelId, setResultModelId] = useState<string | null>(null);
   const [bodyLocation, setBodyLocation] = useState("");
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
@@ -56,18 +62,30 @@ export default function ScanClient({ email }: { email: string }) {
   const [historyLoading, setHistoryLoading] = useState(true);
 
   useEffect(() => {
-    isModelAvailable().then((available) => setModelStatus(available ? "loading" : "missing"));
+    const stored = window.localStorage.getItem(MODEL_STORAGE_KEY);
+    if (stored && MODEL_REGISTRY.some((m) => m.id === stored)) {
+      setModelId(stored);
+    }
   }, []);
 
   useEffect(() => {
+    window.localStorage.setItem(MODEL_STORAGE_KEY, modelId);
+    setModelStatus("checking");
+    setModelError(null);
+    isModelAvailable(modelId).then((available) =>
+      setModelStatus(available ? "loading" : "missing")
+    );
+  }, [modelId]);
+
+  useEffect(() => {
     if (modelStatus !== "loading") return;
-    loadModel()
+    loadModel(modelId)
       .then(() => setModelStatus("ready"))
       .catch((err) => {
         setModelError(err instanceof Error ? err.message : String(err));
         setModelStatus("error");
       });
-  }, [modelStatus]);
+  }, [modelStatus, modelId]);
 
   useEffect(() => {
     fetch("/api/scans")
@@ -99,15 +117,16 @@ export default function ScanClient({ email }: { email: string }) {
     if (!imageRef.current || modelStatus !== "ready") return;
     setAnalyzing(true);
     try {
-      const model = (await loadModel()) as tf.LayersModel;
-      const probs = await predictFromImage(model, imageRef.current);
+      const model = (await loadModel(modelId)) as tf.LayersModel;
+      const probs = await predictFromImage(model, imageRef.current, modelId);
       setProbabilities(probs);
+      setResultModelId(modelId);
     } catch (err) {
       setModelError(err instanceof Error ? err.message : String(err));
     } finally {
       setAnalyzing(false);
     }
-  }, [modelStatus]);
+  }, [modelStatus, modelId]);
 
   async function onSaveResult() {
     if (!probabilities) return;
@@ -128,6 +147,7 @@ export default function ScanClient({ email }: { email: string }) {
           probabilities,
           bodyLocation: bodyLocation || null,
           notes: notes || null,
+          model: resultModelId ?? modelId,
         }),
       });
       if (res.ok) {
@@ -162,21 +182,47 @@ export default function ScanClient({ email }: { email: string }) {
       <AppHeader email={email} />
 
       <main className="flex-1 max-w-5xl mx-auto px-6 py-10 w-full">
-        <motion.h1
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="text-2xl font-bold mb-6"
-        >
-          Scan a lesion
-        </motion.h1>
+        <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
+          <motion.h1
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="text-2xl font-bold"
+          >
+            Scan a lesion
+          </motion.h1>
+          <div className="flex items-center gap-2">
+            <label htmlFor="modelSelect" className="text-sm text-foreground/60">
+              Model
+            </label>
+            <select
+              id="modelSelect"
+              value={modelId}
+              onChange={(e) => {
+                setModelId(e.target.value);
+                setProbabilities(null);
+              }}
+              className="rounded-md border border-foreground/15 bg-transparent px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50"
+            >
+              {MODEL_REGISTRY.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <p className="text-xs text-foreground/50 mb-6 -mt-3">
+          {getModelInfo(modelId).description}
+        </p>
 
         {modelStatus === "missing" && (
           <div className="mb-8 rounded-xl border border-foreground/15 bg-foreground/5 p-4 text-sm">
-            <strong className="block mb-1">No trained model found.</strong>
-            Run the training pipeline in <code>scripts/train_model</code> to
-            generate <code>public/model/model.json</code> before analyzing
-            images. See the README for instructions.
+            <strong className="block mb-1">No trained {getModelInfo(modelId).label} model found.</strong>
+            Run the training pipeline in <code>scripts/train_model</code>{" "}
+            (<code>MODEL_ARCH={modelId} python train.py</code>) to generate{" "}
+            <code>public/model/{modelId}/model.json</code> before analyzing images, or
+            switch to a different model above. See the README for instructions.
           </div>
         )}
         {modelStatus === "error" && (
@@ -344,6 +390,9 @@ export default function ScanClient({ email }: { email: string }) {
                     transition={{ duration: 0.3 }}
                     className="rounded-xl p-4 border border-foreground/15 bg-foreground/5"
                   >
+                    <p className="text-xs text-foreground/50 mb-1">
+                      Model: {getModelInfo(resultModelId ?? modelId).label}
+                    </p>
                     {top!.cls.malignant ? (
                       <p className="text-sm text-foreground/60">Top prediction</p>
                     ) : symptomAssessment.flagged ? (
@@ -440,6 +489,7 @@ export default function ScanClient({ email }: { email: string }) {
                     <th className="py-2 pr-4">Date</th>
                     <th className="py-2 pr-4">Location</th>
                     <th className="py-2 pr-4">Image</th>
+                    <th className="py-2 pr-4">Model</th>
                     <th className="py-2 pr-4">Prediction</th>
                     <th className="py-2 pr-4">Confidence</th>
                     <th className="py-2 pr-4">Malignant risk</th>
@@ -463,6 +513,7 @@ export default function ScanClient({ email }: { email: string }) {
                       <td className="py-2 pr-4">{new Date(scan.createdAt).toLocaleString()}</td>
                       <td className="py-2 pr-4">{scan.bodyLocation ?? "—"}</td>
                       <td className="py-2 pr-4">{scan.imageName ?? "—"}</td>
+                      <td className="py-2 pr-4">{getModelInfo(scan.model).label}</td>
                       <td className="py-2 pr-4">{scan.predictedLabel}</td>
                       <td className="py-2 pr-4">{(scan.confidence * 100).toFixed(1)}%</td>
                       <td className="py-2 pr-4">{(scan.malignantRisk * 100).toFixed(1)}%</td>
