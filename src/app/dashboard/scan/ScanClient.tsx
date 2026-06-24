@@ -173,7 +173,7 @@ export default function ScanClient({ email }: { email: string }) {
         </motion.h1>
 
         {modelStatus === "missing" && (
-          <div className="mb-8 rounded-xl border border-accent-amber/40 bg-accent-amber/10 p-4 text-sm">
+          <div className="mb-8 rounded-xl border border-foreground/15 bg-foreground/5 p-4 text-sm">
             <strong className="block mb-1">No trained model found.</strong>
             Run the training pipeline in <code>scripts/train_model</code> to
             generate <code>public/model/model.json</code> before analyzing
@@ -181,13 +181,13 @@ export default function ScanClient({ email }: { email: string }) {
           </div>
         )}
         {modelStatus === "error" && (
-          <div className="mb-8 rounded-xl border border-accent-red/40 bg-accent-red/10 p-4 text-sm">
+          <div className="mb-8 rounded-xl border border-foreground/15 bg-foreground/5 p-4 text-sm">
             <strong className="block mb-1">Failed to load model.</strong>
             {modelError}
           </div>
         )}
 
-        <div className="mb-8 rounded-xl border border-accent-amber/40 bg-accent-amber/10 p-4 text-sm">
+        <div className="mb-8 rounded-xl border border-foreground/15 bg-foreground/5 p-4 text-sm">
           This tool is for educational purposes only and is not a substitute
           for professional medical diagnosis.
         </div>
@@ -199,10 +199,10 @@ export default function ScanClient({ email }: { email: string }) {
             transition={{ duration: 0.4, delay: 0.05 }}
             className="rounded-2xl border border-foreground/10 p-5 shadow-sm"
           >
-            <h2 className="font-semibold mb-3 text-primary">Upload a lesion photo</h2>
+            <h2 className="font-semibold mb-3">Upload a lesion photo</h2>
             <motion.div
-              animate={imagePreview ? { borderColor: "var(--primary)" } : {}}
-              className="rounded-xl border border-dashed border-primary/30 bg-primary-soft/20 p-6 text-center"
+              animate={imagePreview ? { borderColor: "var(--foreground)" } : {}}
+              className="rounded-xl border border-dashed border-foreground/20 bg-foreground/5 p-6 text-center"
             >
               <AnimatePresence mode="wait">
                 {imagePreview ? (
