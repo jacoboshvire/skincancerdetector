@@ -164,12 +164,8 @@ export default function OverviewClient({ email }: { email: string }) {
                     variants={fadeUp}
                     transition={{ duration: 0.3 }}
                     whileHover={{ x: 2 }}
-                    className={`flex items-center justify-between gap-3 rounded-lg border p-3 text-sm transition-shadow hover:shadow-md ${
-                      isFlagged(scan)
-                        ? "border-accent-red/30 bg-accent-red/5"
-                        : i % 2 === 1
-                        ? "border-foreground/10 bg-foreground/5"
-                        : "border-foreground/10"
+                    className={`flex items-center justify-between gap-3 rounded-lg border border-foreground/10 p-3 text-sm transition-shadow hover:shadow-md ${
+                      i % 2 === 1 ? "bg-foreground/5" : ""
                     }`}
                   >
                     <div>
