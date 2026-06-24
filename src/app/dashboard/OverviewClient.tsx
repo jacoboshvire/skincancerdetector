@@ -212,19 +212,9 @@ export default function OverviewClient({ email }: { email: string }) {
               <motion.div
                 whileHover={{ y: -3 }}
                 transition={{ duration: 0.2 }}
-                className={`rounded-xl border p-4 ${
-                  modelReady
-                    ? "border-accent-green/30 bg-accent-green/5"
-                    : "border-accent-amber/30 bg-accent-amber/5"
-                }`}
+                className="rounded-xl border border-foreground/15 bg-foreground/5 p-4"
               >
-                <p
-                  className={`font-medium ${
-                    modelReady
-                      ? "text-accent-green"
-                      : "text-accent-amber"
-                  }`}
-                >
+                <p className="font-medium text-foreground">
                   {modelReady === null ? "Checking model…" : modelReady ? "Model ready" : "Model not trained yet"}
                 </p>
                 <p className="text-sm text-foreground/60">
