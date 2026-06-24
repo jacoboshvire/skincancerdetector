@@ -307,7 +307,6 @@ export default function ProfileClient({ email }: { email: string }) {
                 {visibleHistory.map((scan, i) => {
                   const imageMalignant = HAM10000_CLASSES.find((c) => c.code === scan.predictedClass)?.malignant;
                   const symptomFlagged = assessSymptoms(scan.notes).flagged;
-                  const flagged = imageMalignant || symptomFlagged;
                   return (
                     <motion.div
                       key={scan.id}
@@ -317,12 +316,8 @@ export default function ProfileClient({ email }: { email: string }) {
                       exit={{ opacity: 0, scale: 0.97 }}
                       transition={{ duration: 0.25 }}
                       whileHover={{ x: 2 }}
-                      className={`rounded-xl border p-4 transition-shadow hover:shadow-md ${
-                        flagged
-                          ? "border-accent-red/40 bg-accent-red/5"
-                          : i % 2 === 1
-                          ? "border-foreground/10 bg-foreground/5"
-                          : "border-foreground/10"
+                      className={`rounded-xl border border-foreground/10 p-4 transition-shadow hover:shadow-md ${
+                        i % 2 === 1 ? "bg-foreground/5" : ""
                       }`}
                     >
                       <div className="flex items-start justify-between flex-wrap gap-2">
