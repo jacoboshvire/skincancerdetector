@@ -319,7 +319,7 @@ export default function ScanClient({ email }: { email: string }) {
             transition={{ duration: 0.4, delay: 0.1 }}
             className="rounded-2xl border border-foreground/10 p-5 shadow-sm"
           >
-            <h2 className="font-semibold mb-3 text-primary">Result</h2>
+            <h2 className="font-semibold mb-3">Result</h2>
             <AnimatePresence mode="wait">
               {!probabilities ? (
                 <motion.p
@@ -343,9 +343,7 @@ export default function ScanClient({ email }: { email: string }) {
                     initial={{ scale: 0.97 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.3 }}
-                    className={`rounded-xl p-4 border ${
-                      isConcern ? "border-accent-red/40 bg-accent-red/10" : "border-accent-green/40 bg-accent-green/10"
-                    }`}
+                    className="rounded-xl p-4 border border-foreground/15 bg-foreground/5"
                   >
                     {top!.cls.malignant ? (
                       <p className="text-sm text-foreground/60">Top prediction</p>
