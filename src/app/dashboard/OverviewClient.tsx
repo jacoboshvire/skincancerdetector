@@ -103,7 +103,7 @@ export default function OverviewClient({ email }: { email: string }) {
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="mb-8 rounded-xl border border-accent-red/40 bg-accent-red/10 p-4 text-sm"
+            className="mb-8 rounded-xl border border-foreground/15 bg-foreground/5 p-4 text-sm"
           >
             <strong className="block mb-1">
               {flagged.length} scan{flagged.length === 1 ? "" : "s"} flagged for follow-up.
@@ -123,10 +123,10 @@ export default function OverviewClient({ email }: { email: string }) {
           className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10"
         >
           <StatCard color="gray" label="Total scans" value={loading ? "…" : history.length} />
-          <StatCard color="red" label="Flagged for follow-up" value={loading ? "…" : flagged.length} />
+          <StatCard color="gray" label="Flagged for follow-up" value={loading ? "…" : flagged.length} />
           <StatCard color="gray" label="Favorites" value={loading ? "…" : favorites.length} />
           <StatCard
-            color="purple"
+            color="gray"
             label="Medical record"
             value={profileComplete ? "Complete" : "Incomplete"}
             href="/profile"
