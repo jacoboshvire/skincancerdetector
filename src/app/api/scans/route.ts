@@ -12,6 +12,7 @@ const schema = z.object({
   probabilities: z.array(z.number()),
   bodyLocation: z.string().max(100).nullable().optional(),
   notes: z.string().max(2000).nullable().optional(),
+  model: z.string().max(50).optional(),
 });
 
 export async function GET() {
@@ -38,6 +39,7 @@ export async function GET() {
       bodyLocation: r.body_location,
       notes: r.notes,
       favorite: r.favorite,
+      model: r.model,
       createdAt: Number(r.created_at),
     })),
   });
