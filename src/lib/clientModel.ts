@@ -27,11 +27,23 @@ export async function isModelAvailable(modelId: string): Promise<boolean> {
   }
 }
 
+// Must match the closed-form transform baked out of EfficientNetB0's
+// Rescaling+Normalization+multiply layers in convert_to_tfjs.py's
+// strip_efficientnet_preprocessing() — those layers aren't portable to
+// tfjs-layers, so the model ships without them and expects pixels already
+// transformed this way.
+const EFFICIENTNET_MEAN = [0.485, 0.456, 0.406];
+const EFFICIENTNET_VAR = [0.229, 0.224, 0.225];
+
 function preprocessPixels(pixels: tf.Tensor3D, mode: Preprocessing): tf.Tensor3D {
   if (mode === "mobilenet") {
     return pixels.div(127.5).sub(1) as tf.Tensor3D; // [-1, 1]
   }
-  return pixels; // efficientnet: raw [0, 255], model has built-in rescaling
+  // efficientnet: (pixel / 255 - mean) / var
+  return pixels
+    .div(255)
+    .sub(tf.tensor1d(EFFICIENTNET_MEAN))
+    .div(tf.tensor1d(EFFICIENTNET_VAR)) as tf.Tensor3D;
 }
 
 export async function predictFromImage(
