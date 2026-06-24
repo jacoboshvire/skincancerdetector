@@ -82,6 +82,7 @@ export interface ScanRow {
   body_location: string | null;
   notes: string | null;
   favorite: boolean;
+  model: string;
   created_at: number;
 }
 
