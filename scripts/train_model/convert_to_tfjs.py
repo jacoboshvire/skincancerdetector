@@ -1,16 +1,17 @@
 """
-Converts the trained Keras model (model.h5) into the TensorFlow.js layers
-format expected by the app at public/model/.
+Converts a trained Keras model (model_<arch>.h5) into the TensorFlow.js
+layers format expected by the app at public/model/<arch>/.
 
 Usage:
-    python convert_to_tfjs.py
+    MODEL_ARCH=mobilenetv2 python convert_to_tfjs.py   (default)
+    MODEL_ARCH=efficientnetb0 python convert_to_tfjs.py
 """
 import json
 import os
 
-# Must match train.py: model.h5 was saved under legacy Keras 2 (tf_keras), so
-# it must also be loaded under tf_keras here, or InputLayer/graph config
-# parsing breaks (see the comment in train.py for why).
+# Must match train.py: model_<arch>.h5 was saved under legacy Keras 2
+# (tf_keras), so it must also be loaded under tf_keras here, or
+# InputLayer/graph config parsing breaks (see the comment in train.py).
 os.environ.setdefault("TF_USE_LEGACY_KERAS", "1")
 
 from pathlib import Path
@@ -18,9 +19,11 @@ from pathlib import Path
 import tensorflow as tf
 import tensorflowjs as tfjs
 
+MODEL_ARCH = os.environ.get("MODEL_ARCH", "mobilenetv2").lower()
+
 HERE = Path(__file__).parent
-MODEL_PATH = HERE / "model.h5"
-OUTPUT_DIR = HERE.parent.parent / "public" / "model"
+MODEL_PATH = HERE / f"model_{MODEL_ARCH}.h5"
+OUTPUT_DIR = HERE.parent.parent / "public" / "model" / MODEL_ARCH
 
 
 def fix_keras3_input_layer_config(model_json_path: Path) -> None:
@@ -30,7 +33,7 @@ def fix_keras3_input_layer_config(model_json_path: Path) -> None:
     "batch_input_shape", so without this fix tf.loadLayersModel() throws
     "An InputLayer should be passed either a batchInputShape or an inputShape"
     in the browser. Rewrite every InputLayer config in place (the top-level
-    model and any nested submodels, e.g. the MobileNetV2 base).
+    model and any nested submodels, e.g. the backbone).
     """
     with open(model_json_path) as f:
         raw = f.read()
@@ -57,7 +60,7 @@ def fix_keras3_input_layer_config(model_json_path: Path) -> None:
 
 def main():
     if not MODEL_PATH.exists():
-        raise FileNotFoundError(f"Missing {MODEL_PATH}. Run train.py first.")
+        raise FileNotFoundError(f"Missing {MODEL_PATH}. Run `MODEL_ARCH={MODEL_ARCH} python train.py` first.")
 
     model = tf.keras.models.load_model(MODEL_PATH)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
