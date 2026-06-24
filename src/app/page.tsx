@@ -133,7 +133,7 @@ export default function LandingPage() {
         </section>
 
         <section className="max-w-5xl mx-auto px-6 py-12">
-          <div className="rounded-2xl border border-accent-amber/40 bg-accent-amber/10 p-6 text-sm leading-relaxed">
+          <div className="rounded-2xl border border-foreground/15 bg-foreground/5 p-6 text-sm leading-relaxed">
             <strong className="block mb-1">Not a medical device.</strong>
             SkinScan is an educational demonstration of applying machine
             learning to dermoscopic images. It is not FDA-cleared, has not
