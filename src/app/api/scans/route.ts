@@ -61,11 +61,11 @@ export async function POST(req: NextRequest) {
   const sql = await getDb();
   await sql`
     INSERT INTO scans
-      (user_id, image_name, predicted_class, predicted_label, malignant_risk, confidence, probabilities, body_location, notes, created_at)
+      (user_id, image_name, predicted_class, predicted_label, malignant_risk, confidence, probabilities, body_location, notes, model, created_at)
     VALUES (
       ${session.userId}, ${d.imageName ?? null}, ${d.predictedClass}, ${d.predictedLabel},
       ${d.malignantRisk}, ${d.confidence}, ${JSON.stringify(d.probabilities)},
-      ${d.bodyLocation ?? null}, ${d.notes ?? null}, ${Date.now()}
+      ${d.bodyLocation ?? null}, ${d.notes ?? null}, ${d.model ?? "mobilenetv2"}, ${Date.now()}
     )
   `;
 
