@@ -339,6 +339,8 @@ export default function ProfileClient({ email }: { email: string }) {
                               {new Date(scan.createdAt).toLocaleString()}
                               {scan.bodyLocation && <> · {scan.bodyLocation}</>}
                               {scan.imageName && <> · {scan.imageName}</>}
+                              {" · "}
+                              {getModelInfo(scan.model).label}
                             </p>
                           </div>
                         </div>
