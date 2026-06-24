@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import AppHeader from "@/components/AppHeader";
 import HeartButton from "@/components/HeartButton";
 import { HAM10000_CLASSES } from "@/lib/modelClasses";
+import { getModelInfo } from "@/lib/modelRegistry";
 import { assessSymptoms } from "@/lib/symptomRisk";
 
 interface ScanRecord {
@@ -19,6 +20,7 @@ interface ScanRecord {
   bodyLocation: string | null;
   notes: string | null;
   favorite: boolean;
+  model: string;
   createdAt: number;
 }
 
