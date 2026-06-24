@@ -30,11 +30,13 @@ function ensureSchema(): Promise<void> {
           body_location TEXT,
           notes TEXT,
           favorite BOOLEAN NOT NULL DEFAULT FALSE,
+          model TEXT NOT NULL DEFAULT 'mobilenetv2',
           created_at BIGINT NOT NULL
         )
       `;
 
       await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS favorite BOOLEAN NOT NULL DEFAULT FALSE`;
+      await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS model TEXT NOT NULL DEFAULT 'mobilenetv2'`;
       await sql`CREATE INDEX IF NOT EXISTS idx_scans_user_id ON scans(user_id)`;
 
       await sql`
