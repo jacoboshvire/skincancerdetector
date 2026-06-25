@@ -225,7 +225,7 @@ export default function OverviewClient({ email }: { email: string }) {
                 <p className="text-sm text-foreground/60">
                   {modelsReady
                     ? "Switch between available models on the scan page."
-                    : "Run the training pipeline in scripts/train_model — see the README."}
+                    : "Run the training pipeline in scripts/train_model; see the README."}
                 </p>
               </motion.div>
             </div>
