@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SkinScan — Early Skin Lesion Screening",
+  title: "SkinScan: Early Skin Lesion Screening",
   description:
     "AI-assisted skin lesion screening demo powered by TensorFlow.js, trained on the HAM10000 dataset.",
 };
