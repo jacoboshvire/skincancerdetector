@@ -86,7 +86,7 @@ export default function LandingPage() {
             className="relative mt-6 text-lg text-foreground/70 max-w-2xl mx-auto"
           >
             Upload a photo of a skin lesion and get an instant, on-device risk
-            assessment across the seven HAM10000 lesion categories — including
+            assessment across the seven HAM10000 lesion categories, including
             melanoma, basal cell carcinoma, and actinic keratoses.
           </motion.p>
           <motion.div
