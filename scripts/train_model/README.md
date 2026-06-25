@@ -104,10 +104,13 @@ predictions rather than an error:
 
 - **mobilenetv2**: pixels resized to 224×224 and scaled to `[-1, 1]`
   (`pixel / 127.5 - 1`).
-- **efficientnetb0**: pixels resized to 224×224 and left in raw `[0, 255]`
-  range — `tf.keras.applications.EfficientNetB0` has built-in `Rescaling`
-  and `Normalization` layers, so applying the MobileNetV2-style `[-1, 1]`
-  scaling here would double-normalize and break predictions.
+- **efficientnetb0**: pixels resized to 224×224, then `(pixel / 255 - mean) / var`
+  using ImageNet mean/var constants. `tf.keras.applications.EfficientNetB0`'s
+  built-in `Rescaling`/`Normalization` layers aren't portable to tfjs-layers
+  (it can't deserialize `Normalization`), so `convert_to_tfjs.py` strips them
+  from the exported graph and the client applies the equivalent closed-form
+  transform instead. See `strip_efficientnet_preprocessing()` in
+  `convert_to_tfjs.py`.
 
 If you add a new architecture, check what preprocessing its
 `tf.keras.applications.*` constructor expects and wire up both sides the
