@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 const FEATURES = [
   {
     title: "On-device inference",
-    body: "Images are classified directly in your browser with TensorFlow.js — photos never leave your device unless you choose to save a result to your history.",
+    body: "Images are classified directly in your browser with TensorFlow.js; photos never leave your device unless you choose to save a result to your history.",
     color: "border-foreground/15 bg-foreground/5",
     titleColor: "text-foreground",
   },
