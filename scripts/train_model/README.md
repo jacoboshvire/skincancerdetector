@@ -92,8 +92,8 @@ pip install -r requirements.txt
    ```
 
    Writes `model.json` and weight shard `.bin` files into
-   `public/model/<arch>/`. Restart (or just refresh) the Next.js dev server
-   — the scan page will pick the model up automatically once it's listed in
+   `public/model/<arch>/`. Restart (or just refresh) the Next.js dev server;
+   the scan page will pick the model up automatically once it's listed in
    `src/lib/modelRegistry.ts`.
 
 ## Keeping preprocessing in sync
