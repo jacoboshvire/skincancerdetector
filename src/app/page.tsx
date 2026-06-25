@@ -382,7 +382,7 @@ export default function LandingPage() {
               transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
               className="relative"
             >
-              <ScanIllustration />
+              <LiveDemo />
             </motion.div>
           </div>
         </section>
