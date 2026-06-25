@@ -12,17 +12,17 @@ dataset. Built with Next.js, protected by password + JWT + email-based MFA.
 
 ## How it works
 
-- **Landing page** (`/`) — explains the tool and links to sign up / log in.
-- **Auth** (`/register`, `/login`, `/verify-otp`) — email + password
+- **Landing page** (`/`): explains the tool and links to sign up / log in.
+- **Auth** (`/register`, `/login`, `/verify-otp`): email + password
   accounts. After password verification, a 6-digit one-time code is emailed
   to the user (MFA); only after that code is verified does the server issue
   a signed JWT, stored as an httpOnly session cookie.
-- **Dashboard** (`/dashboard`, JWT-protected) — upload a lesion photo, run
+- **Dashboard** (`/dashboard`, JWT-protected): upload a lesion photo, run
   classification entirely in the browser via TensorFlow.js, see a
   per-category probability breakdown plus an overall "malignant-category
-  risk" score, and optionally save results — along with where on the body
-  the lesion is and any symptom notes — to a per-account medical record.
-- **Profile** (`/profile`, JWT-protected) — an editable medical-record form
+  risk" score, and optionally save results, along with where on the body
+  the lesion is and any symptom notes, to a per-account medical record.
+- **Profile** (`/profile`, JWT-protected): an editable medical-record form
   (name, date of birth, sex, family history of skin cancer, other notes)
   plus the full history of saved AI scan results, with malignant-category
   predictions visually flagged.
@@ -52,16 +52,16 @@ cp .env.example .env
 
 Edit `.env`:
 
-- `JWT_SECRET` — required for production; generate with `openssl rand -base64 32`.
+- `JWT_SECRET`: required for production; generate with `openssl rand -base64 32`.
   In development, an insecure default is used automatically if unset (a
   warning is printed).
-- `POSTGRES_URL` — required. A Postgres connection string (Neon, Vercel
-  Postgres, Supabase, etc. all work — the app uses `@vercel/postgres`, which
+- `POSTGRES_URL`: required. A Postgres connection string (Neon, Vercel
+  Postgres, Supabase, etc. all work; the app uses `@vercel/postgres`, which
   speaks Neon's serverless wire protocol but works with any standard
   Postgres connection string over plain TCP too). Tables are created
   automatically on first request if they don't exist; there's no separate
   migration step to run.
-- `SMTP_*` — optional. If left unset, MFA codes are printed to the server
+- `SMTP_*`: optional. If left unset, MFA codes are printed to the server
   console instead of emailed, so you can test the full flow with zero email
   setup. Configure these to send real emails.
 
