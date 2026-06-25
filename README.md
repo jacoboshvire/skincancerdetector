@@ -148,7 +148,7 @@ request if they're missing, the same way it already works locally.
   with bcrypt before storage, never stored or logged in plaintext (outside
   the explicit dev-mode console fallback when SMTP isn't configured).
 - Sessions are JWTs signed with `JWT_SECRET`, stored in httpOnly, `SameSite=Lax`
-  cookies — inaccessible to client-side JavaScript and not sent cross-site.
+  cookies, inaccessible to client-side JavaScript and not sent cross-site.
 - `src/proxy.ts` enforces authentication on `/dashboard/*` and `/profile/*`
   at the routing layer, independent of any client-side checks.
 - Login and resend-OTP responses are intentionally shaped to avoid revealing
