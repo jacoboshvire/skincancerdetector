@@ -125,19 +125,19 @@ Refresh the dashboard once conversion finishes; no rebuild needed in dev.
    config changes are needed.
 2. Before the first deploy succeeds end-to-end, set these in the project's
    **Settings → Environment Variables**:
-   - `POSTGRES_URL` — a Postgres connection string. Either add Vercel's own
+   - `POSTGRES_URL`: a Postgres connection string. Either add Vercel's own
      "Postgres" storage integration (Storage tab → Create Database; it
      injects this automatically), or paste in a connection string from your
      own Neon/Supabase/etc. project.
-   - `JWT_SECRET` — `openssl rand -base64 32`.
-   - `MFA_ENABLED` — `true` or `false`.
-   - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` — if you
-     want real MFA emails sent in production (strongly recommended — there's
+   - `JWT_SECRET`: `openssl rand -base64 32`.
+   - `MFA_ENABLED`: `true` or `false`.
+   - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`: if you
+     want real MFA emails sent in production (strongly recommended; there's
      no console to read a fallback code from in production).
 3. Redeploy after setting env vars (Vercel only injects them into new
    deployments, not retroactively into an already-built one).
 4. The trained model in `public/model/` is committed to git, so it deploys
-   automatically — no separate step needed there.
+   automatically; no separate step needed there.
 
 There's no migration command to run: `src/lib/db.ts` creates tables on first
 request if they're missing, the same way it already works locally.
