@@ -147,7 +147,7 @@ export default function ProfileClient({ email }: { email: string }) {
           <h2 className="font-semibold mb-3">Medical record</h2>
           <p className="text-sm text-foreground/60 mb-4">
             Optional background information to give context to your scan
-            history. Stored with your account only — never sent to the
+            history. Stored with your account only; never sent to the
             classifier.
           </p>
           {profileLoading ? (
