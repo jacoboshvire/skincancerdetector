@@ -87,53 +87,142 @@ function ChecklistIcon({ className }: { className?: string }) {
   );
 }
 
-function ScanIllustration() {
+type DemoStepId = "upload" | "photo" | "scanning" | "result";
+
+const DEMO_STEPS: { id: DemoStepId; duration: number }[] = [
+  { id: "upload", duration: 1600 },
+  { id: "photo", duration: 1100 },
+  { id: "scanning", duration: 2200 },
+  { id: "result", duration: 2400 },
+];
+
+function useDemoStep(): DemoStepId {
+  const [stepId, setStepId] = useState<DemoStepId>(DEMO_STEPS[0].id);
+
+  useEffect(() => {
+    let index = 0;
+    let timeoutId: ReturnType<typeof setTimeout>;
+    const advance = () => {
+      timeoutId = setTimeout(() => {
+        index = (index + 1) % DEMO_STEPS.length;
+        setStepId(DEMO_STEPS[index].id);
+        advance();
+      }, DEMO_STEPS[index].duration);
+    };
+    advance();
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  return stepId;
+}
+
+const LESION_SWATCH = "radial-gradient(circle at 35% 35%, #8a5a36, #4a2e1a 70%)";
+
+function LiveDemo() {
+  const step = useDemoStep();
+
   return (
-    <svg viewBox="0 0 360 360" className="w-full max-w-xs sm:max-w-sm mx-auto" aria-hidden="true">
-      <defs>
-        <linearGradient id="scanGradient" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="var(--primary)" />
-          <stop offset="50%" stopColor="var(--accent-purple)" />
-          <stop offset="100%" stopColor="var(--accent-pink)" />
-        </linearGradient>
-      </defs>
-      <circle cx="180" cy="180" r="160" fill="url(#scanGradient)" opacity="0.1" />
-      <rect
-        x="85"
-        y="35"
-        width="190"
-        height="290"
-        rx="30"
-        fill="var(--background)"
-        stroke="url(#scanGradient)"
-        strokeWidth="3"
-      />
-      <rect x="150" y="52" width="60" height="6" rx="3" fill="var(--foreground)" opacity="0.15" />
-      <circle cx="180" cy="175" r="50" fill="var(--foreground)" opacity="0.07" />
-      <circle
-        cx="180"
-        cy="175"
-        r="50"
-        stroke="url(#scanGradient)"
-        strokeWidth="3"
-        fill="none"
-        strokeDasharray="8 10"
-        strokeLinecap="round"
-      >
-        <animateTransform
-          attributeName="transform"
-          type="rotate"
-          from="0 180 175"
-          to="360 180 175"
-          dur="7s"
-          repeatCount="indefinite"
-        />
-      </circle>
-      <circle cx="180" cy="175" r="18" fill="url(#scanGradient)" />
-      <circle cx="232" cy="262" r="24" fill="var(--accent-green)" />
-      <path d="M222 262l7 7 13-15" stroke="white" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      <rect x="125" y="297" width="110" height="9" rx="4.5" fill="var(--foreground)" opacity="0.12" />
-    </svg>
+    <div className="relative mx-auto w-[230px] sm:w-[260px]">
+      <div className="relative rounded-[2rem] border-2 border-foreground/15 bg-background shadow-xl p-3">
+        <div className="h-1.5 w-12 rounded-full bg-foreground/15 mx-auto mb-3" />
+        <div className="relative h-72 rounded-xl bg-foreground/5 overflow-hidden flex flex-col items-center justify-center px-4">
+          <AnimatePresence mode="wait">
+            {step === "upload" && (
+              <motion.div
+                key="upload"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.35 }}
+                className="flex flex-col items-center text-center"
+              >
+                <div className="w-20 h-20 rounded-xl border-2 border-dashed border-foreground/25 flex items-center justify-center mb-3">
+                  <CameraIcon className="w-7 h-7 text-foreground/35" />
+                </div>
+                <p className="text-xs text-foreground/50">Upload a lesion photo</p>
+              </motion.div>
+            )}
+
+            {step === "photo" && (
+              <motion.div
+                key="photo"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.35 }}
+                className="flex flex-col items-center text-center"
+              >
+                <div className="w-28 h-28 rounded-full shadow-inner" style={{ background: LESION_SWATCH }} />
+                <p className="text-[11px] text-foreground/40 mt-3">lesion_photo.jpg</p>
+              </motion.div>
+            )}
+
+            {step === "scanning" && (
+              <motion.div
+                key="scanning"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.35 }}
+                className="flex flex-col items-center text-center"
+              >
+                <div className="relative w-28 h-28">
+                  <div className="absolute inset-0 rounded-full" style={{ background: LESION_SWATCH }} />
+                  <motion.div
+                    className="absolute -inset-2 rounded-full border-2 border-dashed"
+                    style={{ borderColor: "var(--primary)" }}
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1.4, repeat: Infinity, ease: "linear" }}
+                  />
+                </div>
+                <motion.p
+                  className="text-xs text-foreground/50 mt-3"
+                  animate={{ opacity: [0.4, 1, 0.4] }}
+                  transition={{ duration: 1.2, repeat: Infinity }}
+                >
+                  Analyzing…
+                </motion.p>
+              </motion.div>
+            )}
+
+            {step === "result" && (
+              <motion.div
+                key="result"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.35 }}
+                className="flex flex-col items-center text-center w-full"
+              >
+                <div className="w-12 h-12 rounded-full bg-accent-green flex items-center justify-center mb-3">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="white"
+                    strokeWidth={3}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <p className="text-sm font-semibold text-accent-green">Likely benign</p>
+                <p className="text-xs text-foreground/50 mt-1">96% confidence</p>
+                <div className="w-full h-1.5 rounded-full bg-foreground/10 mt-3 overflow-hidden">
+                  <motion.div
+                    className="h-full rounded-full bg-accent-green"
+                    initial={{ width: "0%" }}
+                    animate={{ width: "96%" }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    </div>
   );
 }
 
