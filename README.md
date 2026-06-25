@@ -96,12 +96,12 @@ Refresh the dashboard once conversion finishes; no rebuild needed in dev.
 
 1. **Sign up** at `/register` with an email and password (8+ characters).
 2. **Log in** at `/login`. MFA is off by default (`MFA_ENABLED=false` in
-   `.env`) — you're sent straight to `/dashboard`. With `MFA_ENABLED=true`,
+   `.env`): you're sent straight to `/dashboard`. With `MFA_ENABLED=true`,
    you're sent to `/verify-otp` after your password is verified instead.
 3. **If MFA is on, check for your code.** If you configured SMTP, check your
-   inbox. If not, check the terminal running `npm run dev` — it prints
+   inbox. If not, check the terminal running `npm run dev`; it prints
    `OTP code for <email> is: <code>`. Enter the 6-digit code; codes expire
-   after 5 minutes and lock out after 5 wrong attempts — use "Resend code"
+   after 5 minutes and lock out after 5 wrong attempts; use "Resend code"
    if needed. Either way, you end up with a JWT session cookie (valid 12
    hours).
 4. **On the dashboard**, upload a photo of a skin lesion and click
@@ -112,7 +112,7 @@ Refresh the dashboard once conversion finishes; no rebuild needed in dev.
    it to your account.
 5. **Visit `/profile`** (linked from the dashboard header) to fill in
    background medical-record details (name, date of birth, sex, family
-   history of skin cancer) and to see your full scan history — every saved
+   history of skin cancer) and to see your full scan history: every saved
    result with its date, location, confidence, malignant-category risk, and
    notes, with malignant-flagged entries highlighted.
 6. **Log out** via the button in the header, which clears the session
