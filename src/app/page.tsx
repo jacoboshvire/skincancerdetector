@@ -253,6 +253,12 @@ function LiveDemo() {
               </motion.div>
             )}
           </AnimatePresence>
+          </div>
+
+          {/* Home indicator */}
+          <div className="flex justify-center pb-2 pt-1">
+            <div className="w-28 h-1 rounded-full bg-foreground/30" />
+          </div>
         </div>
       </div>
     </div>
