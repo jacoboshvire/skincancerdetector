@@ -186,7 +186,7 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen overflow-x-hidden">
       <header className="sticky top-0 z-20 border-b border-foreground/10 glass-header">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-[1300px] mx-auto px-6 py-4 flex items-center justify-between">
           <span className="font-semibold text-lg flex items-center gap-1.5">
             <span className="text-primary">●</span> <span className="gradient-text">SkinScan</span>
           </span>
@@ -207,7 +207,7 @@ export default function LandingPage() {
       </header>
 
       <main className="flex-1">
-        <section className="relative max-w-5xl mx-auto px-6 py-20 sm:py-24 overflow-hidden">
+        <section className="relative max-w-[1300px] mx-auto px-6 py-20 sm:py-24 overflow-hidden">
           <div
             aria-hidden
             className="absolute -top-32 -left-24 w-96 h-96 rounded-full bg-primary/20 blur-3xl animate-blob"
@@ -297,7 +297,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="max-w-5xl mx-auto px-6 py-12 grid sm:grid-cols-3 gap-6">
+        <section className="max-w-[1300px] mx-auto px-6 py-12 grid sm:grid-cols-3 gap-6">
           {FEATURES.map((f, i) => (
             <motion.div
               key={f.title}
@@ -317,7 +317,7 @@ export default function LandingPage() {
           ))}
         </section>
 
-        <section className="max-w-5xl mx-auto px-6 py-12">
+        <section className="max-w-[1300px] mx-auto px-6 py-12">
           <motion.h2
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -349,7 +349,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="max-w-5xl mx-auto px-6 py-12">
+        <section className="max-w-[1300px] mx-auto px-6 py-12">
           <div className="rounded-2xl border border-foreground/15 bg-foreground/5 p-6 text-sm leading-relaxed">
             <strong className="block mb-1">Not a medical device.</strong>
             SkinScan is an educational demonstration of applying machine
