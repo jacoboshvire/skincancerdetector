@@ -7,11 +7,14 @@ export interface ModelInfo {
   url: string;
   /**
    * How raw 0-255 pixels must be transformed before being fed to this
-   * model — MUST match the scaling applied in scripts/train_model/train.py
-   * for the same architecture, or predictions will be garbage.
-   *   - "mobilenet": scaled to [-1, 1] (pixel/127.5 - 1)
-   *   - "efficientnet": left raw 0-255 (the model has built-in
-   *      Rescaling/Normalization layers)
+   * model, or predictions will be garbage:
+   *   - "mobilenet": scaled to [-1, 1] (pixel/127.5 - 1), matching train.py.
+   *   - "efficientnet": (pixel/255 - mean) / var. EfficientNetB0's built-in
+   *     Rescaling/Normalization/multiply layers aren't portable to
+   *     tfjs-layers (it throws "Unknown layer: Normalization"), so
+   *     convert_to_tfjs.py strips them from the exported graph and this
+   *     replicates the equivalent closed-form transform client-side. See
+   *     strip_efficientnet_preprocessing() in convert_to_tfjs.py.
    */
   preprocessing: Preprocessing;
 }
