@@ -1,7 +1,7 @@
 # Training pipeline: HAM10000 → TensorFlow.js
 
 Produces the models the web app loads from `public/model/<arch>/model.json`.
-This is a one-time (or occasional) offline step run with Python — it is
+This is a one-time (or occasional) offline step run with Python; it is
 separate from the Next.js app, which only ever runs inference, never
 training.
 
@@ -64,20 +64,20 @@ pip install -r requirements.txt
    Outputs `model_<arch>.h5` in this directory. On CPU on a MacBook Air
    (8GB), the full run (5 head epochs + 10 fine-tune epochs) takes roughly
    30-45 minutes depending on the architecture. Expect val accuracy around
-   70-75% on the 7-class problem — HAM10000 is heavily skewed toward benign
+   70-75% on the 7-class problem; HAM10000 is heavily skewed toward benign
    nevi (`nv`), which `train.py` corrects for with class weighting, but this
    is a teaching example, not a clinical-grade classifier.
 
    Two environment variables matter here:
-   - `FORCE_CPU=1` — on Apple Silicon, `tensorflow-metal` GPU acceleration is
+   - `FORCE_CPU=1`: on Apple Silicon, `tensorflow-metal` GPU acceleration is
      fast for the training steps themselves but has been observed to hang
      indefinitely during the validation phase (TF 2.16 / tensorflow-metal
      1.2.0). If training stalls after the first epoch's steps complete with
      no progress for several minutes, kill it and rerun with `FORCE_CPU=1`.
-   - `TF_USE_LEGACY_KERAS=1` — set unconditionally inside `train.py` itself
+   - `TF_USE_LEGACY_KERAS=1`: set unconditionally inside `train.py` itself
      (you don't need to pass it). TF 2.16 defaults to Keras 3, which
      serializes models (`InputLayer` config, functional-graph node format)
-     in a way the browser-side `tfjs` runtime cannot parse — it fails with
+     in a way the browser-side `tfjs` runtime cannot parse; it fails with
      errors like `"An InputLayer should be passed either a batchInputShape
      or an inputShape"` or `"Corrupted configuration, expected array for
      nodeData"`. Training under legacy Keras 2 (the `tf_keras` package,
