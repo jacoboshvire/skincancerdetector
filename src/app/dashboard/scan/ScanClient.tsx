@@ -318,7 +318,7 @@ export default function ScanClient({ email }: { email: string }) {
                   className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50"
                 />
                 <p className="text-xs text-foreground/50 mt-1">
-                  Factored into the result below alongside the image — things like recent
+                  Factored into the result below alongside the image: things like recent
                   change, bleeding, or itching matter even if a photo looks benign.
                 </p>
               </div>
@@ -413,7 +413,7 @@ export default function ScanClient({ email }: { email: string }) {
                       <p className="text-sm mt-2">
                         Symptom notes mention:{" "}
                         <span className="font-medium">{symptomAssessment.matchedKeywords.join(", ")}</span>
-                        . A single photo can't show change over time — these are classic reasons to
+                        . A single photo can't show change over time; these are classic reasons to
                         get a lesion checked regardless of how it looks in one image.
                       </p>
                     )}
