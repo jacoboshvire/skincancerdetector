@@ -73,7 +73,7 @@ Open http://localhost:3000.
 
 ## Training the model
 
-The app ships without a trained model — `public/model/` is empty by design.
+The app ships without a trained model; `public/model/` is empty by design.
 The dashboard detects this and tells you to run the training pipeline rather
 than failing silently.
 
@@ -90,7 +90,7 @@ python convert_to_tfjs.py   # convert model.h5 -> ../../public/model/
 
 Full details, including expected accuracy and why preprocessing must stay in
 sync between Python and the browser, are in `scripts/train_model/README.md`.
-Refresh the dashboard once conversion finishes — no rebuild needed in dev.
+Refresh the dashboard once conversion finishes; no rebuild needed in dev.
 
 ## Using the app
 
