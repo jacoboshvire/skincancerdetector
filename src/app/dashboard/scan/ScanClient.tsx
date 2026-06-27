@@ -10,6 +10,7 @@ import { loadModel, predictFromImage, isModelAvailable } from "@/lib/clientModel
 import { HAM10000_CLASSES, malignantRiskFromProbabilities, topPrediction } from "@/lib/modelClasses";
 import { MODEL_REGISTRY, DEFAULT_MODEL_ID, getModelInfo } from "@/lib/modelRegistry";
 import { assessSymptoms } from "@/lib/symptomRisk";
+import { truncateImageName } from "@/lib/format";
 
 interface ScanRecord {
   id: number;
