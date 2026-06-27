@@ -47,7 +47,7 @@ export default function Cursor() {
       />
       <motion.div
         aria-hidden
-        className="fixed top-0 left-0 z-[200] rounded-full border pointer-events-none"
+        className="fixed top-0 left-0 z-[200] rounded-full border pointer-events-none overflow-hidden"
         style={{
           x: ringX,
           y: ringY,
@@ -59,10 +59,16 @@ export default function Cursor() {
           width: hovering ? 56 : 28,
           height: hovering ? 56 : 28,
           opacity: hovering ? 0.6 : 0.35,
-          backgroundColor: hovering ? "color-mix(in srgb, var(--primary) 15%, transparent)" : "transparent",
         }}
         transition={{ duration: 0.25, ease: "easeOut" }}
-      />
+      >
+        <motion.div
+          className="absolute inset-0"
+          style={{ background: "var(--primary)" }}
+          animate={{ opacity: hovering ? 0.15 : 0 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+        />
+      </motion.div>
     </>
   );
 }
