@@ -40,6 +40,10 @@ const SEX_OPTIONS = [
   { value: "other", label: "Other" },
 ];
 
+function truncateImageName(name: string, maxLength = 40): string {
+  return name.length > maxLength ? `${name.slice(0, maxLength)}.....` : name;
+}
+
 export default function ProfileClient({ email }: { email: string }) {
   const [createdAt, setCreatedAt] = useState<number | null>(null);
   const [history, setHistory] = useState<ScanRecord[]>([]);
