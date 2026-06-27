@@ -339,7 +339,7 @@ export default function ProfileClient({ email }: { email: string }) {
                                 <span className="text-accent-red text-xs font-medium">(symptoms flagged)</span>
                               )}
                             </p>
-                            <p className="text-sm text-foreground/60">
+                            <p className="text-sm text-foreground/60 break-words">
                               {new Date(scan.createdAt).toLocaleString()}
                               {scan.bodyLocation && <> · {scan.bodyLocation}</>}
                               {scan.imageName && (
