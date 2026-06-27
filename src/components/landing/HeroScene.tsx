@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { Canvas, useFrame, type RootState } from "@react-three/fiber";
-import { Float, MeshTransmissionMaterial } from "@react-three/drei";
+import { Float, MeshDistortMaterial } from "@react-three/drei";
 import type { Mesh } from "three";
 
 function GlassBlob() {
@@ -23,19 +23,19 @@ function GlassBlob() {
     <Float speed={1.6} rotationIntensity={0.5} floatIntensity={1.4}>
       <mesh ref={meshRef}>
         <icosahedronGeometry args={[1.5, 8]} />
-        <MeshTransmissionMaterial
+        <MeshDistortMaterial
           attach="material"
-          transmission={1}
-          thickness={1.4}
-          roughness={0.08}
-          ior={1.35}
-          chromaticAberration={0.04}
-          distortion={0.4}
-          distortionScale={0.4}
-          temporalDistortion={0.1}
           color="#c4b5fd"
-          samples={6}
-          resolution={512}
+          distort={0.45}
+          speed={1.8}
+          roughness={0.1}
+          metalness={0.1}
+          clearcoat={1}
+          clearcoatRoughness={0.1}
+          ior={1.4}
+          transparent
+          opacity={0.45}
+          depthWrite={false}
         />
       </mesh>
     </Float>
