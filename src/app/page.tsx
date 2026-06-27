@@ -124,9 +124,131 @@ function useDemoStep(): DemoStepId {
 
 const LESION_SWATCH = "radial-gradient(circle at 35% 35%, #8a5a36, #4a2e1a 70%)";
 
-function LiveDemo() {
+function StatusIcons() {
+  return (
+    <div className="flex items-center gap-1 text-foreground/80">
+      <svg viewBox="0 0 18 12" className="w-[13px] h-[9px]" fill="currentColor">
+        <rect x="0" y="7" width="3" height="5" rx="0.5" />
+        <rect x="5" y="5" width="3" height="7" rx="0.5" />
+        <rect x="10" y="3" width="3" height="9" rx="0.5" />
+        <rect x="15" y="0" width="3" height="12" rx="0.5" />
+      </svg>
+      <svg viewBox="0 0 24 24" className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
+        <path d="M5 9a10 10 0 0 1 14 0" />
+        <path d="M8 12.5a6 6 0 0 1 8 0" />
+        <circle cx="12" cy="16" r="1" fill="currentColor" stroke="none" />
+      </svg>
+      <svg viewBox="0 0 24 12" className="w-[20px] h-[10px]" fill="none" stroke="currentColor" strokeWidth={1}>
+        <rect x="1" y="1" width="19" height="10" rx="2.5" />
+        <rect x="3" y="3" width="14" height="6" rx="1.5" fill="currentColor" stroke="none" />
+        <rect x="21" y="4" width="2" height="4" rx="1" fill="currentColor" stroke="none" />
+      </svg>
+    </div>
+  );
+}
+
+function DemoScreenContent() {
   const step = useDemoStep();
 
+  return (
+    <AnimatePresence mode="wait">
+      {step === "upload" && (
+        <motion.div
+          key="upload"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.35 }}
+          className="flex flex-col items-center text-center"
+        >
+          <div className="w-20 h-20 rounded-xl border-2 border-dashed border-foreground/25 flex items-center justify-center mb-3">
+            <CameraIcon className="w-7 h-7 text-foreground/35" />
+          </div>
+          <p className="text-xs text-foreground/50">Upload a lesion photo</p>
+        </motion.div>
+      )}
+
+      {step === "photo" && (
+        <motion.div
+          key="photo"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.35 }}
+          className="flex flex-col items-center text-center"
+        >
+          <div className="w-28 h-28 rounded-full shadow-inner" style={{ background: LESION_SWATCH }} />
+          <p className="text-[11px] text-foreground/40 mt-3">lesion_photo.jpg</p>
+        </motion.div>
+      )}
+
+      {step === "scanning" && (
+        <motion.div
+          key="scanning"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.35 }}
+          className="flex flex-col items-center text-center"
+        >
+          <div className="relative w-28 h-28">
+            <div className="absolute inset-0 rounded-full" style={{ background: LESION_SWATCH }} />
+            <motion.div
+              className="absolute -inset-2 rounded-full border-2 border-dashed"
+              style={{ borderColor: "var(--primary)" }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1.4, repeat: Infinity, ease: "linear" }}
+            />
+          </div>
+          <motion.p
+            className="text-xs text-foreground/50 mt-3"
+            animate={{ opacity: [0.4, 1, 0.4] }}
+            transition={{ duration: 1.2, repeat: Infinity }}
+          >
+            Analyzing…
+          </motion.p>
+        </motion.div>
+      )}
+
+      {step === "result" && (
+        <motion.div
+          key="result"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.35 }}
+          className="flex flex-col items-center text-center w-full"
+        >
+          <div className="w-12 h-12 rounded-full bg-accent-green flex items-center justify-center mb-3">
+            <svg
+              viewBox="0 0 24 24"
+              className="w-6 h-6"
+              fill="none"
+              stroke="white"
+              strokeWidth={3}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <p className="text-sm font-semibold text-accent-green">Likely benign</p>
+          <p className="text-xs text-foreground/50 mt-1">96% confidence</p>
+          <div className="w-full h-1.5 rounded-full bg-foreground/10 mt-3 overflow-hidden">
+            <motion.div
+              className="h-full rounded-full bg-accent-green"
+              initial={{ width: "0%" }}
+              animate={{ width: "96%" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            />
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+function PhoneFrame() {
   return (
     <div className="relative mx-auto w-[250px] sm:w-[270px]">
       {/* Side buttons */}
@@ -144,121 +266,11 @@ function LiveDemo() {
           {/* Status bar */}
           <div className="flex items-center justify-between px-6 pt-3 pb-1 text-[11px] font-semibold text-foreground/80">
             <span>9:41</span>
-            <div className="flex items-center gap-1 text-foreground/80">
-              <svg viewBox="0 0 18 12" className="w-[13px] h-[9px]" fill="currentColor">
-                <rect x="0" y="7" width="3" height="5" rx="0.5" />
-                <rect x="5" y="5" width="3" height="7" rx="0.5" />
-                <rect x="10" y="3" width="3" height="9" rx="0.5" />
-                <rect x="15" y="0" width="3" height="12" rx="0.5" />
-              </svg>
-              <svg viewBox="0 0 24 24" className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
-                <path d="M5 9a10 10 0 0 1 14 0" />
-                <path d="M8 12.5a6 6 0 0 1 8 0" />
-                <circle cx="12" cy="16" r="1" fill="currentColor" stroke="none" />
-              </svg>
-              <svg viewBox="0 0 24 12" className="w-[20px] h-[10px]" fill="none" stroke="currentColor" strokeWidth={1}>
-                <rect x="1" y="1" width="19" height="10" rx="2.5" />
-                <rect x="3" y="3" width="14" height="6" rx="1.5" fill="currentColor" stroke="none" />
-                <rect x="21" y="4" width="2" height="4" rx="1" fill="currentColor" stroke="none" />
-              </svg>
-            </div>
+            <StatusIcons />
           </div>
 
-          <div className="relative h-[400px] bg-foreground/5 overflow-hidden flex flex-col items-center justify-center px-4">
-          <AnimatePresence mode="wait">
-            {step === "upload" && (
-              <motion.div
-                key="upload"
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.35 }}
-                className="flex flex-col items-center text-center"
-              >
-                <div className="w-20 h-20 rounded-xl border-2 border-dashed border-foreground/25 flex items-center justify-center mb-3">
-                  <CameraIcon className="w-7 h-7 text-foreground/35" />
-                </div>
-                <p className="text-xs text-foreground/50">Upload a lesion photo</p>
-              </motion.div>
-            )}
-
-            {step === "photo" && (
-              <motion.div
-                key="photo"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.35 }}
-                className="flex flex-col items-center text-center"
-              >
-                <div className="w-28 h-28 rounded-full shadow-inner" style={{ background: LESION_SWATCH }} />
-                <p className="text-[11px] text-foreground/40 mt-3">lesion_photo.jpg</p>
-              </motion.div>
-            )}
-
-            {step === "scanning" && (
-              <motion.div
-                key="scanning"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.35 }}
-                className="flex flex-col items-center text-center"
-              >
-                <div className="relative w-28 h-28">
-                  <div className="absolute inset-0 rounded-full" style={{ background: LESION_SWATCH }} />
-                  <motion.div
-                    className="absolute -inset-2 rounded-full border-2 border-dashed"
-                    style={{ borderColor: "var(--primary)" }}
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1.4, repeat: Infinity, ease: "linear" }}
-                  />
-                </div>
-                <motion.p
-                  className="text-xs text-foreground/50 mt-3"
-                  animate={{ opacity: [0.4, 1, 0.4] }}
-                  transition={{ duration: 1.2, repeat: Infinity }}
-                >
-                  Analyzing…
-                </motion.p>
-              </motion.div>
-            )}
-
-            {step === "result" && (
-              <motion.div
-                key="result"
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.35 }}
-                className="flex flex-col items-center text-center w-full"
-              >
-                <div className="w-12 h-12 rounded-full bg-accent-green flex items-center justify-center mb-3">
-                  <svg
-                    viewBox="0 0 24 24"
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth={3}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <p className="text-sm font-semibold text-accent-green">Likely benign</p>
-                <p className="text-xs text-foreground/50 mt-1">96% confidence</p>
-                <div className="w-full h-1.5 rounded-full bg-foreground/10 mt-3 overflow-hidden">
-                  <motion.div
-                    className="h-full rounded-full bg-accent-green"
-                    initial={{ width: "0%" }}
-                    animate={{ width: "96%" }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                  />
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <div className="relative h-[320px] sm:h-[400px] bg-foreground/5 overflow-hidden flex flex-col items-center justify-center px-4">
+            <DemoScreenContent />
           </div>
 
           {/* Home indicator */}
@@ -268,6 +280,115 @@ function LiveDemo() {
         </div>
       </div>
     </div>
+  );
+}
+
+function TabletFrame() {
+  return (
+    <div className="relative mx-auto w-[230px] sm:w-[320px]">
+      {/* Power button */}
+      <div className="absolute -top-[2px] right-12 w-7 h-[3px] bg-neutral-700 rounded-t-sm" />
+
+      {/* Bezel */}
+      <div className="relative rounded-[1.4rem] bg-neutral-900 p-[12px] shadow-2xl ring-1 ring-black/20">
+        {/* Screen */}
+        <div className="relative rounded-[0.6rem] bg-background overflow-hidden">
+          {/* Camera dot */}
+          <div className="absolute top-[6px] left-1/2 -translate-x-1/2 w-[6px] h-[6px] bg-black rounded-full z-10" />
+
+          {/* Status bar */}
+          <div className="flex items-center justify-between px-5 pt-3 pb-1 text-[11px] font-semibold text-foreground/80">
+            <span>9:41</span>
+            <StatusIcons />
+          </div>
+
+          <div className="relative h-[300px] sm:h-[400px] bg-foreground/5 overflow-hidden flex flex-col items-center justify-center px-4">
+            <DemoScreenContent />
+          </div>
+
+          {/* Home indicator */}
+          <div className="flex justify-center pb-2 pt-1">
+            <div className="w-24 h-1 rounded-full bg-foreground/30" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LaptopFrame() {
+  return (
+    <div className="relative mx-auto w-[260px] sm:w-[420px]">
+      {/* Screen */}
+      <div className="relative rounded-t-[0.9rem] bg-neutral-900 p-[8px] shadow-2xl">
+        {/* Camera dot */}
+        <div className="absolute top-[3px] left-1/2 -translate-x-1/2 w-[5px] h-[5px] bg-neutral-700 rounded-full z-10" />
+
+        <div className="relative rounded-[0.3rem] bg-background overflow-hidden">
+          {/* Browser-style top strip */}
+          <div className="flex items-center gap-1.5 px-3 py-2 border-b border-foreground/10">
+            <span className="w-2 h-2 rounded-full bg-accent-red" />
+            <span className="w-2 h-2 rounded-full bg-accent-amber" />
+            <span className="w-2 h-2 rounded-full bg-accent-green" />
+          </div>
+
+          <div className="relative h-[180px] sm:h-[250px] bg-foreground/5 overflow-hidden flex flex-col items-center justify-center px-4">
+            <DemoScreenContent />
+          </div>
+        </div>
+      </div>
+
+      {/* Base / keyboard deck */}
+      <div className="relative h-[10px] sm:h-[14px] bg-neutral-800 rounded-b-xl -mx-2 sm:-mx-3">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-12 sm:w-16 h-[3px] bg-neutral-700 rounded-full" />
+      </div>
+    </div>
+  );
+}
+
+type DeviceId = "phone" | "laptop" | "tablet";
+
+const DEVICE_SEQUENCE: { id: DeviceId; duration: number; Frame: () => React.JSX.Element }[] = [
+  { id: "phone", duration: 6000, Frame: PhoneFrame },
+  { id: "laptop", duration: 6000, Frame: LaptopFrame },
+  { id: "tablet", duration: 6000, Frame: TabletFrame },
+];
+
+function useDeviceCycle() {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    let i = 0;
+    let timeoutId: ReturnType<typeof setTimeout>;
+    const advance = () => {
+      timeoutId = setTimeout(() => {
+        i = (i + 1) % DEVICE_SEQUENCE.length;
+        setIndex(i);
+        advance();
+      }, DEVICE_SEQUENCE[i].duration);
+    };
+    advance();
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  return DEVICE_SEQUENCE[index];
+}
+
+function LiveDemo() {
+  const { id, Frame } = useDeviceCycle();
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={id}
+        initial={{ opacity: 0, scale: 0.94 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.94 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+      >
+        <Frame />
+      </motion.div>
+    </AnimatePresence>
   );
 }
 
