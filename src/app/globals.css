@@ -89,3 +89,34 @@ body {
 .animate-blob-slow {
   animation: blob-float 26s ease-in-out infinite reverse;
 }
+
+/* Custom cursor (Cursor.tsx toggles this on <body> when active) */
+.cursor-none,
+.cursor-none a,
+.cursor-none button {
+  cursor: none;
+}
+
+/* Lenis smooth scroll: recommended baseline rules */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Native View Transitions (next.config.ts experimental.viewTransition) */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
