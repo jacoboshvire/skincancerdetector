@@ -377,8 +377,40 @@ const fadeUp = {
   show: { opacity: 1, y: 0 },
 };
 
+const HEADLINE_PLAIN = ["Early", "skin", "lesion", "screening,"];
+const HEADLINE_GRADIENT = ["made", "effortless"];
+
+const headlineContainer = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.07, delayChildren: 0.15 } },
+};
+
+const headlineWord = {
+  hidden: { opacity: 0, y: 28, filter: "blur(6px)" },
+  show: { opacity: 1, y: 0, filter: "blur(0px)" },
+};
+
 export default function LandingPage() {
+  const [loaded, setLoaded] = useState(false);
+  const { scrollYProgress } = useScroll();
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoaded(true), 900);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
+    <ReactLenis root options={{ lerp: 0.1, duration: 1.2 }}>
+      <Preloader done={loaded} />
+      <Cursor />
+      <motion.div
+        aria-hidden
+        className="fixed top-0 left-0 right-0 h-[3px] z-[150] origin-left"
+        style={{
+          scaleX: scrollYProgress,
+          background: "linear-gradient(90deg, var(--primary), var(--accent-purple), var(--accent-pink))",
+        }}
+      />
     <div className="flex flex-col min-h-screen overflow-x-hidden">
       <header className="sticky top-0 z-20 border-b border-foreground/10 glass-header">
         <div className="max-w-[1300px] mx-auto px-6 py-4 flex items-center justify-between">
