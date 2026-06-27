@@ -342,7 +342,13 @@ export default function ProfileClient({ email }: { email: string }) {
                             <p className="text-sm text-foreground/60">
                               {new Date(scan.createdAt).toLocaleString()}
                               {scan.bodyLocation && <> · {scan.bodyLocation}</>}
-                              {scan.imageName && <> · {scan.imageName}</>}
+                              {scan.imageName && (
+                                <>
+                                  {" · "}
+                                  <span className="sm:hidden">{truncateImageName(scan.imageName)}</span>
+                                  <span className="hidden sm:inline">{scan.imageName}</span>
+                                </>
+                              )}
                               {" · "}
                               {getModelInfo(scan.model).label}
                             </p>
