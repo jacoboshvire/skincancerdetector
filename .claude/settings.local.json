@@ -4,7 +4,9 @@
       "Bash(npm run *)",
       "Read(//private/tmp/pw-driver/**)",
       "Bash(node -e ' *)",
-      "Bash(node verify.js)"
+      "Bash(node verify.js)",
+      "Read(//private/tmp/pw-awwwards/**)",
+      "Bash(NODE_PATH=/Users/jacob/.npm/_npx/e41f203b7505f1fb/node_modules node -e ' *)"
     ]
   }
 }
