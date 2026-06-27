@@ -34,7 +34,6 @@ function GlassBlob() {
           distortionScale={0.4}
           temporalDistortion={0.1}
           color="#c4b5fd"
-          background={undefined}
           samples={6}
           resolution={512}
         />
