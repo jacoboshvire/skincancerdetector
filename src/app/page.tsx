@@ -461,12 +461,29 @@ export default function LandingPage() {
               <motion.h1
                 initial="hidden"
                 animate="show"
-                variants={fadeUp}
-                transition={{ duration: 0.6, ease: "easeOut" }}
+                variants={headlineContainer}
                 className="text-4xl sm:text-6xl font-bold tracking-tight"
               >
-                Early skin lesion screening,{" "}
-                <span className="gradient-text">made effortless</span>
+                {HEADLINE_PLAIN.map((word, i) => (
+                  <motion.span
+                    key={`plain-${i}`}
+                    variants={headlineWord}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    className="inline-block mr-[0.25em]"
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+                {HEADLINE_GRADIENT.map((word, i) => (
+                  <motion.span
+                    key={`gradient-${i}`}
+                    variants={headlineWord}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    className="inline-block mr-[0.25em] gradient-text"
+                  >
+                    {word}
+                  </motion.span>
+                ))}
               </motion.h1>
               <motion.p
                 initial="hidden"
