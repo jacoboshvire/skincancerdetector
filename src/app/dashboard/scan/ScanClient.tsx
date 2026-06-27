@@ -512,7 +512,14 @@ export default function ScanClient({ email }: { email: string }) {
                       </td>
                       <td className="py-2 pr-4">{new Date(scan.createdAt).toLocaleString()}</td>
                       <td className="py-2 pr-4">{scan.bodyLocation ?? ""}</td>
-                      <td className="py-2 pr-4">{scan.imageName ?? ""}</td>
+                      <td className="py-2 pr-4">
+                        {scan.imageName && (
+                          <>
+                            <span className="sm:hidden">{truncateImageName(scan.imageName)}</span>
+                            <span className="hidden sm:inline">{scan.imageName}</span>
+                          </>
+                        )}
+                      </td>
                       <td className="py-2 pr-4">{getModelInfo(scan.model).label}</td>
                       <td className="py-2 pr-4">{scan.predictedLabel}</td>
                       <td className="py-2 pr-4">{(scan.confidence * 100).toFixed(1)}%</td>
