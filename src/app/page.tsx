@@ -417,18 +417,26 @@ export default function LandingPage() {
           <span className="font-semibold text-lg flex items-center gap-1.5">
             <span className="text-primary">●</span> <span className="gradient-text">SkinScan</span>
           </span>
-          <nav className="flex gap-4 text-sm">
-            <Link href="/login" className="px-3 py-1.5 rounded hover:bg-foreground/5 transition-colors">
+          <nav className="flex gap-4 text-sm items-center">
+            <Link
+              href="/login"
+              transitionTypes={["nav-forward"]}
+              data-cursor-hover
+              className="px-3 py-1.5 rounded hover:bg-foreground/5 transition-colors"
+            >
               Log in
             </Link>
-            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
-              <Link
-                href="/register"
-                className="px-3 py-1.5 rounded bg-primary text-primary-foreground hover:opacity-90 block"
-              >
-                Sign up
-              </Link>
-            </motion.div>
+            <Magnetic>
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
+                <Link
+                  href="/register"
+                  transitionTypes={["nav-forward"]}
+                  className="px-3 py-1.5 rounded bg-primary text-primary-foreground hover:opacity-90 block"
+                >
+                  Sign up
+                </Link>
+              </motion.div>
+            </Magnetic>
           </nav>
         </div>
       </header>
