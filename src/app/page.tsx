@@ -591,6 +591,7 @@ export default function LandingPage() {
       <footer className="border-t border-foreground/10 py-6 text-center text-sm text-foreground/60">
         © Copyright by Ejiro Jacob Oshevire and built by Ejiro Jacob Oshevire
       </footer>
-    </div>
+      </div>
+    </ReactLenis>
   );
 }
