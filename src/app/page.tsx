@@ -535,7 +535,15 @@ export default function LandingPage() {
         }}
       />
     <div className="flex flex-col min-h-screen overflow-x-hidden">
-      <header className="sticky top-0 z-20 border-b border-foreground/10 glass-header">
+      {scrolled && <div style={{ height: headerHeight }} aria-hidden />}
+      <header
+        ref={headerRef}
+        className={`z-30 glass-header transition-all duration-300 ${
+          scrolled
+            ? "fixed top-[2%] left-1/2 -translate-x-1/2 w-[94%] max-w-[1300px] rounded-2xl border border-foreground/10 shadow-xl"
+            : "relative w-full border-b border-foreground/10"
+        }`}
+      >
         <div className="max-w-[1300px] mx-auto px-6 py-4 flex items-center justify-between">
           <span className="font-semibold text-lg flex items-center gap-1.5">
             <span className="text-primary">●</span> <span className="gradient-text">SkinScan</span>
