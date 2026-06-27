@@ -304,7 +304,7 @@ export default function ProfileClient({ email }: { email: string }) {
               )}
             </p>
           ) : (
-            <motion.div layout className="space-y-3">
+            <motion.div layout className="grid grid-cols-1 lg:grid-cols-2 gap-3">
               <AnimatePresence initial={false}>
                 {visibleHistory.map((scan, i) => {
                   const imageMalignant = HAM10000_CLASSES.find((c) => c.code === scan.predictedClass)?.malignant;
