@@ -8,6 +8,7 @@ import HeartButton from "@/components/HeartButton";
 import { HAM10000_CLASSES } from "@/lib/modelClasses";
 import { getModelInfo } from "@/lib/modelRegistry";
 import { assessSymptoms } from "@/lib/symptomRisk";
+import { truncateImageName } from "@/lib/format";
 
 interface ScanRecord {
   id: number;
