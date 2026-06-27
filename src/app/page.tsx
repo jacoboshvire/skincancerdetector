@@ -503,22 +503,28 @@ export default function LandingPage() {
                 transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
                 className="mt-8 flex gap-3 justify-center sm:justify-start"
               >
-                <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}>
-                  <Link
-                    href="/register"
-                    className="block px-5 py-2.5 rounded-md bg-primary text-primary-foreground font-medium shadow-lg shadow-primary/25 hover:opacity-90"
-                  >
-                    Get started
-                  </Link>
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}>
-                  <Link
-                    href="/login"
-                    className="block px-5 py-2.5 rounded-md border border-foreground/15 font-medium hover:bg-foreground/5"
-                  >
-                    I already have an account
-                  </Link>
-                </motion.div>
+                <Magnetic>
+                  <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}>
+                    <Link
+                      href="/register"
+                      transitionTypes={["nav-forward"]}
+                      className="block px-5 py-2.5 rounded-md bg-primary text-primary-foreground font-medium shadow-lg shadow-primary/25 hover:opacity-90"
+                    >
+                      Get started
+                    </Link>
+                  </motion.div>
+                </Magnetic>
+                <Magnetic>
+                  <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}>
+                    <Link
+                      href="/login"
+                      transitionTypes={["nav-forward"]}
+                      className="block px-5 py-2.5 rounded-md border border-foreground/15 font-medium hover:bg-foreground/5"
+                    >
+                      I already have an account
+                    </Link>
+                  </motion.div>
+                </Magnetic>
               </motion.div>
               <motion.div
                 initial="hidden"
