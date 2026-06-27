@@ -515,6 +515,7 @@ const headlineWord = {
 export default function LandingPage() {
   const [loaded, setLoaded] = useState(false);
   const { scrollYProgress } = useScroll();
+  const { ref: headerRef, scrolled, height: headerHeight } = useFixedOnScroll();
 
   useEffect(() => {
     const timer = setTimeout(() => setLoaded(true), 900);
