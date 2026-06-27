@@ -548,7 +548,7 @@ export default function LandingPage() {
               initial={{ opacity: 0, scale: 0.92 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
-              className="relative"
+              className="relative mt-10 sm:mt-0"
             >
               <HeroVisual />
             </motion.div>
