@@ -1,8 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import { ReactLenis } from "lenis/react";
+import { motion, AnimatePresence, useMotionValue, useSpring, useScroll } from "framer-motion";
+import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
+import Cursor from "@/components/landing/Cursor";
+import Magnetic from "@/components/landing/Magnetic";
+
+const HeroScene = dynamic(() => import("@/components/landing/HeroScene"), { ssr: false });
 
 function LightningIcon({ className }: { className?: string }) {
   return (
