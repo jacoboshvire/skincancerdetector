@@ -271,6 +271,66 @@ function LiveDemo() {
   );
 }
 
+function HeroVisual() {
+  const ref = useRef<HTMLDivElement>(null);
+  const rotateX = useMotionValue(0);
+  const rotateY = useMotionValue(0);
+  const springRotateX = useSpring(rotateX, { stiffness: 150, damping: 20 });
+  const springRotateY = useSpring(rotateY, { stiffness: 150, damping: 20 });
+
+  const handleMouseMove = (e: ReactMouseEvent<HTMLDivElement>) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    rotateY.set(px * 18);
+    rotateX.set(py * -18);
+  };
+
+  const reset = () => {
+    rotateX.set(0);
+    rotateY.set(0);
+  };
+
+  return (
+    <div ref={ref} onMouseMove={handleMouseMove} onMouseLeave={reset} className="relative [perspective:1200px]">
+      <div className="absolute inset-0 -m-16 sm:-m-24" aria-hidden>
+        <HeroScene />
+      </div>
+      <motion.div style={{ rotateX: springRotateX, rotateY: springRotateY }} className="relative [transform-style:preserve-3d]">
+        <LiveDemo />
+      </motion.div>
+    </div>
+  );
+}
+
+function Preloader({ done }: { done: boolean }) {
+  return (
+    <AnimatePresence>
+      {!done && (
+        <motion.div
+          key="preloader"
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="fixed inset-0 z-[300] flex items-center justify-center bg-background"
+        >
+          <motion.span
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="font-semibold text-2xl flex items-center gap-2"
+          >
+            <span className="text-primary">●</span>
+            <span className="gradient-text">SkinScan</span>
+          </motion.span>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 const FEATURES = [
   {
     title: "Instant results",
