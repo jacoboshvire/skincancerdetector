@@ -149,6 +149,7 @@ export default function AppHeader({ email }: { email: string }) {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+      </header>
+    </>
   );
 }
