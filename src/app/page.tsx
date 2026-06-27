@@ -550,7 +550,7 @@ export default function LandingPage() {
               transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
               className="relative"
             >
-              <LiveDemo />
+              <HeroVisual />
             </motion.div>
           </div>
         </section>
