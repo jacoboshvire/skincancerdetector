@@ -2,10 +2,10 @@
 
 import { useRef } from "react";
 import { Canvas, useFrame, type RootState } from "@react-three/fiber";
-import { Float, MeshDistortMaterial } from "@react-three/drei";
+import { Float, MeshTransmissionMaterial } from "@react-three/drei";
 import type { Mesh } from "three";
 
-function DistortedBlob() {
+function GlassBlob() {
   const meshRef = useRef<Mesh>(null);
 
   useFrame((state: RootState) => {
@@ -23,13 +23,20 @@ function DistortedBlob() {
     <Float speed={1.6} rotationIntensity={0.5} floatIntensity={1.4}>
       <mesh ref={meshRef}>
         <icosahedronGeometry args={[1.5, 8]} />
-        <MeshDistortMaterial
-          color="#7c3aed"
+        <MeshTransmissionMaterial
           attach="material"
-          distort={0.45}
-          speed={1.8}
-          roughness={0.1}
-          metalness={0.3}
+          transmission={1}
+          thickness={1.4}
+          roughness={0.08}
+          ior={1.35}
+          chromaticAberration={0.04}
+          distortion={0.4}
+          distortionScale={0.4}
+          temporalDistortion={0.1}
+          color="#c4b5fd"
+          background={undefined}
+          samples={6}
+          resolution={512}
         />
       </mesh>
     </Float>
@@ -45,10 +52,10 @@ export default function HeroScene() {
       gl={{ alpha: true, antialias: true }}
       aria-hidden
     >
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[3, 3, 4]} intensity={1.4} color="#2563eb" />
-      <directionalLight position={[-3, -2, -3]} intensity={0.8} color="#db2777" />
-      <DistortedBlob />
+      <ambientLight intensity={0.7} />
+      <directionalLight position={[3, 3, 4]} intensity={1.6} color="#2563eb" />
+      <directionalLight position={[-3, -2, -3]} intensity={1} color="#db2777" />
+      <GlassBlob />
     </Canvas>
   );
 }
