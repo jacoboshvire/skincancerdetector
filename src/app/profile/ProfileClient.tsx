@@ -322,10 +322,10 @@ export default function ProfileClient({ email }: { email: string }) {
                         i % 2 === 1 ? "bg-foreground/5" : ""
                       }`}
                     >
-                      <div className="flex items-start justify-between flex-wrap gap-2">
-                        <div className="flex items-start gap-2">
+                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                        <div className="flex items-start gap-2 min-w-0">
                           <HeartButton active={scan.favorite} onToggle={() => onToggleFavorite(scan)} />
-                          <div>
+                          <div className="min-w-0">
                             <p className="font-medium">
                               {scan.predictedLabel}{" "}
                               {imageMalignant && (
@@ -344,7 +344,7 @@ export default function ProfileClient({ email }: { email: string }) {
                             </p>
                           </div>
                         </div>
-                        <p className="text-sm text-right">
+                        <p className="text-sm pl-9 sm:pl-0 sm:text-right sm:shrink-0">
                           Confidence {(scan.confidence * 100).toFixed(1)}%
                           <br />
                           Malignant risk {(scan.malignantRisk * 100).toFixed(1)}%
