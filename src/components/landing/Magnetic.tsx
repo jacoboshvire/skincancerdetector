@@ -10,7 +10,7 @@ export default function Magnetic({ children }: { children: ReactNode }) {
   const springX = useSpring(x, { stiffness: 200, damping: 15, mass: 0.3 });
   const springY = useSpring(y, { stiffness: 200, damping: 15, mass: 0.3 });
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
