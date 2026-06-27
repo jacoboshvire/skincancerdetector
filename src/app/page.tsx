@@ -295,7 +295,7 @@ function HeroVisual() {
 
   return (
     <div ref={ref} onMouseMove={handleMouseMove} onMouseLeave={reset} className="relative [perspective:1200px]">
-      <div className="absolute inset-0 -m-16 sm:-m-24" aria-hidden>
+      <div className="absolute inset-0 -m-6 sm:-m-24 pointer-events-none" aria-hidden>
         <HeroScene />
       </div>
       <motion.div style={{ rotateX: springRotateX, rotateY: springRotateY }} className="relative [transform-style:preserve-3d]">
