@@ -4,7 +4,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { ReactLenis } from "lenis/react";
 import { motion, AnimatePresence, useMotionValue, useSpring, useScroll } from "framer-motion";
-import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent, type ReactElement } from "react";
 import Cursor from "@/components/landing/Cursor";
 import Magnetic from "@/components/landing/Magnetic";
 
