@@ -22,7 +22,7 @@ function GlassBlob() {
   return (
     <Float speed={1.6} rotationIntensity={0.5} floatIntensity={1.4}>
       <mesh ref={meshRef}>
-        <icosahedronGeometry args={[1.5, 8]} />
+        <icosahedronGeometry args={[1, 8]} />
         <MeshDistortMaterial
           attach="material"
           color="#c4b5fd"
