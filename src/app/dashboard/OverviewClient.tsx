@@ -136,7 +136,7 @@ export default function OverviewClient({ email }: { email: string }) {
           />
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <section>
             <div className="flex items-baseline justify-between mb-3">
               <h2 className="font-semibold">Recent activity</h2>

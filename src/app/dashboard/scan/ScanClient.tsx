@@ -237,7 +237,7 @@ export default function ScanClient({ email }: { email: string }) {
           for professional medical diagnosis.
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <motion.section
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
