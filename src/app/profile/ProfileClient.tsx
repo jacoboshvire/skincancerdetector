@@ -247,16 +247,16 @@ export default function ProfileClient({ email }: { email: string }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
         >
-          <div className="flex items-baseline justify-between mb-3 flex-wrap gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-3 gap-2">
             <h2 className="font-semibold">Medical history</h2>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
               {!historyLoading && history.length > 0 && (
                 <p className="text-sm text-foreground/60">
                   {history.length} scan{history.length === 1 ? "" : "s"} ·{" "}
                   {malignantCount} flagged for follow-up
                 </p>
               )}
-              <div className="relative flex rounded-md border border-foreground/15 overflow-hidden text-sm">
+              <div className="relative flex rounded-md border border-foreground/15 overflow-hidden text-sm self-start">
                 <button
                   onClick={() => setFilter("all")}
                   className={`relative px-3 py-1 transition-colors ${filter === "all" ? "text-primary-foreground" : "hover:bg-foreground/5"}`}
