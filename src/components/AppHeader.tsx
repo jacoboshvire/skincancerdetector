@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useFixedOnScroll } from "@/lib/useFixedOnScroll";
 
 const NAV_LINKS = [
   { href: "/dashboard", label: "Overview" },
