@@ -32,6 +32,7 @@ export default function AppHeader({ email }: { email: string }) {
   const pathname = usePathname();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { ref, scrolled, height } = useFixedOnScroll();
 
   async function onLogout() {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -40,7 +41,16 @@ export default function AppHeader({ email }: { email: string }) {
   }
 
   return (
-    <header className="sticky top-0 z-20 border-b border-foreground/10 glass-header">
+    <>
+      {scrolled && <div style={{ height }} aria-hidden />}
+      <header
+        ref={ref}
+        className={`z-30 glass-header transition-all duration-300 ${
+          scrolled
+            ? "fixed top-[2%] left-1/2 -translate-x-1/2 w-[94%] max-w-5xl rounded-2xl border border-foreground/10 shadow-xl"
+            : "relative w-full border-b border-foreground/10"
+        }`}
+      >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
         <div className="flex items-center gap-6 min-w-0">
           <span className="font-semibold text-lg flex items-center gap-1.5 shrink-0">
