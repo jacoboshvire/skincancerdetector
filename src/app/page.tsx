@@ -348,7 +348,7 @@ function LaptopFrame() {
 
 type DeviceId = "phone" | "laptop" | "tablet";
 
-const DEVICE_SEQUENCE: { id: DeviceId; duration: number; Frame: () => React.JSX.Element }[] = [
+const DEVICE_SEQUENCE: { id: DeviceId; duration: number; Frame: () => ReactElement }[] = [
   { id: "phone", duration: 6000, Frame: PhoneFrame },
   { id: "laptop", duration: 6000, Frame: LaptopFrame },
   { id: "tablet", duration: 6000, Frame: TabletFrame },
