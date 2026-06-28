@@ -305,7 +305,7 @@ export default function ProfileClient({ email }: { email: string }) {
           ) : (
             <motion.div layout className="grid grid-cols-1 lg:grid-cols-2 gap-3">
               <AnimatePresence initial={false}>
-                {visibleHistory.map((scan, i) => {
+                {visibleHistory.map((scan) => {
                   const imageMalignant = HAM10000_CLASSES.find((c) => c.code === scan.predictedClass)?.malignant;
                   const symptomFlagged = assessSymptoms(scan.notes).flagged;
                   return (
@@ -317,12 +317,8 @@ export default function ProfileClient({ email }: { email: string }) {
                       exit={{ opacity: 0, scale: 0.97 }}
                       transition={{ duration: 0.25 }}
                       whileHover={{ x: 2 }}
-                      className={`rounded-xl border-2 p-4 transition-shadow hover:shadow-md ${
-                        imageMalignant || symptomFlagged
-                          ? "border-accent-red/25 bg-accent-red/5"
-                          : i % 2 === 1
-                            ? "border-foreground/10 bg-foreground/5"
-                            : "border-foreground/10"
+                      className={`border border-foreground/15 border-t-2 p-4 ${
+                        imageMalignant || symptomFlagged ? "border-t-accent-red" : "border-t-accent-green"
                       }`}
                     >
                       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
@@ -338,7 +334,7 @@ export default function ProfileClient({ email }: { email: string }) {
                                 <span className="text-accent-red text-xs font-medium">(symptoms flagged)</span>
                               )}
                             </p>
-                            <p className="text-sm text-foreground/60 break-words">
+                            <p className="text-sm text-muted break-words">
                               {new Date(scan.createdAt).toLocaleString()}
                               {scan.bodyLocation && <> · {scan.bodyLocation}</>}
                               {scan.imageName && (
@@ -353,15 +349,15 @@ export default function ProfileClient({ email }: { email: string }) {
                             </p>
                           </div>
                         </div>
-                        <p className="text-sm pl-9 sm:pl-0 sm:text-right sm:shrink-0">
+                        <p className="text-sm pl-9 sm:pl-0 sm:text-right sm:shrink-0 text-muted">
                           Confidence {(scan.confidence * 100).toFixed(1)}%
                           <br />
                           Malignant risk {(scan.malignantRisk * 100).toFixed(1)}%
                         </p>
                       </div>
                       {scan.notes && (
-                        <p className="mt-2 text-sm text-foreground/70">
-                          <span className="font-medium">Symptom notes:</span> {scan.notes}
+                        <p className="mt-2 text-sm text-muted">
+                          <span className="font-medium text-foreground">Symptom notes:</span> {scan.notes}
                         </p>
                       )}
                     </motion.div>
