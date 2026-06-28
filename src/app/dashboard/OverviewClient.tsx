@@ -88,13 +88,15 @@ export default function OverviewClient({ email }: { email: string }) {
           className="mb-8 flex items-center justify-between flex-wrap gap-4"
         >
           <div>
-            <h1 className="text-2xl font-bold">Welcome back</h1>
-            <p className="text-foreground/60 text-sm">{email}</p>
+            <h1 className="text-3xl font-extrabold tracking-tight">
+              Welcome <span className="gradient-text">back</span>
+            </h1>
+            <p className="text-foreground/60 text-sm mt-1">{email}</p>
           </div>
           <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}>
             <Link
               href="/dashboard/scan"
-              className="block rounded-md bg-primary text-primary-foreground px-5 py-2.5 font-medium shadow-lg shadow-primary/25 hover:opacity-90"
+              className="block rounded-xl btn-gradient px-6 py-3 font-semibold shadow-glow"
             >
               + New scan
             </Link>
