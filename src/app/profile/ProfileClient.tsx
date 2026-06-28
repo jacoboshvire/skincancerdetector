@@ -145,9 +145,9 @@ export default function ProfileClient({ email }: { email: string }) {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.05 }}
-          className="rounded-2xl border border-foreground/15 bg-foreground/5 p-5 shadow-sm"
+          className="rounded-2xl border-2 border-accent-purple/20 bg-accent-purple/5 p-5 shadow-sm"
         >
-          <h2 className="font-semibold mb-3">Medical record</h2>
+          <h2 className="font-bold text-lg mb-3">Medical record</h2>
           <p className="text-sm text-foreground/60 mb-4">
             Optional background information to give context to your scan
             history. Stored with your account only; never sent to the
