@@ -691,7 +691,7 @@ export default function LandingPage() {
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="text-3xl sm:text-4xl font-extrabold text-center tracking-tight"
           >
-            How it <span className="gradient-text">works</span>
+            How it <span className="text-muted">works</span>
           </motion.h2>
           <div className="mt-12 grid sm:grid-cols-3 gap-8">
             {STEPS.map((s, i) => (
@@ -701,16 +701,16 @@ export default function LandingPage() {
                 whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.6, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={{ y: -4 }}
                 className="text-center"
               >
-                <div className="w-14 h-14 mx-auto rounded-2xl btn-gradient text-primary-foreground flex items-center justify-center mb-4 shadow-glow">
-                  <s.icon className="w-7 h-7" />
+                <div className="w-14 h-14 mx-auto border border-foreground/25 flex items-center justify-center mb-4">
+                  <s.icon className="w-6 h-6" />
                 </div>
                 <h3 className="font-bold text-lg mb-1">
-                  {i + 1}. {s.title}
+                  <span className="nav-mono text-muted mr-1">{String(i + 1).padStart(2, "0")}</span>
+                  {s.title}
                 </h3>
-                <p className="text-sm text-foreground/70">{s.body}</p>
+                <p className="text-sm text-muted">{s.body}</p>
               </motion.div>
             ))}
           </div>
