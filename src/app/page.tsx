@@ -7,6 +7,7 @@ import { motion, AnimatePresence, useMotionValue, useSpring, useScroll } from "f
 import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent, type ReactElement } from "react";
 import Cursor from "@/components/landing/Cursor";
 import Magnetic from "@/components/landing/Magnetic";
+import ThemeToggle from "@/components/ThemeToggle";
 import { useFixedOnScroll } from "@/lib/useFixedOnScroll";
 
 const HeroScene = dynamic(() => import("@/components/landing/HeroScene"), { ssr: false });
