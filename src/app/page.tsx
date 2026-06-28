@@ -624,26 +624,22 @@ export default function LandingPage() {
                 className="mt-8 flex gap-3 justify-center sm:justify-start"
               >
                 <Magnetic>
-                  <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}>
-                    <Link
-                      href="/register"
-                      transitionTypes={["nav-forward"]}
-                      className="block px-7 py-3.5 rounded-xl btn-gradient font-semibold text-base shadow-glow-lg"
-                    >
-                      Get started
-                    </Link>
-                  </motion.div>
+                  <Link
+                    href="/register"
+                    transitionTypes={["nav-forward"]}
+                    className="block px-7 py-3.5 btn-solid text-sm"
+                  >
+                    Get started
+                  </Link>
                 </Magnetic>
                 <Magnetic>
-                  <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}>
-                    <Link
-                      href="/login"
-                      transitionTypes={["nav-forward"]}
-                      className="block px-7 py-3.5 rounded-xl border-2 border-foreground/15 font-semibold text-base hover:bg-foreground/5"
-                    >
-                      I already have an account
-                    </Link>
-                  </motion.div>
+                  <Link
+                    href="/login"
+                    transitionTypes={["nav-forward"]}
+                    className="block px-7 py-3.5 border border-foreground/25 nav-mono text-sm hover:bg-foreground/5"
+                  >
+                    I already have an account
+                  </Link>
                 </Magnetic>
               </motion.div>
               <motion.div
