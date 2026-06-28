@@ -53,9 +53,9 @@ export default function AppHeader({ email }: { email: string }) {
       >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
         <div className="flex items-center gap-6 min-w-0">
-          <span className="font-semibold text-lg flex items-center gap-1.5 shrink-0">
+          <span className="font-bold text-lg flex items-center gap-1.5 shrink-0">
             <motion.span
-              className="text-primary"
+              className="text-primary text-glow"
               animate={{ scale: [1, 1.3, 1] }}
               transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
             >
