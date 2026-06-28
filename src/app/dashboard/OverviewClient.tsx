@@ -89,18 +89,13 @@ export default function OverviewClient({ email }: { email: string }) {
         >
           <div>
             <h1 className="text-3xl font-extrabold tracking-tight">
-              Welcome <span className="gradient-text">back</span>
+              Welcome <span className="text-muted">back</span>
             </h1>
-            <p className="text-foreground/60 text-sm mt-1">{email}</p>
+            <p className="text-muted text-sm mt-1">{email}</p>
           </div>
-          <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}>
-            <Link
-              href="/dashboard/scan"
-              className="block rounded-xl btn-gradient px-6 py-3 font-semibold shadow-glow"
-            >
-              + New scan
-            </Link>
-          </motion.div>
+          <Link href="/dashboard/scan" className="block btn-solid px-6 py-3 text-sm">
+            + New scan
+          </Link>
         </motion.div>
 
         {!loading && flagged.length > 0 && (
