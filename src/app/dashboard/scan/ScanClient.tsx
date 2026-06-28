@@ -245,7 +245,7 @@ export default function ScanClient({ email }: { email: string }) {
             transition={{ duration: 0.4, delay: 0.05 }}
             className="rounded-2xl border border-foreground/10 p-5 shadow-sm"
           >
-            <h2 className="font-semibold mb-3">Upload a lesion photo</h2>
+            <h2 className="font-bold text-lg mb-3">Upload a lesion photo</h2>
             <motion.div
               animate={imagePreview ? { borderColor: "var(--foreground)" } : {}}
               className="rounded-xl border border-dashed border-foreground/20 bg-foreground/5 p-6 text-center"
@@ -365,7 +365,7 @@ export default function ScanClient({ email }: { email: string }) {
             transition={{ duration: 0.4, delay: 0.1 }}
             className="rounded-2xl border border-foreground/10 p-5 shadow-sm"
           >
-            <h2 className="font-semibold mb-3">Result</h2>
+            <h2 className="font-bold text-lg mb-3">Result</h2>
             <AnimatePresence mode="wait">
               {!probabilities ? (
                 <motion.p
@@ -480,7 +480,7 @@ export default function ScanClient({ email }: { email: string }) {
         </div>
 
         <section className="mt-12">
-          <h2 className="font-semibold mb-3">Scan history</h2>
+          <h2 className="font-bold text-lg mb-3">Scan history</h2>
           {historyLoading ? (
             <p className="text-sm text-foreground/50">Loading…</p>
           ) : history.length === 0 ? (
