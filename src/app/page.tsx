@@ -717,19 +717,21 @@ export default function LandingPage() {
         </section>
 
         <section className="max-w-[1300px] mx-auto px-6 py-12">
-          <div className="rounded-2xl border border-foreground/15 bg-foreground/5 p-6 text-sm leading-relaxed">
-            <strong className="block mb-1">Not a medical device.</strong>
-            SkinScan is an educational demonstration of applying machine
-            learning to dermoscopic images. It is not FDA-cleared, has not
-            been clinically validated, and must never be used as a substitute
-            for evaluation by a licensed dermatologist or physician. If you
-            are concerned about a skin lesion, seek professional medical care.
+          <div className="border border-foreground/20 p-6 text-sm leading-relaxed">
+            <span className="tag-mono mb-3">Not a medical device</span>
+            <p className="mt-3 text-muted">
+              SkinScan is an educational demonstration of applying machine
+              learning to dermoscopic images. It is not FDA-cleared, has not
+              been clinically validated, and must never be used as a substitute
+              for evaluation by a licensed dermatologist or physician. If you
+              are concerned about a skin lesion, seek professional medical care.
+            </p>
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-foreground/10 py-6 text-center text-sm text-foreground/60">
-        © Copyright by Ejiro Jacob Oshevire and built by Ejiro Jacob Oshevire
+      <footer className="border-t border-foreground/15 py-6 text-center nav-mono text-muted">
+        © Ejiro Jacob Oshevire
       </footer>
       </div>
     </ReactLenis>
