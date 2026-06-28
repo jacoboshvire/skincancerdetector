@@ -225,7 +225,7 @@ export default function ProfileClient({ email }: { email: string }) {
                 disabled={savingProfile}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="rounded-md bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 shadow-md shadow-primary/20"
+                className="rounded-xl btn-gradient px-5 py-2.5 text-sm font-semibold disabled:opacity-50 shadow-glow"
               >
                 {savingProfile ? "Saving…" : "Save"}
               </motion.button>
