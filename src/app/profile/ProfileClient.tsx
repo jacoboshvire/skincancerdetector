@@ -267,7 +267,7 @@ export default function ProfileClient({ email }: { email: string }) {
                   {filter === "all" && (
                     <motion.span
                       layoutId="filter-pill"
-                      className="absolute inset-0 bg-primary -z-10"
+                      className="absolute inset-0 btn-gradient -z-10"
                       transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
                     />
                   )}
