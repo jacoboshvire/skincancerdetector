@@ -539,33 +539,31 @@ export default function LandingPage() {
         ref={headerRef}
         className={`z-30 glass-header transition-all duration-300 ${
           scrolled
-            ? "fixed top-[2%] left-1/2 -translate-x-1/2 w-[94%] max-w-[1300px] rounded-2xl border border-foreground/10 shadow-xl"
-            : "relative w-full border-b border-foreground/10"
+            ? "fixed top-[2%] left-1/2 -translate-x-1/2 w-[94%] max-w-[1300px] rounded-xl border border-foreground/15 shadow-xl"
+            : "relative w-full border-b border-foreground/15"
         }`}
       >
         <div className="max-w-[1300px] mx-auto px-6 py-4 flex items-center justify-between">
-          <span className="font-semibold text-lg flex items-center gap-1.5">
-            <span className="text-primary">●</span> <span className="gradient-text">SkinScan</span>
+          <span className="font-bold text-lg flex items-center gap-1 tracking-tight">
+            SkinScan<span className="text-muted">^</span>
           </span>
-          <nav className="flex gap-4 text-sm items-center">
+          <nav className="flex gap-2 nav-mono items-center">
             <Link
               href="/login"
               transitionTypes={["nav-forward"]}
               data-cursor-hover
-              className="px-3 py-1.5 rounded hover:bg-foreground/5 transition-colors"
+              className="px-3 py-2 hover:bg-foreground/5 transition-colors"
             >
               Log in
             </Link>
             <Magnetic>
-              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
-                <Link
-                  href="/register"
-                  transitionTypes={["nav-forward"]}
-                  className="px-4 py-1.5 rounded-lg btn-gradient font-medium shadow-glow block"
-                >
-                  Sign up
-                </Link>
-              </motion.div>
+              <Link
+                href="/register"
+                transitionTypes={["nav-forward"]}
+                className="px-4 py-2 btn-solid block"
+              >
+                Sign up
+              </Link>
             </Magnetic>
           </nav>
         </div>
