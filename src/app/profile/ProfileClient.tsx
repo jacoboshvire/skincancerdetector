@@ -132,10 +132,8 @@ export default function ProfileClient({ email }: { email: string }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <h1 className="text-3xl font-extrabold tracking-tight mb-1">
-            <span className="gradient-text">Profile</span>
-          </h1>
-          <p className="text-sm text-foreground/60">
+          <h1 className="text-3xl font-extrabold tracking-tight mb-1">Profile</h1>
+          <p className="text-sm text-muted">
             {email}
             {createdAt && <> · Member since {new Date(createdAt).toLocaleDateString()}</>}
           </p>
@@ -145,16 +143,16 @@ export default function ProfileClient({ email }: { email: string }) {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.05 }}
-          className="rounded-2xl border-2 border-accent-purple/20 bg-accent-purple/5 p-5 shadow-sm"
+          className="border border-foreground/15 p-5"
         >
           <h2 className="font-bold text-lg mb-3">Medical record</h2>
-          <p className="text-sm text-foreground/60 mb-4">
+          <p className="text-sm text-muted mb-4">
             Optional background information to give context to your scan
             history. Stored with your account only; never sent to the
             classifier.
           </p>
           {profileLoading ? (
-            <p className="text-sm text-foreground/50">Loading…</p>
+            <p className="text-sm text-muted">Loading…</p>
           ) : (
             <form onSubmit={onSaveProfile} className="space-y-4 max-w-md">
               <div>
@@ -166,7 +164,7 @@ export default function ProfileClient({ email }: { email: string }) {
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50"
+                  className="w-full border border-foreground/20 bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-foreground/50"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -179,7 +177,7 @@ export default function ProfileClient({ email }: { email: string }) {
                     type="date"
                     value={dateOfBirth}
                     onChange={(e) => setDateOfBirth(e.target.value)}
-                    className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50"
+                    className="w-full border border-foreground/20 bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-foreground/50"
                   />
                 </div>
                 <div>
@@ -190,7 +188,7 @@ export default function ProfileClient({ email }: { email: string }) {
                     id="sex"
                     value={sex}
                     onChange={(e) => setSex(e.target.value)}
-                    className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50"
+                    className="w-full border border-foreground/20 bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-foreground/50"
                   >
                     {SEX_OPTIONS.map((opt) => (
                       <option key={opt.value} value={opt.value}>
@@ -217,18 +215,16 @@ export default function ProfileClient({ email }: { email: string }) {
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   rows={3}
-                  className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50"
+                  className="w-full border border-foreground/20 bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-foreground/50"
                 />
               </div>
-              <motion.button
+              <button
                 type="submit"
                 disabled={savingProfile}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="rounded-xl btn-gradient px-5 py-2.5 text-sm font-semibold disabled:opacity-50 shadow-glow"
+                className="btn-solid px-5 py-3 text-sm disabled:opacity-50"
               >
                 {savingProfile ? "Saving…" : "Save"}
-              </motion.button>
+              </button>
               <AnimatePresence>
                 {savedProfile && (
                   <motion.span
