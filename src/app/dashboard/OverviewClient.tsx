@@ -103,16 +103,18 @@ export default function OverviewClient({ email }: { email: string }) {
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="mb-8 rounded-xl border-2 border-accent-red/30 bg-accent-red/10 p-4 text-sm"
+            className="mb-8 border border-accent-red/40 p-4 text-sm"
           >
-            <strong className="block mb-1 text-accent-red">
-              {flagged.length} scan{flagged.length === 1 ? "" : "s"} flagged for follow-up.
-            </strong>
-            Based on image classification and/or reported symptoms. Review them on your{" "}
-            <Link href="/profile" className="underline">
-              profile page
-            </Link>
-            , and consider seeing a dermatologist.
+            <span className="tag-mono text-accent-red mb-2">
+              {flagged.length} scan{flagged.length === 1 ? "" : "s"} flagged for follow-up
+            </span>
+            <p className="mt-2 text-muted">
+              Based on image classification and/or reported symptoms. Review them on your{" "}
+              <Link href="/profile" className="underline text-foreground">
+                profile page
+              </Link>
+              , and consider seeing a dermatologist.
+            </p>
           </motion.div>
         )}
 
