@@ -190,10 +190,10 @@ export default function ScanClient({ email }: { email: string }) {
             transition={{ duration: 0.4 }}
             className="text-3xl font-extrabold tracking-tight"
           >
-            Scan a <span className="gradient-text">lesion</span>
+            Scan a <span className="text-muted">lesion</span>
           </motion.h1>
-          <div className="flex items-center gap-2">
-            <label htmlFor="modelSelect" className="text-sm text-foreground/60">
+          <div className="flex items-center gap-2 nav-mono">
+            <label htmlFor="modelSelect" className="text-muted">
               Model
             </label>
             <select
@@ -203,7 +203,7 @@ export default function ScanClient({ email }: { email: string }) {
                 setModelId(e.target.value);
                 setProbabilities(null);
               }}
-              className="rounded-md border border-foreground/15 bg-transparent px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50"
+              className="border border-foreground/20 bg-transparent px-3 py-2 normal-case focus:outline-none focus:border-foreground/50"
             >
               {MODEL_REGISTRY.map((m) => (
                 <option key={m.id} value={m.id}>
@@ -213,12 +213,12 @@ export default function ScanClient({ email }: { email: string }) {
             </select>
           </div>
         </div>
-        <p className="text-xs text-foreground/50 mb-6 -mt-3">
+        <p className="text-xs text-muted mb-6 -mt-3">
           {getModelInfo(modelId).description}
         </p>
 
         {modelStatus === "missing" && (
-          <div className="mb-8 rounded-xl border border-foreground/15 bg-foreground/5 p-4 text-sm">
+          <div className="mb-8 border border-foreground/20 p-4 text-sm">
             <strong className="block mb-1">No trained {getModelInfo(modelId).label} model found.</strong>
             Run the training pipeline in <code>scripts/train_model</code>{" "}
             (<code>MODEL_ARCH={modelId} python train.py</code>) to generate{" "}
@@ -227,15 +227,18 @@ export default function ScanClient({ email }: { email: string }) {
           </div>
         )}
         {modelStatus === "error" && (
-          <div className="mb-8 rounded-xl border border-foreground/15 bg-foreground/5 p-4 text-sm">
+          <div className="mb-8 border border-foreground/20 p-4 text-sm">
             <strong className="block mb-1">Failed to load model.</strong>
             {modelError}
           </div>
         )}
 
-        <div className="mb-8 rounded-xl border border-foreground/15 bg-foreground/5 p-4 text-sm">
-          This tool is for educational purposes only and is not a substitute
-          for professional medical diagnosis.
+        <div className="mb-8 border border-foreground/20 p-4 text-sm">
+          <span className="tag-mono mb-2">Educational use only</span>
+          <p className="mt-2 text-muted">
+            This tool is for educational purposes only and is not a substitute
+            for professional medical diagnosis.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
