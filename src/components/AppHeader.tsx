@@ -129,7 +129,7 @@ export default function AppHeader({ email }: { email: string }) {
                     href={link.href}
                     onClick={() => setMenuOpen(false)}
                     className={`px-3 py-2 rounded-md ${
-                      active ? "bg-primary text-primary-foreground font-medium" : "hover:bg-foreground/5"
+                      active ? "btn-gradient font-medium" : "hover:bg-foreground/5"
                     }`}
                   >
                     {link.label}
