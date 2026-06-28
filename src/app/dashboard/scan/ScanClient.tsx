@@ -526,7 +526,7 @@ export default function ScanClient({ email }: { email: string }) {
               </table>
             </div>
           )}
-          <p className="mt-3 text-sm text-foreground/50">
+          <p className="mt-3 text-sm text-muted">
             See your full medical history, including symptom notes, on your{" "}
             <Link href="/profile" className="underline">
               profile page
