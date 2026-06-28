@@ -442,10 +442,9 @@ function Preloader({ done }: { done: boolean }) {
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="font-semibold text-2xl flex items-center gap-2"
+            className="font-bold text-2xl flex items-center gap-2 tracking-tight"
           >
-            <span className="text-primary">●</span>
-            <span className="gradient-text">SkinScan</span>
+            SkinScan<span className="text-muted">^</span>
           </motion.span>
         </motion.div>
       )}
