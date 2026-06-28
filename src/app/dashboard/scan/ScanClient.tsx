@@ -188,9 +188,9 @@ export default function ScanClient({ email }: { email: string }) {
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="text-2xl font-bold"
+            className="text-3xl font-extrabold tracking-tight"
           >
-            Scan a lesion
+            Scan a <span className="gradient-text">lesion</span>
           </motion.h1>
           <div className="flex items-center gap-2">
             <label htmlFor="modelSelect" className="text-sm text-foreground/60">
