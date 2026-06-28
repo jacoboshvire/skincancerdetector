@@ -543,6 +543,7 @@ export default function LandingPage() {
             SkinScan<span className="text-muted">^</span>
           </span>
           <nav className="flex gap-2 nav-mono items-center">
+            <ThemeToggle className="mr-1" />
             <Link
               href="/login"
               transitionTypes={["nav-forward"]}
