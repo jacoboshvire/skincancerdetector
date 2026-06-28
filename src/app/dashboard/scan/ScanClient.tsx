@@ -243,7 +243,7 @@ export default function ScanClient({ email }: { email: string }) {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.05 }}
-            className="rounded-2xl border border-foreground/10 p-5 shadow-sm"
+            className="rounded-2xl border-2 border-foreground/10 p-5 shadow-sm"
           >
             <h2 className="font-bold text-lg mb-3">Upload a lesion photo</h2>
             <motion.div
