@@ -331,7 +331,7 @@ export default function ScanClient({ email }: { email: string }) {
                 disabled={!imagePreview || modelStatus !== "ready" || analyzing}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex-1 rounded-md bg-primary text-primary-foreground py-2.5 font-medium disabled:opacity-50 hover:opacity-90 shadow-md shadow-primary/20"
+                className="flex-1 rounded-xl btn-gradient py-3 font-semibold disabled:opacity-50 shadow-glow"
               >
                 {analyzing ? (
                   <span className="inline-flex items-center gap-2 justify-center">
