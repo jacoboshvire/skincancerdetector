@@ -650,10 +650,7 @@ export default function LandingPage() {
                 className="mt-6 flex flex-wrap gap-2 justify-center sm:justify-start"
               >
                 {TRUST_PILLS.map((label) => (
-                  <span
-                    key={label}
-                    className="text-xs font-semibold px-3.5 py-1.5 rounded-full border-2 border-primary/25 bg-primary/10 text-primary"
-                  >
+                  <span key={label} className="tag-mono">
                     {label}
                   </span>
                 ))}
