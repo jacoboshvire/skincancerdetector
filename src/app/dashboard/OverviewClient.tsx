@@ -244,7 +244,7 @@ const STAT_COLORS = {
   pink: "border-accent-pink/30 bg-accent-pink/10 text-accent-pink hover:shadow-accent-pink/20",
   purple: "border-accent-purple/30 bg-accent-purple/10 text-accent-purple hover:shadow-accent-purple/20",
   gray: "border-foreground/15 bg-foreground/5 text-foreground hover:shadow-foreground/10",
-};
+} as const;
 
 function StatCard({
   color,
