@@ -188,7 +188,7 @@ export default function OverviewClient({ email }: { email: string }) {
           </section>
 
           <section>
-            <h2 className="font-semibold mb-3">Quick links</h2>
+            <h2 className="font-bold text-lg mb-3">Quick links</h2>
             <div className="space-y-3">
               <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.2 }}>
                 <Link
