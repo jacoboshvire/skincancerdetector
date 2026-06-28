@@ -453,7 +453,7 @@ export default function ScanClient({ email }: { email: string }) {
                     disabled={saving}
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-md border border-primary/40 text-primary py-2 text-sm font-medium hover:bg-primary-soft/30 disabled:opacity-50"
+                    className="w-full rounded-xl border-2 border-primary/40 text-primary py-2.5 text-sm font-semibold hover:bg-primary-soft/30 disabled:opacity-50"
                   >
                     {saving ? "Saving…" : "Save to medical record"}
                   </motion.button>
