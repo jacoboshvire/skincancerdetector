@@ -653,7 +653,7 @@ export default function LandingPage() {
                     <Link
                       href="/login"
                       transitionTypes={["nav-forward"]}
-                      className="block px-5 py-2.5 rounded-md border border-foreground/15 font-medium hover:bg-foreground/5"
+                      className="block px-7 py-3.5 rounded-xl border-2 border-foreground/15 font-semibold text-base hover:bg-foreground/5"
                     >
                       I already have an account
                     </Link>
