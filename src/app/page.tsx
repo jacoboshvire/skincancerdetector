@@ -642,7 +642,7 @@ export default function LandingPage() {
                     <Link
                       href="/register"
                       transitionTypes={["nav-forward"]}
-                      className="block px-5 py-2.5 rounded-md bg-primary text-primary-foreground font-medium shadow-lg shadow-primary/25 hover:opacity-90"
+                      className="block px-7 py-3.5 rounded-xl btn-gradient font-semibold text-base shadow-glow-lg"
                     >
                       Get started
                     </Link>
