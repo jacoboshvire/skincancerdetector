@@ -84,6 +84,7 @@ export default function AppHeader({ email }: { email: string }) {
 
         <div className="hidden sm:flex items-center gap-4 nav-mono">
           <span className="text-muted truncate max-w-[200px] normal-case">{email}</span>
+          <ThemeToggle />
           <button
             onClick={onLogout}
             className="px-3 py-2 border border-foreground/20 hover:bg-foreground/5 shrink-0"
@@ -92,15 +93,18 @@ export default function AppHeader({ email }: { email: string }) {
           </button>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setMenuOpen((open) => !open)}
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-          aria-expanded={menuOpen}
-          className="sm:hidden p-2 -m-2 hover:bg-foreground/5"
-        >
-          {menuOpen ? <CloseIcon className="w-5 h-5" /> : <MenuIcon className="w-5 h-5" />}
-        </button>
+        <div className="flex items-center gap-2 sm:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            className="p-2 -m-2 hover:bg-foreground/5"
+          >
+            {menuOpen ? <CloseIcon className="w-5 h-5" /> : <MenuIcon className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>
