@@ -250,20 +250,20 @@ export default function ProfileClient({ email }: { email: string }) {
             <h2 className="font-bold text-lg">Medical history</h2>
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
               {!historyLoading && history.length > 0 && (
-                <p className="text-sm text-foreground/60">
+                <p className="text-sm text-muted nav-mono">
                   {history.length} scan{history.length === 1 ? "" : "s"} ·{" "}
                   {malignantCount} flagged for follow-up
                 </p>
               )}
-              <div className="relative flex rounded-md border border-foreground/15 overflow-hidden text-sm self-start">
+              <div className="relative flex border border-foreground/20 overflow-hidden nav-mono self-start">
                 <button
                   onClick={() => setFilter("all")}
-                  className={`relative px-3 py-1 transition-colors ${filter === "all" ? "text-primary-foreground" : "hover:bg-foreground/5"}`}
+                  className={`relative px-3 py-2 transition-colors ${filter === "all" ? "text-primary-foreground" : "hover:bg-foreground/5"}`}
                 >
                   {filter === "all" && (
                     <motion.span
                       layoutId="filter-pill"
-                      className="absolute inset-0 btn-gradient -z-10"
+                      className="absolute inset-0 bg-primary -z-10"
                       transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
                     />
                   )}
@@ -271,7 +271,7 @@ export default function ProfileClient({ email }: { email: string }) {
                 </button>
                 <button
                   onClick={() => setFilter("favorites")}
-                  className={`relative px-3 py-1 transition-colors ${filter === "favorites" ? "text-white" : "hover:bg-foreground/5"}`}
+                  className={`relative px-3 py-2 transition-colors ${filter === "favorites" ? "text-primary-foreground" : "hover:bg-foreground/5"}`}
                 >
                   {filter === "favorites" && (
                     <motion.span
