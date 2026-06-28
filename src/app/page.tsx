@@ -458,19 +458,22 @@ const FEATURES = [
     title: "Instant results",
     body: "Get a clear risk read on a skin lesion in seconds, no appointment or waiting room needed.",
     icon: LightningIcon,
-    color: "border-foreground/15 bg-foreground/5",
+    color: "border-accent-blue/25 bg-accent-blue/10",
+    iconColor: "bg-accent-blue/15 text-accent-blue",
   },
   {
     title: "100% private",
     body: "Your photos are analyzed securely and never shared. Nothing leaves your control unless you choose to save a result.",
     icon: ShieldIcon,
-    color: "border-foreground/15 bg-foreground/5",
+    color: "border-accent-purple/25 bg-accent-purple/10",
+    iconColor: "bg-accent-purple/15 text-accent-purple",
   },
   {
     title: "Secure by design",
     body: "Your account and saved history are protected with strong encryption and two-step verification.",
     icon: LockIcon,
-    color: "border-foreground/15 bg-foreground/5",
+    color: "border-accent-pink/25 bg-accent-pink/10",
+    iconColor: "bg-accent-pink/15 text-accent-pink",
   },
 ];
 
@@ -593,7 +596,7 @@ export default function LandingPage() {
                 initial="hidden"
                 animate="show"
                 variants={headlineContainer}
-                className="text-4xl sm:text-6xl font-bold tracking-tight"
+                className="text-5xl sm:text-7xl font-extrabold tracking-tight leading-[1.05]"
               >
                 {HEADLINE_PLAIN.map((word, i) => (
                   <motion.span
