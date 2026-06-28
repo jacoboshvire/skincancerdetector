@@ -35,15 +35,19 @@ export default function RegisterPage() {
 
   return (
     <div className="relative flex flex-1 items-center justify-center px-6 py-16 overflow-hidden">
-      <div aria-hidden className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-accent-purple/15 blur-3xl animate-blob" />
-      <div aria-hidden className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-primary/15 blur-3xl animate-blob-slow" />
+      <div aria-hidden className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-accent-purple/25 blur-3xl animate-blob" />
+      <div aria-hidden className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-primary/25 blur-3xl animate-blob-slow" />
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="relative w-full max-w-sm rounded-2xl glass-card p-8 shadow-xl"
+        className="relative w-full max-w-sm rounded-2xl glass-card p-8 shadow-glow-lg"
       >
-        <h1 className="text-2xl font-bold mb-1">Create your account</h1>
+        <span className="font-bold flex items-center gap-1.5 mb-4">
+          <span className="text-primary text-glow">●</span>
+          <span className="gradient-text">SkinScan</span>
+        </span>
+        <h1 className="text-3xl font-extrabold tracking-tight mb-1">Create your account</h1>
         <p className="text-sm text-foreground/60 mb-6">
           You&apos;ll verify your email with a one-time code after logging in.
         </p>
