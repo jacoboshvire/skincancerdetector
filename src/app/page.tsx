@@ -530,11 +530,8 @@ export default function LandingPage() {
       <Cursor />
       <motion.div
         aria-hidden
-        className="fixed top-0 left-0 right-0 h-[3px] z-[150] origin-left"
-        style={{
-          scaleX: scrollYProgress,
-          background: "linear-gradient(90deg, var(--primary), var(--accent-purple), var(--accent-pink))",
-        }}
+        className="fixed top-0 left-0 right-0 h-[2px] z-[150] origin-left bg-foreground"
+        style={{ scaleX: scrollYProgress }}
       />
     <div className="flex flex-col min-h-screen overflow-x-hidden">
       {scrolled && <div style={{ height: headerHeight }} aria-hidden />}
