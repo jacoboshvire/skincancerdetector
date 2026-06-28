@@ -77,7 +77,7 @@ export default function AppHeader({ email }: { email: string }) {
                   {active && (
                     <motion.span
                       layoutId="nav-pill"
-                      className="absolute inset-0 rounded-md bg-primary -z-10"
+                      className="absolute inset-0 rounded-md btn-gradient shadow-glow -z-10"
                       transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
                     />
                   )}
