@@ -108,9 +108,9 @@ export default function OverviewClient({ email }: { email: string }) {
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="mb-8 rounded-xl border border-foreground/15 bg-foreground/5 p-4 text-sm"
+            className="mb-8 rounded-xl border-2 border-accent-red/30 bg-accent-red/10 p-4 text-sm"
           >
-            <strong className="block mb-1">
+            <strong className="block mb-1 text-accent-red">
               {flagged.length} scan{flagged.length === 1 ? "" : "s"} flagged for follow-up.
             </strong>
             Based on image classification and/or reported symptoms. Review them on your{" "}
