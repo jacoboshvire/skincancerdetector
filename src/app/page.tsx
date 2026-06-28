@@ -715,11 +715,11 @@ export default function LandingPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="text-2xl sm:text-3xl font-bold text-center"
+            className="text-3xl sm:text-4xl font-extrabold text-center tracking-tight"
           >
-            How it works
+            How it <span className="gradient-text">works</span>
           </motion.h2>
-          <div className="mt-10 grid sm:grid-cols-3 gap-8">
+          <div className="mt-12 grid sm:grid-cols-3 gap-8">
             {STEPS.map((s, i) => (
               <motion.div
                 key={s.title}
@@ -727,12 +727,13 @@ export default function LandingPage() {
                 whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.6, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -4 }}
                 className="text-center"
               >
-                <div className="w-12 h-12 mx-auto rounded-full bg-primary/10 text-primary flex items-center justify-center mb-3">
-                  <s.icon className="w-6 h-6" />
+                <div className="w-14 h-14 mx-auto rounded-2xl btn-gradient text-primary-foreground flex items-center justify-center mb-4 shadow-glow">
+                  <s.icon className="w-7 h-7" />
                 </div>
-                <h3 className="font-semibold mb-1">
+                <h3 className="font-bold text-lg mb-1">
                   {i + 1}. {s.title}
                 </h3>
                 <p className="text-sm text-foreground/70">{s.body}</p>
