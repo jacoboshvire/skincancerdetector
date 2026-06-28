@@ -61,22 +61,19 @@ function VerifyOtpForm() {
   }
 
   return (
-    <div className="relative flex flex-1 items-center justify-center px-6 py-16 overflow-hidden">
-      <div aria-hidden className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-primary/25 blur-3xl animate-blob" />
-      <div aria-hidden className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-accent-pink/25 blur-3xl animate-blob-slow" />
+    <div className="relative flex flex-1 items-center justify-center px-6 py-16 overflow-hidden grid-lines">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="relative w-full max-w-sm rounded-2xl glass-card p-8 shadow-glow-lg"
+        className="relative w-full max-w-sm glass-card p-8"
       >
-        <span className="font-bold flex items-center gap-1.5 mb-4">
-          <span className="text-primary text-glow">●</span>
-          <span className="gradient-text">SkinScan</span>
+        <span className="font-bold flex items-center gap-1 mb-4 tracking-tight">
+          SkinScan<span className="text-muted">^</span>
         </span>
         <h1 className="text-2xl font-extrabold tracking-tight mb-1">Enter verification code</h1>
-        <p className="text-sm text-foreground/60 mb-6">
-          We sent a 6-digit code to <span className="font-medium">{email}</span>.
+        <p className="text-sm text-muted mb-6">
+          We sent a 6-digit code to <span className="font-medium text-foreground">{email}</span>.
           In development without SMTP configured, check your server logs for
           the code.
         </p>
@@ -95,25 +92,23 @@ function VerifyOtpForm() {
               autoComplete="one-time-code"
               value={code}
               onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
-              className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm tracking-widest text-center text-lg focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50"
+              className="w-full border border-foreground/20 bg-transparent px-3 py-2 text-sm tracking-widest text-center text-lg focus:outline-none focus:border-foreground/50"
             />
           </div>
           {error && <p className="text-sm text-accent-red">{error}</p>}
           {info && <p className="text-sm text-accent-green">{info}</p>}
-          <motion.button
+          <button
             type="submit"
             disabled={loading || code.length !== 6}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full rounded-xl btn-gradient py-3 font-semibold disabled:opacity-60 shadow-glow"
+            className="w-full btn-solid py-3 text-sm disabled:opacity-60"
           >
             {loading ? "Verifying…" : "Verify"}
-          </motion.button>
+          </button>
         </form>
         <button
           onClick={onResend}
           disabled={resending}
-          className="w-full text-sm text-center mt-6 text-foreground underline disabled:opacity-60"
+          className="w-full text-sm text-center mt-6 text-muted underline disabled:opacity-60"
         >
           {resending ? "Sending…" : "Resend code"}
         </button>
