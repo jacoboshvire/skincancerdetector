@@ -579,15 +579,15 @@ export default function LandingPage() {
         <section className="relative w-full py-20 sm:py-24 overflow-hidden">
           <div
             aria-hidden
-            className="absolute -top-32 -left-24 w-96 h-96 rounded-full bg-primary/20 blur-3xl animate-blob"
+            className="absolute -top-32 -left-24 w-[28rem] h-[28rem] rounded-full bg-primary/30 blur-3xl animate-blob"
           />
           <div
             aria-hidden
-            className="absolute -top-16 right-0 w-96 h-96 rounded-full bg-accent-purple/20 blur-3xl animate-blob-slow"
+            className="absolute -top-16 right-0 w-[28rem] h-[28rem] rounded-full bg-accent-purple/30 blur-3xl animate-blob-slow"
           />
           <div
             aria-hidden
-            className="absolute bottom-0 left-1/3 w-72 h-72 rounded-full bg-accent-pink/15 blur-3xl animate-blob"
+            className="absolute bottom-0 left-1/3 w-80 h-80 rounded-full bg-accent-pink/25 blur-3xl animate-blob"
           />
 
           <div className="relative max-w-[1300px] mx-auto px-6 grid sm:grid-cols-2 gap-12 items-center">
