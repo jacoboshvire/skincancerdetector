@@ -246,12 +246,12 @@ export default function ScanClient({ email }: { email: string }) {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.05 }}
-            className="rounded-2xl border-2 border-foreground/10 p-5 shadow-sm"
+            className="border border-foreground/15 p-5"
           >
             <h2 className="font-bold text-lg mb-3">Upload a lesion photo</h2>
             <motion.div
               animate={imagePreview ? { borderColor: "var(--foreground)" } : {}}
-              className="rounded-xl border border-dashed border-foreground/20 bg-foreground/5 p-6 text-center"
+              className="border border-dashed border-foreground/25 p-6 text-center"
             >
               <AnimatePresence mode="wait">
                 {imagePreview ? (
@@ -267,7 +267,7 @@ export default function ScanClient({ email }: { email: string }) {
                       src={imagePreview}
                       alt="Selected lesion"
                       crossOrigin="anonymous"
-                      className="max-h-64 mx-auto rounded-md object-contain"
+                      className="max-h-64 mx-auto object-contain"
                     />
                   </motion.div>
                 ) : (
@@ -275,7 +275,7 @@ export default function ScanClient({ email }: { email: string }) {
                     key="empty"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="text-sm text-foreground/50 py-12"
+                    className="text-sm text-muted py-12"
                   >
                     No image selected
                   </motion.p>
@@ -292,14 +292,14 @@ export default function ScanClient({ email }: { email: string }) {
 
             <div className="mt-4 space-y-2">
               <div>
-                <label className="block text-xs font-medium mb-1" htmlFor="bodyLocation">
+                <label className="block text-xs nav-mono text-muted mb-1" htmlFor="bodyLocation">
                   Location on body (optional)
                 </label>
                 <select
                   id="bodyLocation"
                   value={bodyLocation}
                   onChange={(e) => setBodyLocation(e.target.value)}
-                  className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50"
+                  className="w-full border border-foreground/20 bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-foreground/50"
                 >
                   <option value="">Not specified</option>
                   {BODY_LOCATIONS.map((loc) => (
@@ -310,7 +310,7 @@ export default function ScanClient({ email }: { email: string }) {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-medium mb-1" htmlFor="notes">
+                <label className="block text-xs nav-mono text-muted mb-1" htmlFor="notes">
                   Symptom notes (optional)
                 </label>
                 <textarea
@@ -319,9 +319,9 @@ export default function ScanClient({ email }: { email: string }) {
                   onChange={(e) => setNotes(e.target.value)}
                   rows={2}
                   placeholder="e.g. itchy, recently changed size or color"
-                  className="w-full rounded-md border border-foreground/15 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50"
+                  className="w-full border border-foreground/20 bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-foreground/50"
                 />
-                <p className="text-xs text-foreground/50 mt-1">
+                <p className="text-xs text-muted mt-1">
                   Factored into the result below alongside the image: things like recent
                   change, bleeding, or itching matter even if a photo looks benign.
                 </p>
@@ -329,12 +329,10 @@ export default function ScanClient({ email }: { email: string }) {
             </div>
 
             <div className="mt-4 flex gap-2">
-              <motion.button
+              <button
                 onClick={onAnalyze}
                 disabled={!imagePreview || modelStatus !== "ready" || analyzing}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex-1 rounded-xl btn-gradient py-3 font-semibold disabled:opacity-50 shadow-glow"
+                className="flex-1 btn-solid py-3 text-sm disabled:opacity-50"
               >
                 {analyzing ? (
                   <span className="inline-flex items-center gap-2 justify-center">
@@ -348,17 +346,15 @@ export default function ScanClient({ email }: { email: string }) {
                 ) : (
                   "Analyze image"
                 )}
-              </motion.button>
-              <motion.button
+              </button>
+              <button
                 onClick={onReset}
                 disabled={!imagePreview}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
                 title="Clear the current image and result"
-                className="rounded-md border border-foreground/15 px-4 py-2.5 text-sm font-medium hover:bg-foreground/5 disabled:opacity-50"
+                className="border border-foreground/20 px-4 py-3 nav-mono hover:bg-foreground/5 disabled:opacity-50"
               >
                 Reset
-              </motion.button>
+              </button>
             </div>
           </motion.section>
 
