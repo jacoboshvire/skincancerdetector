@@ -475,14 +475,14 @@ export default function ScanClient({ email }: { email: string }) {
         <section className="mt-12">
           <h2 className="font-bold text-lg mb-3">Scan history</h2>
           {historyLoading ? (
-            <p className="text-sm text-foreground/50">Loading…</p>
+            <p className="text-sm text-muted">Loading…</p>
           ) : history.length === 0 ? (
-            <p className="text-sm text-foreground/50">No saved scans yet.</p>
+            <p className="text-sm text-muted">No saved scans yet.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-left text-foreground/50 border-b border-foreground/10">
+                  <tr className="text-left nav-mono text-muted border-b border-foreground/20">
                     <th className="py-2 pr-4"></th>
                     <th className="py-2 pr-4">Date</th>
                     <th className="py-2 pr-4">Location</th>
@@ -494,12 +494,10 @@ export default function ScanClient({ email }: { email: string }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {history.map((scan, i) => (
+                  {history.map((scan) => (
                     <tr
                       key={scan.id}
-                      className={`border-b border-foreground/5 hover:bg-foreground/10 transition-colors ${
-                        i % 2 === 1 ? "bg-foreground/5" : ""
-                      }`}
+                      className="border-b border-foreground/10 hover:bg-foreground/5 transition-colors"
                     >
                       <td className="py-2 pr-4">
                         <HeartButton
