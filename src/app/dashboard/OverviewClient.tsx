@@ -141,7 +141,7 @@ export default function OverviewClient({ email }: { email: string }) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <section>
             <div className="flex items-baseline justify-between mb-3">
-              <h2 className="font-semibold">Recent activity</h2>
+              <h2 className="font-bold text-lg">Recent activity</h2>
               <Link href="/profile" className="text-sm text-primary underline">
                 View all
               </Link>
