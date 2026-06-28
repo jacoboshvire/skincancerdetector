@@ -251,7 +251,7 @@ export default function ProfileClient({ email }: { email: string }) {
           transition={{ duration: 0.4, delay: 0.1 }}
         >
           <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-3 gap-2">
-            <h2 className="font-semibold">Medical history</h2>
+            <h2 className="font-bold text-lg">Medical history</h2>
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
               {!historyLoading && history.length > 0 && (
                 <p className="text-sm text-foreground/60">
