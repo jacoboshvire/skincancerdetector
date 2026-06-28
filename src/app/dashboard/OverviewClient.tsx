@@ -144,11 +144,11 @@ export default function OverviewClient({ email }: { email: string }) {
               </Link>
             </div>
             {loading ? (
-              <p className="text-sm text-foreground/50">Loading…</p>
+              <p className="text-sm text-muted">Loading…</p>
             ) : recent.length === 0 ? (
-              <p className="text-sm text-foreground/50">
+              <p className="text-sm text-muted">
                 No scans yet.{" "}
-                <Link href="/dashboard/scan" className="underline text-primary">
+                <Link href="/dashboard/scan" className="underline text-foreground">
                   Analyze your first photo
                 </Link>
                 .
@@ -160,19 +160,17 @@ export default function OverviewClient({ email }: { email: string }) {
                 transition={{ staggerChildren: 0.06 }}
                 className="space-y-2"
               >
-                {recent.map((scan, i) => (
+                {recent.map((scan) => (
                   <motion.li
                     key={scan.id}
                     variants={fadeUp}
                     transition={{ duration: 0.3 }}
                     whileHover={{ x: 2 }}
-                    className={`flex items-center justify-between gap-3 rounded-lg border border-foreground/10 p-3 text-sm transition-shadow hover:shadow-md ${
-                      i % 2 === 1 ? "bg-foreground/5" : ""
-                    }`}
+                    className="flex items-center justify-between gap-3 border border-foreground/15 p-3 text-sm"
                   >
                     <div>
                       <p className="font-medium">{scan.predictedLabel}</p>
-                      <p className="text-foreground/50">
+                      <p className="text-muted">
                         {new Date(scan.createdAt).toLocaleDateString()}
                         {scan.bodyLocation && <> · {scan.bodyLocation}</>}
                       </p>
