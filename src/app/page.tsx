@@ -670,7 +670,7 @@ export default function LandingPage() {
                 {TRUST_PILLS.map((label) => (
                   <span
                     key={label}
-                    className="text-xs font-medium px-3 py-1 rounded-full border border-foreground/15 bg-foreground/5 text-foreground/70"
+                    className="text-xs font-semibold px-3.5 py-1.5 rounded-full border-2 border-primary/25 bg-primary/10 text-primary"
                   >
                     {label}
                   </span>
