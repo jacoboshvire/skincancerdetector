@@ -321,8 +321,12 @@ export default function ProfileClient({ email }: { email: string }) {
                       exit={{ opacity: 0, scale: 0.97 }}
                       transition={{ duration: 0.25 }}
                       whileHover={{ x: 2 }}
-                      className={`rounded-xl border border-foreground/10 p-4 transition-shadow hover:shadow-md ${
-                        i % 2 === 1 ? "bg-foreground/5" : ""
+                      className={`rounded-xl border-2 p-4 transition-shadow hover:shadow-md ${
+                        imageMalignant || symptomFlagged
+                          ? "border-accent-red/25 bg-accent-red/5"
+                          : i % 2 === 1
+                            ? "border-foreground/10 bg-foreground/5"
+                            : "border-foreground/10"
                       }`}
                     >
                       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
