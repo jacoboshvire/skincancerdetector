@@ -132,7 +132,9 @@ export default function ProfileClient({ email }: { email: string }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <h1 className="text-2xl font-bold mb-1">Profile</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight mb-1">
+            <span className="gradient-text">Profile</span>
+          </h1>
           <p className="text-sm text-foreground/60">
             {email}
             {createdAt && <> · Member since {new Date(createdAt).toLocaleDateString()}</>}
