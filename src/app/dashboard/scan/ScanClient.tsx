@@ -362,7 +362,7 @@ export default function ScanClient({ email }: { email: string }) {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
-            className="rounded-2xl border-2 border-foreground/10 p-5 shadow-sm"
+            className="border border-foreground/15 p-5"
           >
             <h2 className="font-bold text-lg mb-3">Result</h2>
             <AnimatePresence mode="wait">
@@ -372,7 +372,7 @@ export default function ScanClient({ email }: { email: string }) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="text-sm text-foreground/50"
+                  className="text-sm text-muted"
                 >
                   Upload and analyze an image to see results here.
                 </motion.p>
@@ -388,35 +388,31 @@ export default function ScanClient({ email }: { email: string }) {
                     initial={{ scale: 0.97 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.3 }}
-                    className={`rounded-xl p-5 border-2 ${
+                    className={`p-5 border-t-2 border border-foreground/15 ${
                       top!.cls.malignant || symptomAssessment.flagged
-                        ? "border-accent-red/30 bg-accent-red/10"
-                        : "border-accent-green/30 bg-accent-green/10"
+                        ? "border-t-accent-red"
+                        : "border-t-accent-green"
                     }`}
                   >
-                    <p className="text-xs text-foreground/50 mb-1">
+                    <p className="text-xs text-muted mb-1">
                       Model: {getModelInfo(resultModelId ?? modelId).label}
                     </p>
                     {top!.cls.malignant ? (
-                      <p className="font-bold text-accent-red">⚠ Top prediction is malignant-category</p>
+                      <span className="tag-mono text-accent-red">Malignant-category prediction</span>
                     ) : symptomAssessment.flagged ? (
-                      <p className="font-bold text-accent-red">
-                        ⚠ Image looks benign, but reported symptoms warrant a check-up
-                      </p>
+                      <span className="tag-mono text-accent-red">Symptoms warrant a check-up</span>
                     ) : (
-                      <p className="font-bold text-accent-green">
-                        ✓ Healthy skin
-                      </p>
+                      <span className="tag-mono text-accent-green">Healthy skin</span>
                     )}
-                    <p className="font-bold text-lg mt-1">{top!.cls.label}</p>
-                    <p className="text-sm mt-1">
+                    <p className="font-bold text-lg mt-2">{top!.cls.label}</p>
+                    <p className="text-sm mt-1 text-muted">
                       Confidence: {(top!.confidence * 100).toFixed(1)}% · Overall
                       malignant-category risk: {(malignantRisk! * 100).toFixed(1)}%
                     </p>
                     {symptomAssessment.flagged && (
-                      <p className="text-sm mt-2">
+                      <p className="text-sm mt-2 text-muted">
                         Symptom notes mention:{" "}
-                        <span className="font-medium">{symptomAssessment.matchedKeywords.join(", ")}</span>
+                        <span className="font-medium text-foreground">{symptomAssessment.matchedKeywords.join(", ")}</span>
                         . A single photo can't show change over time; these are classic reasons to
                         get a lesion checked regardless of how it looks in one image.
                       </p>
@@ -433,9 +429,9 @@ export default function ScanClient({ email }: { email: string }) {
                               <span className="text-accent-red text-xs font-medium">(malignant)</span>
                             )}
                           </span>
-                          <span>{((probabilities[i] ?? 0) * 100).toFixed(1)}%</span>
+                          <span className="text-muted">{((probabilities[i] ?? 0) * 100).toFixed(1)}%</span>
                         </div>
-                        <div className="h-1.5 rounded bg-foreground/10 overflow-hidden">
+                        <div className="h-1 bg-foreground/10 overflow-hidden">
                           <motion.div
                             className={`h-full ${cls.malignant ? "bg-accent-red" : "bg-accent-green"}`}
                             initial={{ width: 0 }}
@@ -447,15 +443,13 @@ export default function ScanClient({ email }: { email: string }) {
                     ))}
                   </ul>
 
-                  <motion.button
+                  <button
                     onClick={onSaveResult}
                     disabled={saving}
-                    whileHover={{ scale: 1.01 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-xl border-2 border-primary/40 text-primary py-2.5 text-sm font-semibold hover:bg-primary-soft/30 disabled:opacity-50"
+                    className="w-full border border-foreground/30 py-3 nav-mono hover:bg-foreground/5 disabled:opacity-50"
                   >
                     {saving ? "Saving…" : "Save to medical record"}
-                  </motion.button>
+                  </button>
                   <AnimatePresence>
                     {saved && (
                       <motion.p
