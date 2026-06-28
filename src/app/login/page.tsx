@@ -104,7 +104,7 @@ function LoginForm() {
             disabled={loading}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full rounded-md bg-primary text-primary-foreground py-2.5 font-medium hover:opacity-90 disabled:opacity-60 shadow-md shadow-primary/20"
+            className="w-full rounded-xl btn-gradient py-3 font-semibold disabled:opacity-60 shadow-glow"
           >
             {loading ? "Checking…" : "Continue"}
           </motion.button>
