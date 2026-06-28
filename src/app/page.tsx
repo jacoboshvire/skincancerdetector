@@ -604,7 +604,7 @@ export default function LandingPage() {
                 animate="show"
                 variants={fadeUp}
                 transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-                className="mt-6 text-lg text-foreground/70 max-w-xl mx-auto sm:mx-0"
+                className="mt-6 text-lg text-muted max-w-xl mx-auto sm:mx-0"
               >
                 Upload a photo of a skin lesion and get an instant risk
                 assessment across seven common lesion categories, including
