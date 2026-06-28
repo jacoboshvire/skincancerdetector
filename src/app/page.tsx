@@ -670,14 +670,15 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.6, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -8, scale: 1.02 }}
-              className={`rounded-2xl border-2 p-6 shadow-sm hover:shadow-xl transition-shadow ${f.color}`}
+              whileHover={{ y: -4 }}
+              className="border border-foreground/15 p-6"
             >
-              <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-3 ${f.iconColor}`}>
-                <f.icon className="w-5 h-5" />
+              <div className="flex items-center justify-between mb-4">
+                <f.icon className="w-6 h-6" />
+                <span className="nav-mono text-muted">{String(i + 1).padStart(2, "0")}</span>
               </div>
               <h2 className="font-bold text-lg mb-2">{f.title}</h2>
-              <p className="text-sm text-foreground/70">{f.body}</p>
+              <p className="text-sm text-muted">{f.body}</p>
             </motion.div>
           ))}
         </section>
