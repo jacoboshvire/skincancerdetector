@@ -262,10 +262,10 @@ function StatCard({
       variants={fadeUp}
       whileHover={{ y: -4, scale: 1.02 }}
       transition={{ duration: 0.3 }}
-      className={`rounded-xl border p-4 hover:shadow-lg transition-shadow ${STAT_COLORS[color]}`}
+      className={`rounded-xl border-2 p-4 hover:shadow-lg transition-shadow ${STAT_COLORS[color]}`}
     >
-      <p className="text-2xl font-bold">{value}</p>
-      <p className="text-sm mt-1 text-foreground/60">{label}</p>
+      <p className="text-3xl font-extrabold">{value}</p>
+      <p className="text-sm mt-1 text-foreground/60 font-medium">{label}</p>
     </motion.div>
   );
   return href ? <Link href={href}>{content}</Link> : content;
