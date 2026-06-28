@@ -389,23 +389,27 @@ export default function ScanClient({ email }: { email: string }) {
                     initial={{ scale: 0.97 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.3 }}
-                    className="rounded-xl p-4 border border-foreground/15 bg-foreground/5"
+                    className={`rounded-xl p-5 border-2 ${
+                      top!.cls.malignant || symptomAssessment.flagged
+                        ? "border-accent-red/30 bg-accent-red/10"
+                        : "border-accent-green/30 bg-accent-green/10"
+                    }`}
                   >
                     <p className="text-xs text-foreground/50 mb-1">
                       Model: {getModelInfo(resultModelId ?? modelId).label}
                     </p>
                     {top!.cls.malignant ? (
-                      <p className="text-sm text-foreground/60">Top prediction</p>
+                      <p className="font-bold text-accent-red">⚠ Top prediction is malignant-category</p>
                     ) : symptomAssessment.flagged ? (
-                      <p className="font-semibold text-accent-red">
+                      <p className="font-bold text-accent-red">
                         ⚠ Image looks benign, but reported symptoms warrant a check-up
                       </p>
                     ) : (
-                      <p className="font-semibold text-accent-green">
+                      <p className="font-bold text-accent-green">
                         ✓ Healthy skin
                       </p>
                     )}
-                    <p className="font-semibold">{top!.cls.label}</p>
+                    <p className="font-bold text-lg mt-1">{top!.cls.label}</p>
                     <p className="text-sm mt-1">
                       Confidence: {(top!.confidence * 100).toFixed(1)}% · Overall
                       malignant-category risk: {(malignantRisk! * 100).toFixed(1)}%
