@@ -287,9 +287,9 @@ export default function ProfileClient({ email }: { email: string }) {
           </div>
 
           {historyLoading ? (
-            <p className="text-sm text-foreground/50">Loading…</p>
+            <p className="text-sm text-muted">Loading…</p>
           ) : visibleHistory.length === 0 ? (
-            <p className="text-sm text-foreground/50">
+            <p className="text-sm text-muted">
               {filter === "favorites" ? (
                 "No favorited scans yet."
               ) : (
