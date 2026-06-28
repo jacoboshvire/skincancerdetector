@@ -570,19 +570,11 @@ export default function LandingPage() {
       </header>
 
       <main className="flex-1">
-        <section className="relative w-full py-20 sm:py-24 overflow-hidden">
-          <div
-            aria-hidden
-            className="absolute -top-32 -left-24 w-[28rem] h-[28rem] rounded-full bg-primary/30 blur-3xl animate-blob"
-          />
-          <div
-            aria-hidden
-            className="absolute -top-16 right-0 w-[28rem] h-[28rem] rounded-full bg-accent-purple/30 blur-3xl animate-blob-slow"
-          />
-          <div
-            aria-hidden
-            className="absolute bottom-0 left-1/3 w-80 h-80 rounded-full bg-accent-pink/25 blur-3xl animate-blob"
-          />
+        <section className="relative w-full py-20 sm:py-24 overflow-hidden grid-lines">
+          <div aria-hidden className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="w-[40rem] h-[40rem] rounded-full border border-foreground/10" />
+            <div className="absolute w-[28rem] h-[28rem] rounded-full border border-foreground/10" />
+          </div>
 
           <div className="relative max-w-[1300px] mx-auto px-6 grid sm:grid-cols-2 gap-12 items-center">
             <div className="text-center sm:text-left">
@@ -607,7 +599,7 @@ export default function LandingPage() {
                     key={`gradient-${i}`}
                     variants={headlineWord}
                     transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="inline-block mr-[0.25em] gradient-text"
+                    className="inline-block mr-[0.25em] text-muted"
                   >
                     {word}
                   </motion.span>
