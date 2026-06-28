@@ -236,11 +236,11 @@ export default function OverviewClient({ email }: { email: string }) {
 }
 
 const STAT_COLORS = {
-  blue: "border-accent-blue/30 bg-accent-blue/10 text-accent-blue hover:shadow-accent-blue/20",
-  red: "border-accent-red/30 bg-accent-red/10 text-accent-red hover:shadow-accent-red/20",
-  pink: "border-accent-pink/30 bg-accent-pink/10 text-accent-pink hover:shadow-accent-pink/20",
-  purple: "border-accent-purple/30 bg-accent-purple/10 text-accent-purple hover:shadow-accent-purple/20",
-  gray: "border-foreground/15 bg-foreground/5 text-foreground hover:shadow-foreground/10",
+  blue: "border-t-accent-blue",
+  red: "border-t-accent-red",
+  pink: "border-t-accent-pink",
+  purple: "border-t-accent-purple",
+  gray: "border-t-foreground/30",
 } as const;
 
 function StatCard({
@@ -257,12 +257,12 @@ function StatCard({
   const content = (
     <motion.div
       variants={fadeUp}
-      whileHover={{ y: -4, scale: 1.02 }}
+      whileHover={{ y: -2 }}
       transition={{ duration: 0.3 }}
-      className={`rounded-xl border-2 p-4 hover:shadow-lg transition-shadow ${STAT_COLORS[color]}`}
+      className={`border border-foreground/15 border-t-2 p-4 ${STAT_COLORS[color]}`}
     >
       <p className="text-3xl font-extrabold">{value}</p>
-      <p className="text-sm mt-1 text-foreground/60 font-medium">{label}</p>
+      <p className="nav-mono text-muted mt-1">{label}</p>
     </motion.div>
   );
   return href ? <Link href={href}>{content}</Link> : content;
