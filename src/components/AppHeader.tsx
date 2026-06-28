@@ -109,9 +109,9 @@ export default function AppHeader({ email }: { email: string }) {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2, ease: "easeInOut" }}
-            className="sm:hidden border-t border-foreground/10 overflow-hidden"
+            className="sm:hidden border-t border-foreground/15 overflow-hidden"
           >
-            <nav className="flex flex-col px-4 py-3 gap-1 text-sm">
+            <nav className="flex flex-col px-4 py-3 gap-1 nav-mono">
               {NAV_LINKS.map((link) => {
                 const active = pathname === link.href;
                 return (
@@ -119,20 +119,18 @@ export default function AppHeader({ email }: { email: string }) {
                     key={link.href}
                     href={link.href}
                     onClick={() => setMenuOpen(false)}
-                    className={`px-3 py-2 rounded-md ${
-                      active ? "btn-gradient font-medium" : "hover:bg-foreground/5"
-                    }`}
+                    className={`px-3 py-2 ${active ? "btn-solid" : "hover:bg-foreground/5"}`}
                   >
                     {link.label}
                   </Link>
                 );
               })}
             </nav>
-            <div className="border-t border-foreground/10 px-4 py-3 flex items-center justify-between gap-3 text-sm">
-              <span className="text-foreground/60 truncate">{email}</span>
+            <div className="border-t border-foreground/15 px-4 py-3 flex items-center justify-between gap-3 nav-mono">
+              <span className="text-muted truncate normal-case">{email}</span>
               <button
                 onClick={onLogout}
-                className="px-3 py-1.5 rounded border border-foreground/15 hover:bg-foreground/5 shrink-0"
+                className="px-3 py-2 border border-foreground/20 hover:bg-foreground/5 shrink-0"
               >
                 Log out
               </button>
