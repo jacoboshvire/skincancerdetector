@@ -185,41 +185,41 @@ export default function OverviewClient({ email }: { email: string }) {
           <section>
             <h2 className="font-bold text-lg mb-3">Quick links</h2>
             <div className="space-y-3">
-              <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.2 }}>
+              <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/dashboard/scan"
-                  className="block rounded-xl border border-foreground/15 bg-foreground/5 p-4 hover:shadow-lg hover:shadow-foreground/10 transition-shadow"
+                  className="block border border-foreground/15 p-4 hover:border-foreground/40 transition-colors"
                 >
                   <p className="font-medium text-foreground">Analyze a new photo</p>
-                  <p className="text-sm text-foreground/60">
+                  <p className="text-sm text-muted">
                     Upload a lesion image for on-device classification.
                   </p>
                 </Link>
               </motion.div>
-              <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.2 }}>
+              <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/profile"
-                  className="block rounded-xl border border-foreground/15 bg-foreground/5 p-4 hover:shadow-lg hover:shadow-foreground/10 transition-shadow"
+                  className="block border border-foreground/15 p-4 hover:border-foreground/40 transition-colors"
                 >
                   <p className="font-medium text-foreground">
                     {profileComplete ? "Edit your medical record" : "Complete your medical record"}
                   </p>
-                  <p className="text-sm text-foreground/60">
+                  <p className="text-sm text-muted">
                     Background details (name, DOB, family history) for context on your history.
                   </p>
                 </Link>
               </motion.div>
               <motion.div
-                whileHover={{ y: -3 }}
+                whileHover={{ y: -2 }}
                 transition={{ duration: 0.2 }}
-                className="rounded-xl border border-foreground/15 bg-foreground/5 p-4"
+                className="border border-foreground/15 p-4"
               >
                 <p className="font-medium text-foreground">
                   {modelsReady === null
                     ? "Checking models…"
                     : `${modelsReady}/${MODEL_REGISTRY.length} models ready`}
                 </p>
-                <p className="text-sm text-foreground/60">
+                <p className="text-sm text-muted">
                   {modelsReady
                     ? "Switch between available models on the scan page."
                     : "Run the training pipeline in scripts/train_model; see the README."}
