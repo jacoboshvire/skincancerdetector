@@ -47,37 +47,30 @@ export default function AppHeader({ email }: { email: string }) {
         ref={ref}
         className={`z-30 glass-header transition-all duration-300 ${
           scrolled
-            ? "fixed top-[2%] left-1/2 -translate-x-1/2 w-[94%] max-w-5xl rounded-2xl border border-foreground/10 shadow-xl"
-            : "relative w-full border-b border-foreground/10"
+            ? "fixed top-[2%] left-1/2 -translate-x-1/2 w-[94%] max-w-5xl rounded-xl border border-foreground/15 shadow-xl"
+            : "relative w-full border-b border-foreground/15"
         }`}
       >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
         <div className="flex items-center gap-6 min-w-0">
-          <span className="font-bold text-lg flex items-center gap-1.5 shrink-0">
-            <motion.span
-              className="text-primary text-glow"
-              animate={{ scale: [1, 1.3, 1] }}
-              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-            >
-              ●
-            </motion.span>{" "}
-            <span className="gradient-text">SkinScan</span>
+          <span className="font-bold text-lg flex items-center gap-1 shrink-0 tracking-tight">
+            SkinScan<span className="text-muted">^</span>
           </span>
-          <nav className="hidden sm:flex gap-1 text-sm relative">
+          <nav className="hidden sm:flex gap-1 nav-mono relative">
             {NAV_LINKS.map((link) => {
               const active = pathname === link.href;
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`relative px-3 py-1.5 rounded-md transition-colors ${
-                    active ? "text-primary-foreground font-medium" : "hover:bg-foreground/5"
+                  className={`relative px-3 py-2 transition-colors ${
+                    active ? "text-primary-foreground" : "hover:bg-foreground/5"
                   }`}
                 >
                   {active && (
                     <motion.span
                       layoutId="nav-pill"
-                      className="absolute inset-0 rounded-md btn-gradient shadow-glow -z-10"
+                      className="absolute inset-0 bg-primary -z-10"
                       transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
                     />
                   )}
@@ -88,16 +81,14 @@ export default function AppHeader({ email }: { email: string }) {
           </nav>
         </div>
 
-        <div className="hidden sm:flex items-center gap-4 text-sm">
-          <span className="text-foreground/60 truncate max-w-[200px]">{email}</span>
-          <motion.button
+        <div className="hidden sm:flex items-center gap-4 nav-mono">
+          <span className="text-muted truncate max-w-[200px] normal-case">{email}</span>
+          <button
             onClick={onLogout}
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
-            className="px-3 py-1.5 rounded border border-foreground/15 hover:bg-foreground/5 shrink-0"
+            className="px-3 py-2 border border-foreground/20 hover:bg-foreground/5 shrink-0"
           >
             Log out
-          </motion.button>
+          </button>
         </div>
 
         <button
@@ -105,7 +96,7 @@ export default function AppHeader({ email }: { email: string }) {
           onClick={() => setMenuOpen((open) => !open)}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           aria-expanded={menuOpen}
-          className="sm:hidden p-2 -m-2 rounded-md hover:bg-foreground/5"
+          className="sm:hidden p-2 -m-2 hover:bg-foreground/5"
         >
           {menuOpen ? <CloseIcon className="w-5 h-5" /> : <MenuIcon className="w-5 h-5" />}
         </button>
