@@ -36,6 +36,7 @@ export default function RegisterPage() {
 
   return (
     <div className="relative flex flex-1 items-center justify-center px-6 py-16 overflow-hidden grid-lines">
+      <ThemeToggle className="absolute top-4 right-4" />
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
