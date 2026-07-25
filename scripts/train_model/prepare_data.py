@@ -97,14 +97,14 @@ def load_bcn20000() -> pd.DataFrame:
         print(f"BCN20000: {missing.sum()} images referenced in metadata were not found on disk; dropping them.")
     df = df[~missing]
 
-    df["dx"] = df["diagnosis"].map(ISIC_DIAGNOSIS_TO_HAM)
+    df["dx"] = df["diagnosis_3"].map(ISIC_DIAGNOSIS_TO_HAM)
     unmapped = df[df["dx"].isna()]
     if len(unmapped):
         print(
             f"BCN20000: dropping {len(unmapped)} images whose diagnosis falls outside "
             "the 7-class taxonomy:"
         )
-        print(unmapped["diagnosis"].value_counts(dropna=False))
+        print(unmapped["diagnosis_3"].value_counts(dropna=False))
     df = df.dropna(subset=["dx"])
 
     df["source"] = "bcn20000"
