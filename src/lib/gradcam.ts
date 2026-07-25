@@ -19,6 +19,7 @@ interface LayerLike {
 
 interface ContainerLike {
   layers: LayerLike[];
+  inputs: tf.SymbolicTensor[];
 }
 
 function isRank4Shape(shape: unknown): shape is (number | null)[] {
