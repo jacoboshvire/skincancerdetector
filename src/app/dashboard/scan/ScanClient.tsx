@@ -7,10 +7,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import AppHeader from "@/components/AppHeader";
 import HeartButton from "@/components/HeartButton";
 import { loadModel, predictFromImage, isModelAvailable } from "@/lib/clientModel";
-import { HAM10000_CLASSES, malignantRiskFromProbabilities, topPrediction } from "@/lib/modelClasses";
+import {
+  HAM10000_CLASSES,
+  malignantRiskFromProbabilities,
+  topPrediction,
+  confidenceReasoning,
+} from "@/lib/modelClasses";
 import { MODEL_REGISTRY, DEFAULT_MODEL_ID, getModelInfo } from "@/lib/modelRegistry";
 import { assessSymptoms } from "@/lib/symptomRisk";
 import { truncateImageName } from "@/lib/format";
+import { computeGradCam } from "@/lib/gradcam";
+import type { RiskFactor } from "@/lib/riskFusion";
 
 interface ScanRecord {
   id: number;
