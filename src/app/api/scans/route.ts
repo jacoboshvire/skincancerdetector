@@ -13,6 +13,17 @@ const schema = z.object({
   bodyLocation: z.string().max(100).nullable().optional(),
   notes: z.string().max(2000).nullable().optional(),
   model: z.string().max(50).optional(),
+  combinedRisk: z.number().min(0).max(1).nullable().optional(),
+  riskFactors: z
+    .array(
+      z.object({
+        label: z.string(),
+        contribution: z.number(),
+        detail: z.string(),
+      })
+    )
+    .nullable()
+    .optional(),
 });
 
 export async function GET() {
