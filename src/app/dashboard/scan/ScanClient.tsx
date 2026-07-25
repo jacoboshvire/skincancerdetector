@@ -460,8 +460,16 @@ export default function ScanClient({ email }: { email: string }) {
                     )}
                     <p className="font-bold text-lg mt-2">{top!.cls.label}</p>
                     <p className="text-sm mt-1 text-muted">
-                      Confidence: {(top!.confidence * 100).toFixed(1)}% · Overall
+                      Confidence: {(top!.confidence * 100).toFixed(1)}% · Image-only
                       malignant-category risk: {(malignantRisk! * 100).toFixed(1)}%
+                    </p>
+                    <p className="text-sm mt-1 text-muted">
+                      Combined risk (image + profile + symptoms):{" "}
+                      <span className="font-medium text-foreground">
+                        {assessing
+                          ? "calculating…"
+                          : `${((assessment?.combinedRisk ?? malignantRisk!) * 100).toFixed(1)}%`}
+                      </span>
                     </p>
                     {symptomAssessment.flagged && (
                       <p className="text-sm mt-2 text-muted">
@@ -470,6 +478,18 @@ export default function ScanClient({ email }: { email: string }) {
                         . A single photo can't show change over time; these are classic reasons to
                         get a lesion checked regardless of how it looks in one image.
                       </p>
+                    )}
+                    {assessment && assessment.factors.length > 1 && (
+                      <ul className="mt-3 space-y-1 border-t border-foreground/10 pt-3">
+                        {assessment.factors.map((f) => (
+                          <li key={f.label} className="text-xs text-muted flex justify-between gap-3">
+                            <span>
+                              <span className="text-foreground font-medium">{f.label}:</span> {f.detail}
+                            </span>
+                            <span className="shrink-0">+{(f.contribution * 100).toFixed(0)}pt</span>
+                          </li>
+                        ))}
+                      </ul>
                     )}
                   </motion.div>
 
