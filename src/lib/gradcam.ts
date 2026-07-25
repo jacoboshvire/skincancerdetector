@@ -66,6 +66,30 @@ function getGradSubModels(model: tf.LayersModel, modelId: string): GradSubModels
   const lastConv = findLastConvLayer(container);
   const convOutput = lastConv.output as tf.SymbolicTensor;
 
+  // eslint-disable-next-line no-console
+  console.log("[gradcam-debug] container === model:", container === (model as unknown as ContainerLike));
+  // eslint-disable-next-line no-console
+  console.log("[gradcam-debug] container.layers.length:", container.layers.length);
+  // eslint-disable-next-line no-console
+  console.log("[gradcam-debug] container.inputs:", (container as unknown as { inputs?: unknown }).inputs);
+  const cInputs = (container as unknown as { inputs?: tf.SymbolicTensor[] }).inputs;
+  if (cInputs) {
+    // eslint-disable-next-line no-console
+    console.log(
+      "[gradcam-debug] container.inputs sourceLayer names:",
+      cInputs.map((t) => t.sourceLayer?.name)
+    );
+  }
+  // eslint-disable-next-line no-console
+  console.log("[gradcam-debug] lastConv name/class:", lastConv.name, (lastConv as unknown as { getClassName?: () => string }).getClassName?.());
+  // eslint-disable-next-line no-console
+  console.log("[gradcam-debug] convOutput sourceLayer name:", convOutput.sourceLayer?.name);
+  // eslint-disable-next-line no-console
+  console.log(
+    "[gradcam-debug] model.layers top-level names:",
+    model.layers.map((l) => l.name)
+  );
+
   // convOutput lives inside the nested backbone's own subgraph, rooted at the
   // backbone's own internal Input node -- not the outer model's Input. Slicing
   // from `model.inputs` fails with "Graph disconnected" because tfjs can't
