@@ -166,7 +166,7 @@ export async function computeGradCam(
   const convOutput = tf.tidy(() => baseModel.predict(input) as tf.Tensor4D);
 
   const gradFn = tf.grad((x: tf.Tensor) => {
-    const preds = headModel.predict(x) as tf.Tensor;
+    const preds = headLayers.reduce((t, layer) => layer.apply(t) as tf.Tensor, x as tf.Tensor);
     return preds.gather([classIndex], 1).sum();
   });
   const grads = gradFn(convOutput) as tf.Tensor4D;
