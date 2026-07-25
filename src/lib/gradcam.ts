@@ -52,9 +52,21 @@ function findLastConvLayer(container: ContainerLike): LayerLike {
   return found;
 }
 
+function layersAfter(layers: LayerLike[], target: LayerLike): LayerLike[] {
+  const idx = layers.indexOf(target);
+  return idx === -1 ? [] : layers.slice(idx + 1);
+}
+
 interface GradSubModels {
   baseModel: tf.LayersModel;
-  headModel: tf.LayersModel;
+  // Layers between the conv output and the model's final prediction, applied
+  // eagerly (see computeGradCam) rather than wrapped in a second tf.model().
+  // tf.model() requires `inputs` to be genuine InputLayer tensors, so an
+  // intermediate tensor like the conv output can't be used to build a "head"
+  // sub-model the way `baseModel` is built from the backbone's own inputs
+  // below -- calling each layer's `.apply()` directly on a concrete tensor
+  // runs it eagerly and stays inside tf.grad's traced computation instead.
+  headLayers: LayerLike[];
 }
 
 const gradModelCache = new Map<string, GradSubModels>();
@@ -67,30 +79,6 @@ function getGradSubModels(model: tf.LayersModel, modelId: string): GradSubModels
   const lastConv = findLastConvLayer(container);
   const convOutput = lastConv.output as tf.SymbolicTensor;
 
-  // eslint-disable-next-line no-console
-  console.log("[gradcam-debug] container === model:", container === (model as unknown as ContainerLike));
-  // eslint-disable-next-line no-console
-  console.log("[gradcam-debug] container.layers.length:", container.layers.length);
-  // eslint-disable-next-line no-console
-  console.log("[gradcam-debug] container.inputs:", (container as unknown as { inputs?: unknown }).inputs);
-  const cInputs = (container as unknown as { inputs?: tf.SymbolicTensor[] }).inputs;
-  if (cInputs) {
-    // eslint-disable-next-line no-console
-    console.log(
-      "[gradcam-debug] container.inputs sourceLayer names:",
-      cInputs.map((t) => t.sourceLayer?.name)
-    );
-  }
-  // eslint-disable-next-line no-console
-  console.log("[gradcam-debug] lastConv name/class:", lastConv.name, (lastConv as unknown as { getClassName?: () => string }).getClassName?.());
-  // eslint-disable-next-line no-console
-  console.log("[gradcam-debug] convOutput sourceLayer name:", convOutput.sourceLayer?.name);
-  // eslint-disable-next-line no-console
-  console.log(
-    "[gradcam-debug] model.layers top-level names:",
-    model.layers.map((l) => l.name)
-  );
-
   // convOutput lives inside the nested backbone's own subgraph, rooted at the
   // backbone's own internal Input node -- not the outer model's Input. Slicing
   // from `model.inputs` fails with "Graph disconnected" because tfjs can't
@@ -100,9 +88,22 @@ function getGradSubModels(model: tf.LayersModel, modelId: string): GradSubModels
   // through baseModel gives the same activations as slicing the outer model
   // would have.
   const baseModel = tf.model({ inputs: container.inputs, outputs: convOutput });
-  const headModel = tf.model({ inputs: convOutput, outputs: model.output as tf.SymbolicTensor });
 
-  const built = { baseModel, headModel };
+  // Any layers left inside the backbone after the conv layer we grabbed
+  // (there are none for the two shipped backbones -- their last layer is the
+  // conv/activation we use -- but this stays correct if that ever changes),
+  // followed by the outer model's post-backbone layers (GlobalAveragePooling2D,
+  // Dropout, Dense). Both shipped backbones end in a linear chain here (no
+  // residual/skip layers after the point we start from), so applying each in
+  // sequence is safe -- see the file-level comment.
+  const containerTail = layersAfter(container.layers, lastConv);
+  const outerTail =
+    container === (model as unknown as ContainerLike)
+      ? []
+      : layersAfter(model.layers as unknown as LayerLike[], container as unknown as LayerLike);
+  const headLayers = [...containerTail, ...outerTail];
+
+  const built = { baseModel, headLayers };
   gradModelCache.set(modelId, built);
   return built;
 }
@@ -153,7 +154,7 @@ export async function computeGradCam(
   opacity = 0.55
 ): Promise<HTMLCanvasElement> {
   const { preprocessing } = getModelInfo(modelId);
-  const { baseModel, headModel } = getGradSubModels(model, modelId);
+  const { baseModel, headLayers } = getGradSubModels(model, modelId);
 
   const input = tf.tidy(() => {
     const pixels = tf.browser.fromPixels(image).toFloat();
