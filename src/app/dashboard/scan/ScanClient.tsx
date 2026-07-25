@@ -314,6 +314,7 @@ export default function ScanClient({ email }: { email: string }) {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3 }}
+                    className="relative inline-block"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
@@ -323,6 +324,14 @@ export default function ScanClient({ email }: { email: string }) {
                       crossOrigin="anonymous"
                       className="max-h-64 mx-auto object-contain"
                     />
+                    {gradCamUrl && showHeatmap && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={gradCamUrl}
+                        alt="Grad-CAM attention heatmap"
+                        className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+                      />
+                    )}
                   </motion.div>
                 ) : (
                   <motion.p
