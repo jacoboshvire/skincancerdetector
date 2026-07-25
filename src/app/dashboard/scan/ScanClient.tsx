@@ -31,7 +31,14 @@ interface ScanRecord {
   notes: string | null;
   favorite: boolean;
   model: string;
+  combinedRisk: number;
+  riskFactors: RiskFactor[] | null;
   createdAt: number;
+}
+
+interface Assessment {
+  combinedRisk: number;
+  factors: RiskFactor[];
 }
 
 type ModelStatus = "checking" | "missing" | "loading" | "ready" | "error";
