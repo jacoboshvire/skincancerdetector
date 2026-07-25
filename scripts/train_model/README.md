@@ -83,10 +83,15 @@ pip install -r requirements.txt
 
    Outputs `model_<arch>.h5` in this directory. On CPU on a MacBook Air
    (8GB), the full run (5 head epochs + 10 fine-tune epochs) takes roughly
-   30-45 minutes depending on the architecture. Expect val accuracy around
-   70-75% on the 7-class problem; HAM10000 is heavily skewed toward benign
-   nevi (`nv`), which `train.py` corrects for with class weighting, but this
-   is a teaching example, not a clinical-grade classifier.
+   30-45 minutes on HAM10000 alone; expect longer (both per epoch and likely
+   more epochs to converge) with BCN20000 added, since there's ~3x the data.
+   Expect val accuracy around 70-75% on HAM10000 alone for the 7-class
+   problem; adding BCN20000 gives the model more examples per class to learn
+   from, which typically helps, but the exact gain depends on your run --
+   watch `train_output*.log` rather than assuming a number. Both datasets are
+   skewed toward benign nevi (`nv`), which `train.py` corrects for with class
+   weighting, but this is a teaching example, not a clinical-grade
+   classifier.
 
    Two environment variables matter here:
    - `FORCE_CPU=1`: on Apple Silicon, `tensorflow-metal` GPU acceleration is
