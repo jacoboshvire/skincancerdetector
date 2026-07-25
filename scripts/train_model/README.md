@@ -93,6 +93,13 @@ pip install -r requirements.txt
    weighting, but this is a teaching example, not a clinical-grade
    classifier.
 
+   Training images also get synthetic hair drawn onto ~50% of them
+   (`HAIR_AUGMENT_PROB` / `HAIR_MAX_STRANDS` in `train.py`) -- real
+   dermoscopic photos are frequently partly obscured by body hair, and a
+   model that's never seen that during training tends to get thrown off by
+   it. This only touches the training pipeline, not inference, so there's
+   nothing to keep in sync on the client side.
+
    Two environment variables matter here:
    - `FORCE_CPU=1`: on Apple Silicon, `tensorflow-metal` GPU acceleration is
      fast for the training steps themselves but has been observed to hang
