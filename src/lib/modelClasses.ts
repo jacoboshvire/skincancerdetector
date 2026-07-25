@@ -33,3 +33,25 @@ export function topPrediction(probabilities: number[]) {
     confidence: probabilities[bestIndex] ?? 0,
   };
 }
+
+export interface ConfidenceReasoning {
+  top: { cls: LesionClass; confidence: number };
+  runnerUp: { cls: LesionClass; confidence: number };
+  margin: number;
+  closeCall: boolean;
+}
+
+/**
+ * Explains *why* the top class won: how far ahead it was of the runner-up.
+ * A thin margin means the model was genuinely torn between two classes, which
+ * matters for interpreting the result (e.g. top class benign, runner-up
+ * malignant, margin 3pp is a very different result from a 60pp margin).
+ */
+export function confidenceReasoning(probabilities: number[]): ConfidenceReasoning {
+  const indices = probabilities.map((_, i) => i).sort((a, b) => probabilities[b] - probabilities[a]);
+  const [topIndex, runnerUpIndex] = indices;
+  const top = { cls: HAM10000_CLASSES[topIndex], confidence: probabilities[topIndex] ?? 0 };
+  const runnerUp = { cls: HAM10000_CLASSES[runnerUpIndex], confidence: probabilities[runnerUpIndex] ?? 0 };
+  const margin = top.confidence - runnerUp.confidence;
+  return { top, runnerUp, margin, closeCall: margin < 0.15 };
+}
