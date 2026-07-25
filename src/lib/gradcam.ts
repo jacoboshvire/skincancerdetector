@@ -66,7 +66,15 @@ function getGradSubModels(model: tf.LayersModel, modelId: string): GradSubModels
   const lastConv = findLastConvLayer(container);
   const convOutput = lastConv.output as tf.SymbolicTensor;
 
-  const baseModel = tf.model({ inputs: model.inputs, outputs: convOutput });
+  // convOutput lives inside the nested backbone's own subgraph, rooted at the
+  // backbone's own internal Input node -- not the outer model's Input. Slicing
+  // from `model.inputs` fails with "Graph disconnected" because tfjs can't
+  // trace across that model-as-layer boundary. `container.inputs` stays
+  // entirely within the nested subgraph, which is valid; since nothing but
+  // the outer Input feeds the backbone, running the same preprocessed tensor
+  // through baseModel gives the same activations as slicing the outer model
+  // would have.
+  const baseModel = tf.model({ inputs: container.inputs, outputs: convOutput });
   const headModel = tf.model({ inputs: convOutput, outputs: model.output as tf.SymbolicTensor });
 
   const built = { baseModel, headModel };
