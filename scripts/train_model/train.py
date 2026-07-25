@@ -72,6 +72,55 @@ ARCH_CONFIG = MODEL_ARCHS[MODEL_ARCH]
 
 HERE = Path(__file__).parent
 
+# Real dermoscopic photos are often partly obscured by body hair; a model
+# trained only on clean images tends to either get distracted by hair
+# strands (treating them as texture/edges relevant to the lesion) or perform
+# worse specifically on hairy images, since it never saw that during
+# training. Rather than trying to strip hair out at inference time (which
+# would require a matching preprocessing step in the browser client, and get
+# the mismatch-prone "must stay in sync with clientModel.ts" problem the
+# module docstring above already warns about), we do the opposite: draw
+# synthetic hair onto a portion of the *training* images so the model
+# learns to see past it. This is the same trick several top ISIC-challenge
+# solutions used.
+HAIR_AUGMENT_PROB = 0.5
+HAIR_MAX_STRANDS = 6
+
+
+def _draw_synthetic_hair(image_np: np.ndarray) -> np.ndarray:
+    if np.random.rand() > HAIR_AUGMENT_PROB:
+        return image_np.astype(np.float32)
+
+    img = Image.fromarray(np.clip(image_np, 0, 255).astype(np.uint8))
+    draw = ImageDraw.Draw(img)
+    h, w = image_np.shape[:2]
+
+    for _ in range(np.random.randint(1, HAIR_MAX_STRANDS + 1)):
+        # Real hairs are near-black to dark-brown and much thinner than any
+        # lesion feature; a handful of short straight segments chained at
+        # slightly bent angles reads as a curved strand without needing a
+        # true curve-drawing primitive.
+        color = tuple(int(c) for c in np.random.randint(0, 50, size=3))
+        stroke_width = np.random.randint(1, 3)
+        x, y = np.random.uniform(0, w), np.random.uniform(0, h)
+        angle = np.random.uniform(0, 2 * np.pi)
+        segment_len = np.random.uniform(0.05, 0.15) * max(w, h)
+        points = [(x, y)]
+        for _ in range(np.random.randint(4, 10)):
+            angle += np.random.uniform(-0.4, 0.4)
+            x = x + segment_len * np.cos(angle)
+            y = y + segment_len * np.sin(angle)
+            points.append((x, y))
+        draw.line(points, fill=color, width=int(stroke_width))
+
+    return np.array(img).astype(np.float32)
+
+
+def add_synthetic_hair(image: tf.Tensor) -> tf.Tensor:
+    out = tf.numpy_function(_draw_synthetic_hair, [image], tf.float32)
+    out.set_shape(image.shape)
+    return out
+
 
 def load_manifest(name: str) -> pd.DataFrame:
     return pd.read_csv(HERE / name)
