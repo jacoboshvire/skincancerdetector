@@ -201,6 +201,8 @@ export default function ScanClient({ email }: { email: string }) {
           bodyLocation: bodyLocation || null,
           notes: notes || null,
           model: resultModelId ?? modelId,
+          combinedRisk: assessment?.combinedRisk ?? malignantRisk,
+          riskFactors: assessment?.factors ?? null,
         }),
       });
       if (res.ok) {
