@@ -344,6 +344,24 @@ export default function ScanClient({ email }: { email: string }) {
                   </motion.p>
                 )}
               </AnimatePresence>
+              {(gradCamLoading || gradCamUrl || gradCamError) && (
+                <div className="mt-3 flex items-center justify-center gap-2 text-xs nav-mono text-muted">
+                  {gradCamLoading ? (
+                    <span>Computing model attention…</span>
+                  ) : gradCamError ? (
+                    <span className="text-accent-red normal-case">Heatmap unavailable: {gradCamError}</span>
+                  ) : (
+                    <label className="inline-flex items-center gap-2 cursor-pointer normal-case">
+                      <input
+                        type="checkbox"
+                        checked={showHeatmap}
+                        onChange={(e) => setShowHeatmap(e.target.checked)}
+                      />
+                      Show model attention (Grad-CAM)
+                    </label>
+                  )}
+                </div>
+              )}
               <input
                 ref={fileInputRef}
                 type="file"
