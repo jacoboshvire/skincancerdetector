@@ -51,6 +51,8 @@ export async function GET() {
       notes: r.notes,
       favorite: r.favorite,
       model: r.model,
+      combinedRisk: r.combined_risk ?? r.malignant_risk,
+      riskFactors: r.risk_factors ? JSON.parse(r.risk_factors) : null,
       createdAt: Number(r.created_at),
     })),
   });
