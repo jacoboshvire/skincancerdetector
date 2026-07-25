@@ -8,10 +8,13 @@ training.
 ## What it does
 
 Transfer-learns an ImageNet-pretrained backbone on
-[HAM10000](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000),
-10,015 dermoscopic images across 7 lesion categories. The base is frozen
-while a new classification head trains, then the top of the backbone is
-unfrozen for a short fine-tuning pass.
+[HAM10000](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000)
+(10,015 dermoscopic images), optionally combined with
+[BCN20000](https://api.isic-archive.com/collections/249/) (~18,900 more,
+disjoint from HAM10000) for roughly 3x the training data across the same 7
+lesion categories. The base is frozen while a new classification head
+trains, then the top of the backbone is unfrozen for a short fine-tuning
+pass.
 
 Two architectures are supported out of the box, selected via the
 `MODEL_ARCH` environment variable (default `mobilenetv2`):
@@ -48,6 +51,23 @@ pip install -r requirements.txt
    ```
 
    This stages the dataset under `scripts/train_model/data/`.
+
+   **Optional: also add BCN20000** for more training data (no image overlap
+   with HAM10000, same diagnostic categories):
+
+   ```bash
+   pip install isic-cli   # or grab the standalone binary if pip's copy
+                           # refuses to run with a "new major version" error:
+                           # https://github.com/ImageMarkup/isic-cli/releases/latest
+
+   python download_bcn20000.py
+   ```
+
+   This stages ~18,900 images (up to 1024x1024, several GB) under
+   `scripts/train_model/data/bcn20000/`. `prepare_data.py` picks it up
+   automatically if present, maps its `diagnosis` field onto the same 7
+   classes, and drops anything outside that taxonomy (see
+   `ISIC_DIAGNOSIS_TO_HAM` in `prepare_data.py` for exactly what's dropped).
 
 2. **Build train/validation manifests:**
 
