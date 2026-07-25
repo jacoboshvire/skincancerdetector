@@ -230,6 +230,7 @@ export default function ScanClient({ email }: { email: string }) {
 
   const top = probabilities ? topPrediction(probabilities) : null;
   const malignantRisk = probabilities ? malignantRiskFromProbabilities(probabilities) : null;
+  const reasoning = probabilities ? confidenceReasoning(probabilities) : null;
   const symptomAssessment = assessSymptoms(notes);
 
   return (
@@ -490,6 +491,13 @@ export default function ScanClient({ email }: { email: string }) {
                       Confidence: {(top!.confidence * 100).toFixed(1)}% · Image-only
                       malignant-category risk: {(malignantRisk! * 100).toFixed(1)}%
                     </p>
+                    {reasoning?.closeCall && (
+                      <p className="text-sm mt-1 text-muted">
+                        Close call: only {(reasoning.margin * 100).toFixed(1)} points ahead of{" "}
+                        <span className="font-medium text-foreground">{reasoning.runnerUp.cls.label}</span>{" "}
+                        ({(reasoning.runnerUp.confidence * 100).toFixed(1)}%).
+                      </p>
+                    )}
                     <p className="text-sm mt-1 text-muted">
                       Combined risk (image + profile + symptoms):{" "}
                       <span className="font-medium text-foreground">
