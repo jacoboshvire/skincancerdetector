@@ -35,7 +35,7 @@ export async function isModelAvailable(modelId: string): Promise<boolean> {
 const EFFICIENTNET_MEAN = [0.485, 0.456, 0.406];
 const EFFICIENTNET_VAR = [0.229, 0.224, 0.225];
 
-function preprocessPixels(pixels: tf.Tensor3D, mode: Preprocessing): tf.Tensor3D {
+export function preprocessPixels(pixels: tf.Tensor3D, mode: Preprocessing): tf.Tensor3D {
   if (mode === "mobilenet") {
     return pixels.div(127.5).sub(1) as tf.Tensor3D; // [-1, 1]
   }
