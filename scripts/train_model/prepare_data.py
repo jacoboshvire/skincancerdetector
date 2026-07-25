@@ -26,32 +26,29 @@ BCN_METADATA_CSV = BCN_DIR / "metadata.csv"
 # Must match the class order in src/lib/modelClasses.ts (HAM10000_CLASSES)
 CLASS_ORDER = ["akiec", "bcc", "bkl", "df", "mel", "nv", "vasc"]
 
-# Maps ISIC Archive `diagnosis` field values (isic_metadata.fields.DiagnosisEnum)
+# Maps BCN20000's `diagnosis_3` field (the specific-diagnosis level of its
+# hierarchical diagnosis_1/2/3 metadata -- NOT the flat `diagnosis` field
+# some other ISIC collections use; verified directly against the actual
+# downloaded metadata.csv, not just the isic-metadata package's schema docs)
 # onto the 7-class HAM10000 taxonomy above. HAM10000's own class definitions
-# already bundle several distinct ISIC diagnoses together -- akiec covers
-# both actinic keratosis and Bowen's-disease-type squamous cell carcinoma in
-# situ; bkl covers seborrheic keratosis, solar lentigo, lichenoid keratosis,
-# and the ISIC catch-all "pigmented benign keratosis"; vasc covers vascular
-# lesion and angioma/angiokeratoma. Diagnoses with no reasonable HAM10000
-# equivalent (scar, verruca, neurofibroma, etc.) are intentionally left
-# unmapped and dropped -- see the "unmapped diagnoses" summary this script
-# prints, which lists exactly what got excluded and how often.
+# already bundle several distinct diagnoses together -- akiec covers both
+# actinic keratosis and Bowen's-disease-type squamous cell carcinoma in situ;
+# bkl covers seborrheic keratosis and solar lentigo. BCN20000 has no vascular
+# lesion cases at all, so `vasc` gets nothing from this source. Diagnoses
+# with no reasonable HAM10000 equivalent (Scar, and anything NaN) are
+# intentionally left unmapped and dropped -- see the "unmapped diagnoses"
+# summary this script prints, which lists exactly what got excluded and how
+# often.
 ISIC_DIAGNOSIS_TO_HAM = {
-    "actinic keratosis": "akiec",
-    "squamous cell carcinoma": "akiec",
-    "basal cell carcinoma": "bcc",
-    "seborrheic keratosis": "bkl",
-    "solar lentigo": "bkl",
-    "lichenoid keratosis": "bkl",
-    "pigmented benign keratosis": "bkl",
-    "dermatofibroma": "df",
-    "melanoma": "mel",
-    "melanoma metastasis": "mel",
-    "nevus": "nv",
-    "nevus spilus": "nv",
-    "vascular lesion": "vasc",
-    "angioma": "vasc",
-    "angiokeratoma": "vasc",
+    "Solar or actinic keratosis": "akiec",
+    "Squamous cell carcinoma, NOS": "akiec",
+    "Basal cell carcinoma": "bcc",
+    "Seborrheic keratosis": "bkl",
+    "Solar lentigo": "bkl",
+    "Dermatofibroma": "df",
+    "Melanoma, NOS": "mel",
+    "Melanoma metastasis": "mel",
+    "Nevus": "nv",
 }
 
 
