@@ -137,6 +137,11 @@ def make_dataset(df: pd.DataFrame, training: bool) -> tf.data.Dataset:
         image = tf.io.decode_jpeg(image, channels=3)
         image = tf.image.resize(image, [IMG_SIZE, IMG_SIZE])
         image = tf.cast(image, tf.float32)
+        if training:
+            # Must run in raw 0-255 space, before either architecture's
+            # rescale, so hair color values (drawn 0-50 per channel) mean
+            # the same thing regardless of MODEL_ARCH.
+            image = add_synthetic_hair(image)
         if ARCH_CONFIG["rescale"]:
             image = (image / 127.5) - 1.0  # match client-side normalization
         return image, label
