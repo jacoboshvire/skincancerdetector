@@ -52,22 +52,26 @@ pip install -r requirements.txt
 
    This stages the dataset under `scripts/train_model/data/`.
 
-   **Optional: also add BCN20000** for more training data (no image overlap
-   with HAM10000, same diagnostic categories):
+   **Optional: also add BCN20000, MSK-1..5, UDA-1/2, and SONIC** for
+   substantially more training data (all disjoint from HAM10000 -- no
+   duplicate images):
 
    ```bash
-   pip install isic-cli   # or grab the standalone binary if pip's copy
-                           # refuses to run with a "new major version" error:
-                           # https://github.com/ImageMarkup/isic-cli/releases/latest
+   # `pip install isic-cli`'s console script refuses to run any real
+   # command (nags "you must upgrade" regardless of the pip version) --
+   # grab the standalone binary instead and put it on PATH:
+   # https://github.com/ImageMarkup/isic-cli/releases/latest
 
-   python download_bcn20000.py
+   python download_bcn20000.py      # ~18,900 images, up to 1024x1024, several GB
+   python download_extra_isic.py    # ~13,700 more (MSK-1..5, UDA-1/2, capped SONIC sample)
    ```
 
-   This stages ~18,900 images (up to 1024x1024, several GB) under
-   `scripts/train_model/data/bcn20000/`. `prepare_data.py` picks it up
-   automatically if present, maps its `diagnosis_3` field onto the same 7
-   classes, and drops anything outside that taxonomy (see
-   `ISIC_DIAGNOSIS_TO_HAM` in `prepare_data.py` for exactly what's dropped).
+   These stage under `scripts/train_model/data/{bcn20000,isic_extra,isic_extra_sonic}/`.
+   `prepare_data.py` picks up whichever of these are present, maps each
+   collection's `diagnosis_3` field onto the same 7 classes, and drops
+   anything outside that taxonomy (see `ISIC_DIAGNOSIS_TO_HAM` in
+   `prepare_data.py` for exactly what's dropped, and why SONIC -- which is
+   100% nevus -- is capped rather than included in full).
 
 2. **Build train/validation manifests:**
 
