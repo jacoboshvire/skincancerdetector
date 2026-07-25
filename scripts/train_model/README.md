@@ -65,7 +65,7 @@ pip install -r requirements.txt
 
    This stages ~18,900 images (up to 1024x1024, several GB) under
    `scripts/train_model/data/bcn20000/`. `prepare_data.py` picks it up
-   automatically if present, maps its `diagnosis` field onto the same 7
+   automatically if present, maps its `diagnosis_3` field onto the same 7
    classes, and drops anything outside that taxonomy (see
    `ISIC_DIAGNOSIS_TO_HAM` in `prepare_data.py` for exactly what's dropped).
 
