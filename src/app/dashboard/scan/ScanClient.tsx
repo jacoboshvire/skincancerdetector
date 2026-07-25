@@ -131,23 +131,55 @@ export default function ScanClient({ email }: { email: string }) {
     setBodyLocation("");
     setNotes("");
     setSaved(false);
+    setAssessment(null);
+    setGradCamUrl(null);
+    setGradCamError(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
   const onAnalyze = useCallback(async () => {
     if (!imageRef.current || modelStatus !== "ready") return;
     setAnalyzing(true);
+    setAssessment(null);
+    setGradCamUrl(null);
+    setGradCamError(null);
     try {
       const model = (await loadModel(modelId)) as tf.LayersModel;
       const probs = await predictFromImage(model, imageRef.current, modelId);
       setProbabilities(probs);
       setResultModelId(modelId);
+
+      const { cls } = topPrediction(probs);
+      const classIndex = HAM10000_CLASSES.findIndex((c) => c.code === cls.code);
+      const imageEl = imageRef.current;
+
+      setAssessing(true);
+      fetch("/api/scans/assess", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          probabilities: probs,
+          bodyLocation: bodyLocation || null,
+          notes: notes || null,
+        }),
+      })
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (data) setAssessment({ combinedRisk: data.combinedRisk, factors: data.factors });
+        })
+        .finally(() => setAssessing(false));
+
+      setGradCamLoading(true);
+      computeGradCam(model, imageEl, modelId, classIndex)
+        .then((canvas) => setGradCamUrl(canvas.toDataURL("image/png")))
+        .catch((err) => setGradCamError(err instanceof Error ? err.message : String(err)))
+        .finally(() => setGradCamLoading(false));
     } catch (err) {
       setModelError(err instanceof Error ? err.message : String(err));
     } finally {
       setAnalyzing(false);
     }
-  }, [modelStatus, modelId]);
+  }, [modelStatus, modelId, bodyLocation, notes]);
 
   async function onSaveResult() {
     if (!probabilities) return;
