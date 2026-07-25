@@ -75,6 +75,12 @@ export default function ScanClient({ email }: { email: string }) {
   const [saved, setSaved] = useState(false);
   const [history, setHistory] = useState<ScanRecord[]>([]);
   const [historyLoading, setHistoryLoading] = useState(true);
+  const [assessment, setAssessment] = useState<Assessment | null>(null);
+  const [assessing, setAssessing] = useState(false);
+  const [gradCamUrl, setGradCamUrl] = useState<string | null>(null);
+  const [gradCamLoading, setGradCamLoading] = useState(false);
+  const [gradCamError, setGradCamError] = useState<string | null>(null);
+  const [showHeatmap, setShowHeatmap] = useState(true);
 
   useEffect(() => {
     const stored = window.localStorage.getItem(MODEL_STORAGE_KEY);
