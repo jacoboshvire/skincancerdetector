@@ -88,6 +88,8 @@ export interface ScanRow {
   notes: string | null;
   favorite: boolean;
   model: string;
+  combined_risk: number | null;
+  risk_factors: string | null;
   created_at: number;
 }
 
