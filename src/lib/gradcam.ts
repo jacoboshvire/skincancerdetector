@@ -15,6 +15,7 @@ interface LayerLike {
   name: string;
   outputShape: unknown;
   output: tf.SymbolicTensor | tf.SymbolicTensor[];
+  apply(x: tf.Tensor | tf.SymbolicTensor): tf.Tensor | tf.SymbolicTensor;
 }
 
 interface ContainerLike {
