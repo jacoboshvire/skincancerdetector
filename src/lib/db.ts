@@ -31,13 +31,18 @@ function ensureSchema(): Promise<void> {
           notes TEXT,
           favorite BOOLEAN NOT NULL DEFAULT FALSE,
           model TEXT NOT NULL DEFAULT 'mobilenetv2',
+          combined_risk DOUBLE PRECISION,
+          risk_factors TEXT,
           created_at BIGINT NOT NULL
         )
       `;
 
       await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS favorite BOOLEAN NOT NULL DEFAULT FALSE`;
       await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS model TEXT NOT NULL DEFAULT 'mobilenetv2'`;
+      await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS combined_risk DOUBLE PRECISION`;
+      await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS risk_factors TEXT`;
       await sql`CREATE INDEX IF NOT EXISTS idx_scans_user_id ON scans(user_id)`;
+      await sql`CREATE INDEX IF NOT EXISTS idx_scans_user_body_location ON scans(user_id, body_location)`;
 
       await sql`
         CREATE TABLE IF NOT EXISTS profiles (
