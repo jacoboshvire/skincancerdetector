@@ -30,7 +30,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFilter
 from sklearn.utils.class_weight import compute_class_weight
 
 # Some tensorflow-metal / TF version combos hang during the validation phase
