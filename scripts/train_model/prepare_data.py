@@ -65,6 +65,12 @@ ISIC_DIAGNOSIS_TO_HAM = {
     "Hemangioma": "vasc",
     "Angiokeratoma": "vasc",
     "Pyogenic granuloma": "vasc",
+    "Lymphangioma": "vasc",
+    "Pigmented benign keratosis": "bkl",
+    # Keratoacanthoma is a well-differentiated squamous cell carcinoma
+    # variant, bundled into akiec for the same reason invasive/in-situ SCC
+    # already are above.
+    "Keratoacanthoma": "akiec",
 }
 
 # (directory under ./data, source label used in the printed breakdown)
@@ -72,6 +78,8 @@ ISIC_COLLECTION_DIRS = [
     ("bcn20000", "bcn20000"),
     ("isic_extra", "isic_extra"),
     ("isic_extra_sonic", "sonic"),
+    ("isic_more", "isic_more"),
+    ("isic_more_challenge2020", "challenge2020"),
 ]
 
 
