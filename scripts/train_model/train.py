@@ -182,11 +182,24 @@ def make_dataset(df: pd.DataFrame, training: bool) -> tf.data.Dataset:
         image = tf.image.resize(image, [IMG_SIZE, IMG_SIZE])
         image = tf.cast(image, tf.float32)
         if training:
-            # Must run in raw 0-255 space, before either architecture's
-            # rescale, so hair/shadow color values mean the same thing
-            # regardless of MODEL_ARCH.
+            # Everything below must run in raw 0-255 space, before either
+            # architecture's rescale, so hair/shadow/JPEG-artifact values
+            # mean the same thing regardless of MODEL_ARCH.
             image = add_synthetic_hair(image)
             image = add_shadow_or_glare(image)
+            # Cheap stand-in for general camera/upload interference (motion
+            # blur, low-quality compression): degrade JPEG quality on some
+            # images. tf.random (not np.random) so this is re-evaluated per
+            # example rather than baked in once at graph-trace time, and
+            # tf.cond keeps the shape/dtype consistent between branches.
+            image = tf.cond(
+                tf.random.uniform(()) < 0.3,
+                lambda: tf.cast(
+                    tf.image.random_jpeg_quality(tf.cast(tf.clip_by_value(image, 0, 255), tf.uint8), 30, 80),
+                    tf.float32,
+                ),
+                lambda: image,
+            )
         if ARCH_CONFIG["rescale"]:
             image = (image / 127.5) - 1.0  # match client-side normalization
         return image, label
@@ -201,12 +214,6 @@ def make_dataset(df: pd.DataFrame, training: bool) -> tf.data.Dataset:
             image = tf.image.random_flip_up_down(image)
             image = tf.image.random_brightness(image, 0.1)
             image = tf.image.random_contrast(image, 0.9, 1.1)
-            # Cheap stand-in for general camera/compression interference
-            # (motion blur, low-quality upload, etc.): degrade JPEG quality
-            # on some images. random_jpeg_quality expects [0, 255] pixels.
-            if np.random.rand() < 0.3:
-                low = tf.cast(tf.clip_by_value(image, 0, 255), tf.uint8)
-                image = tf.cast(tf.image.random_jpeg_quality(low, 30, 80), tf.float32)
             return image, label
 
         ds = ds.map(augment, num_parallel_calls=tf.data.AUTOTUNE)
