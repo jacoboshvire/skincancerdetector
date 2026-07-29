@@ -201,6 +201,12 @@ def make_dataset(df: pd.DataFrame, training: bool) -> tf.data.Dataset:
             image = tf.image.random_flip_up_down(image)
             image = tf.image.random_brightness(image, 0.1)
             image = tf.image.random_contrast(image, 0.9, 1.1)
+            # Cheap stand-in for general camera/compression interference
+            # (motion blur, low-quality upload, etc.): degrade JPEG quality
+            # on some images. random_jpeg_quality expects [0, 255] pixels.
+            if np.random.rand() < 0.3:
+                low = tf.cast(tf.clip_by_value(image, 0, 255), tf.uint8)
+                image = tf.cast(tf.image.random_jpeg_quality(low, 30, 80), tf.float32)
             return image, label
 
         ds = ds.map(augment, num_parallel_calls=tf.data.AUTOTUNE)
