@@ -122,6 +122,50 @@ def add_synthetic_hair(image: tf.Tensor) -> tf.Tensor:
     return out
 
 
+# Real photos submitted through a phone camera commonly have uneven lighting:
+# a shadow from the hand/phone itself, a bright flash glare, or a vignette
+# from the lens. None of that should change the diagnosis, so we draw soft
+# dark or bright blobs onto training images the same way HAIR_AUGMENT_PROB
+# does for hair -- teaching the model the lesion's actual features matter,
+# not incidental lighting.
+SHADOW_AUGMENT_PROB = 0.4
+SHADOW_MAX_REGIONS = 2
+
+
+def _draw_shadow_or_glare(image_np: np.ndarray) -> np.ndarray:
+    if np.random.rand() > SHADOW_AUGMENT_PROB:
+        return image_np.astype(np.float32)
+
+    h, w = image_np.shape[:2]
+    img = Image.fromarray(np.clip(image_np, 0, 255).astype(np.uint8)).convert("RGBA")
+    overlay = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(overlay)
+
+    for _ in range(np.random.randint(1, SHADOW_MAX_REGIONS + 1)):
+        # Dark (shadow/occlusion) most of the time, occasionally bright
+        # (flash glare) -- shadows are the far more common real-world case.
+        is_glare = np.random.rand() < 0.25
+        color = (255, 255, 255) if is_glare else (0, 0, 0)
+        alpha = np.random.randint(50, 140)
+
+        cx, cy = np.random.uniform(0, w), np.random.uniform(0, h)
+        rw = np.random.uniform(0.25, 0.65) * w
+        rh = np.random.uniform(0.25, 0.65) * h
+        draw.ellipse([cx - rw / 2, cy - rh / 2, cx + rw / 2, cy + rh / 2], fill=(*color, alpha))
+
+    # Blur so the region has a soft gradient edge like real lighting, rather
+    # than a hard-edged shape.
+    overlay = overlay.filter(ImageFilter.GaussianBlur(radius=max(w, h) * 0.06))
+    composited = Image.alpha_composite(img, overlay).convert("RGB")
+    return np.array(composited).astype(np.float32)
+
+
+def add_shadow_or_glare(image: tf.Tensor) -> tf.Tensor:
+    out = tf.numpy_function(_draw_shadow_or_glare, [image], tf.float32)
+    out.set_shape(image.shape)
+    return out
+
+
 def load_manifest(name: str) -> pd.DataFrame:
     return pd.read_csv(HERE / name)
 
