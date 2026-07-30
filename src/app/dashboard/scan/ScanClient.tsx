@@ -137,6 +137,7 @@ export default function ScanClient({ email }: { email: string }) {
     setAssessment(null);
     setGradCamUrl(null);
     setGradCamError(null);
+    setGateResult(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
