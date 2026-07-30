@@ -477,7 +477,55 @@ export default function ScanClient({ email }: { email: string }) {
           >
             <h2 className="font-bold text-lg mb-3">Result</h2>
             <AnimatePresence mode="wait">
-              {!probabilities ? (
+              {gateChecking ? (
+                <motion.p
+                  key="gate-checking"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="text-sm text-muted"
+                >
+                  Checking the photo…
+                </motion.p>
+              ) : gateResult?.predicted === "not_skin" ? (
+                <motion.div
+                  key="not-skin"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className="p-5 border-t-2 border border-foreground/15 border-t-accent-red"
+                >
+                  <span className="tag-mono text-accent-red">Doesn&apos;t look like skin</span>
+                  <p className="mt-2 text-sm text-muted">
+                    This photo doesn&apos;t look like a photo of skin (
+                    {(gateResult.probabilities.not_skin * 100).toFixed(0)}% confidence). Upload a
+                    clear, well-lit photo of the lesion or skin area you want checked.
+                  </p>
+                </motion.div>
+              ) : gateResult?.predicted === "healthy_skin" ? (
+                <motion.div
+                  key="healthy-skin"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className="p-5 border-t-2 border border-foreground/15 border-t-accent-green"
+                >
+                  <span className="tag-mono text-accent-green">No lesion detected</span>
+                  <p className="mt-2 text-sm text-muted">
+                    This looks like healthy skin with no distinct lesion to classify (
+                    {(gateResult.probabilities.healthy_skin * 100).toFixed(0)}% confidence). If
+                    you&apos;re trying to get a specific mole or spot checked, try a closer photo
+                    centered on it.
+                  </p>
+                  <p className="mt-2 text-xs text-muted">
+                    This check is a lighter-weight heuristic than the lesion classifier and hasn&apos;t
+                    been expert-verified — if you have a specific concern, get it checked in person
+                    regardless of this result.
+                  </p>
+                </motion.div>
+              ) : !probabilities ? (
                 <motion.p
                   key="empty-result"
                   initial={{ opacity: 0 }}
