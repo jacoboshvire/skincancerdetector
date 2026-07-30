@@ -18,6 +18,7 @@ import { assessSymptoms } from "@/lib/symptomRisk";
 import { truncateImageName } from "@/lib/format";
 import { computeGradCam } from "@/lib/gradcam";
 import type { RiskFactor } from "@/lib/riskFusion";
+import { loadGateModel, classifyGate, type GateResult } from "@/lib/gateModel";
 
 interface ScanRecord {
   id: number;
