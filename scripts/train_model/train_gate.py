@@ -87,6 +87,23 @@ def build_manifest() -> pd.DataFrame:
             f"No healthy-skin crops found under {HEALTHY_SKIN_DIR}. "
             "Run generate_healthy_skin_crops.py first."
         )
+    if len(healthy_paths) > HEALTHY_SKIN_SAMPLE_CAP:
+        # Sample by distinct source image (not raw crop) first, so we don't
+        # end up with e.g. 3 of a source photo's 4 near-duplicate corners
+        # and 0 of another's -- keeps the sampled set as diverse as possible.
+        rng = np.random.default_rng(42)
+        by_source: dict[str, list[Path]] = {}
+        for p in healthy_paths:
+            source_key = p.stem.rsplit("_", 1)[0]  # strip the _tl/_tr/_bl/_br suffix
+            by_source.setdefault(source_key, []).append(p)
+        source_keys = list(by_source.keys())
+        rng.shuffle(source_keys)
+        sampled: list[Path] = []
+        for key in source_keys:
+            if len(sampled) >= HEALTHY_SKIN_SAMPLE_CAP:
+                break
+            sampled.extend(by_source[key])
+        healthy_paths = sampled[:HEALTHY_SKIN_SAMPLE_CAP]
     rows += [(str(p), 1) for p in healthy_paths]
     print(f"healthy_skin: {len(healthy_paths)} images (corner crops)")
 
