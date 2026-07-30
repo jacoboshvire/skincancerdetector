@@ -209,25 +209,51 @@ def main():
     class_weight = dict(enumerate(class_weights_arr))
     print("Class weights:", class_weight)
 
-    model, base = build_model()
-    model.compile(optimizer=tf.keras.optimizers.Adam(1e-3), loss="sparse_categorical_crossentropy", metrics=["accuracy"])
+    resume_state = None
+    if STATE_PATH.exists() and CHECKPOINT_PATH.exists():
+        resume_state = json.loads(STATE_PATH.read_text())
+        print(f"\n[checkpoint] found, resuming from {resume_state}")
+        model = tf.keras.models.load_model(CHECKPOINT_PATH)
+        base = find_backbone_layer(model)
+    else:
+        model, base = build_model()
+        model.compile(optimizer=tf.keras.optimizers.Adam(1e-3), loss="sparse_categorical_crossentropy", metrics=["accuracy"])
     model.summary()
 
-    print(f"\n--- Training gate head for {HEAD_EPOCHS} epochs (base frozen) ---")
-    model.fit(train_ds, validation_data=val_ds, epochs=HEAD_EPOCHS, class_weight=class_weight)
+    head_done = resume_state is not None and (
+        resume_state["phase"] == "finetune" or resume_state["epoch"] >= HEAD_EPOCHS
+    )
+    if not head_done:
+        initial_epoch = resume_state["epoch"] if resume_state else 0
+        print(f"\n--- Training gate head for {HEAD_EPOCHS} epochs (base frozen) ---")
+        model.fit(
+            train_ds, validation_data=val_ds, initial_epoch=initial_epoch, epochs=HEAD_EPOCHS,
+            class_weight=class_weight, callbacks=[SaveCheckpoint("head")],
+        )
 
     fine_tune_at = int(len(base.layers) * FINE_TUNE_FROZEN_FRACTION)
-    print(f"\n--- Fine-tuning top layers for {FINE_TUNE_EPOCHS} epochs (unfreezing {fine_tune_at}-{len(base.layers)}) ---")
     base.trainable = True
     for layer in base.layers[:fine_tune_at]:
         layer.trainable = False
 
     model.compile(optimizer=tf.keras.optimizers.Adam(1e-5), loss="sparse_categorical_crossentropy", metrics=["accuracy"])
-    model.fit(train_ds, validation_data=val_ds, epochs=FINE_TUNE_EPOCHS, class_weight=class_weight)
+
+    finetune_initial_epoch = (
+        resume_state["epoch"] if resume_state is not None and resume_state["phase"] == "finetune" else 0
+    )
+    print(f"\n--- Fine-tuning top layers for {FINE_TUNE_EPOCHS} epochs (unfreezing {fine_tune_at}-{len(base.layers)}), "
+          f"starting at epoch {finetune_initial_epoch} ---")
+    model.fit(
+        train_ds, validation_data=val_ds, initial_epoch=finetune_initial_epoch, epochs=FINE_TUNE_EPOCHS,
+        class_weight=class_weight, callbacks=[SaveCheckpoint("finetune")],
+    )
 
     out_path = HERE / "model_gate.h5"
     model.save(out_path)
     print(f"\nSaved trained gate model to {out_path}")
+
+    CHECKPOINT_PATH.unlink(missing_ok=True)
+    STATE_PATH.unlink(missing_ok=True)
 
 
 if __name__ == "__main__":
