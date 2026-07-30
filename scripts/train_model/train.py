@@ -348,6 +348,9 @@ def main():
     model.save(out_path)
     print(f"\nSaved trained model to {out_path}")
 
+    CHECKPOINT_PATH.unlink(missing_ok=True)
+    STATE_PATH.unlink(missing_ok=True)
+
 
 if __name__ == "__main__":
     main()
