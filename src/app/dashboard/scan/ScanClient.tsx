@@ -181,7 +181,6 @@ export default function ScanClient({ email }: { email: string }) {
 
       const { cls } = topPrediction(probs);
       const classIndex = HAM10000_CLASSES.findIndex((c) => c.code === cls.code);
-      const imageEl = imageRef.current;
 
       setAssessing(true);
       fetch("/api/scans/assess", {
