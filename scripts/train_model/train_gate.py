@@ -151,6 +151,30 @@ def make_dataset(df: pd.DataFrame, training: bool) -> tf.data.Dataset:
     return ds
 
 
+CHECKPOINT_PATH = HERE / "checkpoint_gate.h5"
+STATE_PATH = HERE / "checkpoint_gate_state.json"
+
+
+class SaveCheckpoint(tf.keras.callbacks.Callback):
+    """See train.py's SaveCheckpoint -- same crash-recovery rationale."""
+
+    def __init__(self, phase: str):
+        super().__init__()
+        self.phase = phase
+
+    def on_epoch_end(self, epoch, logs=None):
+        self.model.save(CHECKPOINT_PATH)
+        STATE_PATH.write_text(json.dumps({"phase": self.phase, "epoch": epoch + 1}))
+        print(f"[checkpoint] saved phase={self.phase} epoch={epoch + 1}")
+
+
+def find_backbone_layer(model: tf.keras.Model) -> tf.keras.Model:
+    for layer in model.layers:
+        if isinstance(layer, tf.keras.Model):
+            return layer
+    raise ValueError("Could not find nested backbone layer in loaded checkpoint")
+
+
 def build_model():
     base = tf.keras.applications.MobileNetV2(
         input_shape=(IMG_SIZE, IMG_SIZE, 3),
