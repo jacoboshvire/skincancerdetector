@@ -33,6 +33,7 @@ Output:
     model_gate.h5 in this directory (consumed by convert_to_tfjs.py via
     MODEL_ARCH=gate)
 """
+import json
 import os
 
 os.environ.setdefault("TF_USE_LEGACY_KERAS", "1")
