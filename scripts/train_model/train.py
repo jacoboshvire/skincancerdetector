@@ -222,6 +222,36 @@ def make_dataset(df: pd.DataFrame, training: bool) -> tf.data.Dataset:
     return ds
 
 
+CHECKPOINT_PATH = HERE / f"checkpoint_{MODEL_ARCH}.h5"
+STATE_PATH = HERE / f"checkpoint_{MODEL_ARCH}_state.json"
+
+
+class SaveCheckpoint(tf.keras.callbacks.Callback):
+    """
+    Saves the model + a small JSON sidecar (phase, epochs completed) after
+    every epoch. A 95k-image CPU training run takes hours; without this, a
+    crash anywhere in a 15-epoch run throws away all of it. On restart,
+    main() reloads the checkpoint and resumes with `initial_epoch` rather
+    than rebuilding from scratch.
+    """
+
+    def __init__(self, phase: str):
+        super().__init__()
+        self.phase = phase
+
+    def on_epoch_end(self, epoch, logs=None):
+        self.model.save(CHECKPOINT_PATH)
+        STATE_PATH.write_text(json.dumps({"phase": self.phase, "epoch": epoch + 1}))
+        print(f"[checkpoint] saved phase={self.phase} epoch={epoch + 1}")
+
+
+def find_backbone_layer(model: tf.keras.Model) -> tf.keras.Model:
+    for layer in model.layers:
+        if isinstance(layer, tf.keras.Model):
+            return layer
+    raise ValueError("Could not find nested backbone layer in loaded checkpoint")
+
+
 def build_model() -> tf.keras.Model:
     base = ARCH_CONFIG["build_base"](
         input_shape=(IMG_SIZE, IMG_SIZE, 3),
