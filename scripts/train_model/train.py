@@ -288,25 +288,37 @@ def main():
     class_weight = {i: w for i, w in enumerate(class_weights_arr)}
     print("Class weights (balancing HAM10000's heavy skew toward nv):", class_weight)
 
-    model, base = build_model()
-    model.compile(
-        optimizer=tf.keras.optimizers.Adam(1e-3),
-        loss="sparse_categorical_crossentropy",
-        metrics=["accuracy"],
-    )
+    resume_state = None
+    if STATE_PATH.exists() and CHECKPOINT_PATH.exists():
+        resume_state = json.loads(STATE_PATH.read_text())
+        print(f"\n[checkpoint] found, resuming from {resume_state}")
+        model = tf.keras.models.load_model(CHECKPOINT_PATH)
+        base = find_backbone_layer(model)
+    else:
+        model, base = build_model()
+        model.compile(
+            optimizer=tf.keras.optimizers.Adam(1e-3),
+            loss="sparse_categorical_crossentropy",
+            metrics=["accuracy"],
+        )
     model.summary()
 
-    print(f"\n--- Training classifier head for {HEAD_EPOCHS} epochs (base frozen) ---")
-    model.fit(
-        train_ds,
-        validation_data=val_ds,
-        epochs=HEAD_EPOCHS,
-        class_weight=class_weight,
+    head_done = resume_state is not None and (
+        resume_state["phase"] == "finetune" or resume_state["epoch"] >= HEAD_EPOCHS
     )
+    if not head_done:
+        initial_epoch = resume_state["epoch"] if resume_state else 0
+        print(f"\n--- Training classifier head for {HEAD_EPOCHS} epochs (base frozen) ---")
+        model.fit(
+            train_ds,
+            validation_data=val_ds,
+            initial_epoch=initial_epoch,
+            epochs=HEAD_EPOCHS,
+            class_weight=class_weight,
+            callbacks=[SaveCheckpoint("head")],
+        )
 
     fine_tune_at_layer = int(len(base.layers) * ARCH_CONFIG["fine_tune_frozen_fraction"])
-    print(f"\n--- Fine-tuning top layers of {MODEL_ARCH} for {FINE_TUNE_EPOCHS} epochs "
-          f"(unfreezing layers {fine_tune_at_layer}-{len(base.layers)}) ---")
     base.trainable = True
     for layer in base.layers[:fine_tune_at_layer]:
         layer.trainable = False
@@ -316,11 +328,20 @@ def main():
         loss="sparse_categorical_crossentropy",
         metrics=["accuracy"],
     )
+
+    finetune_initial_epoch = (
+        resume_state["epoch"] if resume_state is not None and resume_state["phase"] == "finetune" else 0
+    )
+    print(f"\n--- Fine-tuning top layers of {MODEL_ARCH} for {FINE_TUNE_EPOCHS} epochs "
+          f"(unfreezing layers {fine_tune_at_layer}-{len(base.layers)}), starting at epoch "
+          f"{finetune_initial_epoch} ---")
     model.fit(
         train_ds,
         validation_data=val_ds,
+        initial_epoch=finetune_initial_epoch,
         epochs=FINE_TUNE_EPOCHS,
         class_weight=class_weight,
+        callbacks=[SaveCheckpoint("finetune")],
     )
 
     out_path = HERE / f"model_{MODEL_ARCH}.h5"
