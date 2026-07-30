@@ -147,9 +147,35 @@ export default function ScanClient({ email }: { email: string }) {
     setAssessment(null);
     setGradCamUrl(null);
     setGradCamError(null);
+    setGateResult(null);
+    setProbabilities(null);
     try {
+      const imageEl = imageRef.current;
+
+      // Triage before running the 7-class lesion classifier: is this even a
+      // skin photo, and if so, is there a lesion to classify at all? A
+      // separate lightweight model (see src/lib/gateModel.ts) rather than
+      // extra classes on the lesion classifier itself. If the gate model
+      // can't load for some reason, fail open and just run the lesion
+      // classifier as before rather than blocking the whole feature on a
+      // secondary check.
+      setGateChecking(true);
+      let gate: GateResult | null = null;
+      try {
+        const gateModel = await loadGateModel();
+        gate = await classifyGate(gateModel, imageEl);
+      } catch (err) {
+        console.warn("Gate model unavailable, skipping the not-skin/healthy-skin check:", err);
+      }
+      setGateChecking(false);
+      setGateResult(gate);
+
+      if (gate && gate.predicted !== "lesion") {
+        return;
+      }
+
       const model = (await loadModel(modelId)) as tf.LayersModel;
-      const probs = await predictFromImage(model, imageRef.current, modelId);
+      const probs = await predictFromImage(model, imageEl, modelId);
       setProbabilities(probs);
       setResultModelId(modelId);
 
