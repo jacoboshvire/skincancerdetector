@@ -61,9 +61,12 @@ DATA_DIR = HERE / "data"
 IMAGENETTE_DIR = DATA_DIR / "imagenette" / "imagenette2-320"
 HEALTHY_SKIN_DIR = DATA_DIR / "healthy_skin_crops"
 
-# Cap how many lesion images we pull in, so the gate's classes stay roughly
-# balanced rather than being ~80% lesion just because that manifest is huge.
+# Caps so the gate's 3 classes stay roughly balanced rather than being
+# dominated by whichever source happens to be largest (the lesion manifest
+# is huge, and generate_healthy_skin_crops.py produces 4 near-duplicate
+# corner crops per source photo).
 LESION_SAMPLE_CAP = 15000
+HEALTHY_SKIN_SAMPLE_CAP = 15000
 
 
 def build_manifest() -> pd.DataFrame:
