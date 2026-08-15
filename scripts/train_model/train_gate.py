@@ -125,10 +125,15 @@ def build_manifest() -> pd.DataFrame:
                 break
             sampled.extend(by_source[key])
         healthy_paths = sampled[:HEALTHY_SKIN_SAMPLE_CAP]
-    n_diverse = sum(1 for p in healthy_paths if p.stem.startswith("skin_tone_diverse_"))
+    n_tone = sum(1 for p in healthy_paths if p.stem.startswith("skin_tone_diverse_"))
+    n_face = sum(1 for p in healthy_paths if p.stem.startswith("utkface_"))
     rows += [(str(p), 1) for p in healthy_paths]
-    print(f"healthy_skin: {len(healthy_paths)} images (corner crops), "
-          f"{n_diverse} ({n_diverse / len(healthy_paths):.0%}) from the Fitzpatrick-balanced source")
+    print(
+        f"healthy_skin: {len(healthy_paths)} images -- "
+        f"{n_tone} ({n_tone / len(healthy_paths):.0%}) Fitzpatrick-balanced clinical crops, "
+        f"{n_face} ({n_face / len(healthy_paths):.0%}) race-balanced natural face photos, "
+        f"{len(healthy_paths) - n_tone - n_face} other clinical corner crops"
+    )
 
     lesion_train = pd.read_csv(HERE / "manifest_train.csv")
     lesion_val = pd.read_csv(HERE / "manifest_val.csv")
