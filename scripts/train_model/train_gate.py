@@ -113,14 +113,9 @@ def build_manifest() -> pd.DataFrame:
             source_key = p.stem.rsplit("_", 1)[0]  # strip the _tl/_tr/_bl/_br suffix
             by_source.setdefault(source_key, []).append(p)
 
-        # The skin_tone_diverse source (see download_skin_tone_diverse.py) is
-        # the only one with balanced Fitzpatrick representation -- everything
-        # else skews heavily toward lighter skin tones. Guarantee all of it
-        # makes the cut before filling the remaining budget from the rest,
-        # rather than letting it get diluted down to its ~12% natural share
-        # of the combined pool.
-        priority_keys = [k for k in by_source if k.startswith("skin_tone_diverse_")]
-        other_keys = [k for k in by_source if not k.startswith("skin_tone_diverse_")]
+        priority_keys = [k for k in by_source if k.startswith(PRIORITY_HEALTHY_SKIN_PREFIXES)]
+        other_keys = [k for k in by_source if not k.startswith(PRIORITY_HEALTHY_SKIN_PREFIXES)]
+        rng.shuffle(priority_keys)
         rng.shuffle(other_keys)
         source_keys = priority_keys + other_keys
 
