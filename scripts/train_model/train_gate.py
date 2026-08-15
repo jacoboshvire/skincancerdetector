@@ -97,16 +97,28 @@ def build_manifest() -> pd.DataFrame:
         for p in healthy_paths:
             source_key = p.stem.rsplit("_", 1)[0]  # strip the _tl/_tr/_bl/_br suffix
             by_source.setdefault(source_key, []).append(p)
-        source_keys = list(by_source.keys())
-        rng.shuffle(source_keys)
+
+        # The skin_tone_diverse source (see download_skin_tone_diverse.py) is
+        # the only one with balanced Fitzpatrick representation -- everything
+        # else skews heavily toward lighter skin tones. Guarantee all of it
+        # makes the cut before filling the remaining budget from the rest,
+        # rather than letting it get diluted down to its ~12% natural share
+        # of the combined pool.
+        priority_keys = [k for k in by_source if k.startswith("skin_tone_diverse_")]
+        other_keys = [k for k in by_source if not k.startswith("skin_tone_diverse_")]
+        rng.shuffle(other_keys)
+        source_keys = priority_keys + other_keys
+
         sampled: list[Path] = []
         for key in source_keys:
             if len(sampled) >= HEALTHY_SKIN_SAMPLE_CAP:
                 break
             sampled.extend(by_source[key])
         healthy_paths = sampled[:HEALTHY_SKIN_SAMPLE_CAP]
+    n_diverse = sum(1 for p in healthy_paths if p.stem.startswith("skin_tone_diverse_"))
     rows += [(str(p), 1) for p in healthy_paths]
-    print(f"healthy_skin: {len(healthy_paths)} images (corner crops)")
+    print(f"healthy_skin: {len(healthy_paths)} images (corner crops), "
+          f"{n_diverse} ({n_diverse / len(healthy_paths):.0%}) from the Fitzpatrick-balanced source")
 
     lesion_train = pd.read_csv(HERE / "manifest_train.csv")
     lesion_val = pd.read_csv(HERE / "manifest_val.csv")
