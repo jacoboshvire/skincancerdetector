@@ -65,9 +65,24 @@ HEALTHY_SKIN_DIR = DATA_DIR / "healthy_skin_crops"
 # Caps so the gate's 3 classes stay roughly balanced rather than being
 # dominated by whichever source happens to be largest (the lesion manifest
 # is huge, and generate_healthy_skin_crops.py produces 4 near-duplicate
-# corner crops per source photo).
+# corner crops per source photo). HEALTHY_SKIN_SAMPLE_CAP is sized to fully
+# fit both priority sources below (4,804 skin_tone_diverse + 13,692
+# utkface_diversity = 18,496) with room to spare for the rest -- raising it
+# rather than letting either get squeezed out defeats the point of adding
+# them. class_weight="balanced" (below) corrects for the resulting size
+# difference between the 3 classes at training time.
 LESION_SAMPLE_CAP = 15000
-HEALTHY_SKIN_SAMPLE_CAP = 15000
+HEALTHY_SKIN_SAMPLE_CAP = 25000
+
+# Filename prefixes (see download_skin_tone_diverse.py and
+# download_face_diversity.py) for the two sources that exist specifically to
+# fix real, measured gaps: Fitzpatrick skin-tone skew in the clinical-photo
+# pool, and the complete absence of normal (non-clinical, face-visible)
+# photo compositions -- a live test caught a real selfie being misclassified
+# "not skin" at 88% confidence because of the latter gap. Both are
+# guaranteed into the sample rather than left to dilute down to their
+# natural share of the combined pool.
+PRIORITY_HEALTHY_SKIN_PREFIXES = ("skin_tone_diverse_", "utkface_")
 
 
 def build_manifest() -> pd.DataFrame:
