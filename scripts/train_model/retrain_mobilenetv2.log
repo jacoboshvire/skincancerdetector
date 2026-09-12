@@ -27,3 +27,4 @@ _________________________________________________________________
 
 --- Training classifier head for 5 epochs (base frozen) ---
 Epoch 1/5
+2026-09-12 20:52:16.898549: E tensorflow/core/grappler/optimizers/meta_optimizer.cc:961] model_pruner failed: INVALID_ARGUMENT: Graph does not contain terminal node Adam/AssignAddVariableOp.
