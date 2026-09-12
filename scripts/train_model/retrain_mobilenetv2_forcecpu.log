@@ -1,0 +1,31 @@
+/Users/jacob/Documents/codingAndStuff/skinCancerDetection/scripts/train_model/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+WARNING:absl:At this time, the v2.11+ optimizer `tf.keras.optimizers.Adam` runs slowly on M1/M2 Macs, please use the legacy TF-Keras optimizer instead, located at `tf.keras.optimizers.legacy.Adam`.
+=== Training architecture: mobilenetv2 ===
+Class weights (balancing HAM10000's heavy skew toward nv): {0: 1.9990137477585177, 1: 1.0333389979761776, 2: 1.9564467064467064, 3: 18.340279681930355, 4: 0.8049945841858226, 5: 0.2718895320477383, 6: 21.667314544865565}
+
+[checkpoint] found, resuming from {'phase': 'head', 'epoch': 1}
+Model: "model"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ input_2 (InputLayer)        [(None, 224, 224, 3)]     0         
+                                                                 
+ mobilenetv2_1.00_224 (Func  (None, 7, 7, 1280)        2257984   
+ tional)                                                         
+                                                                 
+ global_average_pooling2d (  (None, 1280)              0         
+ GlobalAveragePooling2D)                                         
+                                                                 
+ dropout (Dropout)           (None, 1280)              0         
+                                                                 
+ dense (Dense)               (None, 7)                 8967      
+                                                                 
+=================================================================
+Total params: 2266951 (8.65 MB)
+Trainable params: 8967 (35.03 KB)
+Non-trainable params: 2257984 (8.61 MB)
+_________________________________________________________________
+
+--- Training classifier head for 5 epochs (base frozen) ---
+Epoch 2/5
