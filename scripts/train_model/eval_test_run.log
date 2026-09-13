@@ -65,3 +65,4 @@ weighted avg      0.747     0.687     0.707     14333
 Wrote /Users/jacob/Documents/codingAndStuff/skinCancerDetection/scripts/train_model/confusion_matrix_efficientnetb0.png
 
 Wrote /Users/jacob/Documents/codingAndStuff/skinCancerDetection/scripts/train_model/evaluation_summary.md
+EXIT_CODE=0
