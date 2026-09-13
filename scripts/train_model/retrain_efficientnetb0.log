@@ -78,3 +78,4 @@ Epoch 10/10
 2091/2091 [==============================] - 1953s 928ms/step - loss: 0.8242 - accuracy: 0.6555 - val_loss: 0.8197 - val_accuracy: 0.6929
 
 Saved trained model to /Users/jacob/Documents/codingAndStuff/skinCancerDetection/scripts/train_model/model_efficientnetb0.h5
+EXIT_CODE=0
