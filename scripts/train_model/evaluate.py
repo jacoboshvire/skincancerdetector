@@ -202,7 +202,17 @@ def write_summary(results: list) -> None:
 
 
 def main():
-    df = load_manifest()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--manifest", default="manifest_val.csv",
+        help="Which manifest CSV to evaluate against (default: manifest_val.csv). "
+             "Pass manifest_test.csv once prepare_data_3way.py has produced it, "
+             "for the genuinely held-out figure.",
+    )
+    args = parser.parse_args()
+
+    df = load_manifest(args.manifest)
+    print(f"Evaluating against {args.manifest}: {len(df)} images")
     results = [evaluate_arch(arch, df) for arch in ARCHS]
     write_summary(results)
 
