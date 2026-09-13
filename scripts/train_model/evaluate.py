@@ -16,6 +16,7 @@ Output (written to this directory):
     confusion_matrix_mobilenetv2.png
     confusion_matrix_efficientnetb0.png
 """
+import argparse
 import os
 
 # Must be set before the first `import tensorflow` -- see train.py.
@@ -62,18 +63,18 @@ ARCHS = {
 }
 
 
-def load_manifest() -> pd.DataFrame:
-    df = pd.read_csv(HERE / "manifest_val.csv")
+def load_manifest(filename: str) -> pd.DataFrame:
+    df = pd.read_csv(HERE / filename)
     exists = df["path"].apply(lambda p: Path(p).exists())
     missing = int((~exists).sum())
     if missing:
         print(
             f"[warn] {missing} of {len(df)} validation images referenced in "
-            f"manifest_val.csv are missing on disk; skipping them."
+            f"{filename} are missing on disk; skipping them."
         )
         df = df[exists].reset_index(drop=True)
     if df.empty:
-        raise RuntimeError("No validation images found on disk -- nothing to evaluate.")
+        raise RuntimeError(f"No validation images found on disk in {filename} -- nothing to evaluate.")
     return df
 
 
