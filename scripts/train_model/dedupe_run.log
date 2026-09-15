@@ -1,2 +1,63 @@
 /Users/jacob/Documents/codingAndStuff/skinCancerDetection/scripts/train_model/dedupe_and_prepare.py:125: DtypeWarning: Columns (7,8,9,12,13,20,21,22,25,27,30,34) have mixed types. Specify dtype option on import or set low_memory=False.
   df = pd.read_csv(metadata_csv)
+Loaded old split assignment for 95553 images from /Users/jacob/Documents/codingAndStuff/skinCancerDetection/scripts/train_model/backup_pre_dedupe
+bcn20000: dropping 1621 images outside the 7-class taxonomy.
+isic_extra: dropping 1009 images outside the 7-class taxonomy.
+isic_more: dropping 5254 images outside the 7-class taxonomy.
+challenge2020: dropping 54 images outside the 7-class taxonomy.
+
+Combined class distribution BEFORE dedup:
+dx
+nv       50206
+mel      16956
+bcc      13211
+bkl       6978
+akiec     6828
+df         743
+vasc       631
+Name: count, dtype: int64
+Total images before dedup: 95553
+
+Hashing 95553 images (single pass, ~26GB total)...
+  hashed 5000/95553
+  hashed 10000/95553
+  hashed 15000/95553
+  hashed 20000/95553
+  hashed 25000/95553
+  hashed 30000/95553
+  hashed 35000/95553
+  hashed 40000/95553
+  hashed 45000/95553
+  hashed 50000/95553
+  hashed 55000/95553
+  hashed 60000/95553
+  hashed 65000/95553
+  hashed 70000/95553
+  hashed 75000/95553
+  hashed 80000/95553
+  hashed 85000/95553
+  hashed 90000/95553
+  hashed 95000/95553
+  hashed 95553/95553
+
+Combined class distribution AFTER dedup:
+dx
+nv       42859
+bcc      12016
+mel      11745
+bkl       6441
+akiec     6053
+df         709
+vasc       595
+Name: count, dtype: int64
+Total images after dedup: 80418 (15135 duplicates removed)
+
+Wrote /Users/jacob/Documents/codingAndStuff/skinCancerDetection/scripts/train_model/dedupe_report.md
+
+Wrote /Users/jacob/Documents/codingAndStuff/skinCancerDetection/scripts/train_model/leakage_check_report.md
+Cross-split duplicate pairs: 7079 / 15135 total duplicates
+
+Wrote 56292 training rows (manifest_train.csv, ~70% of deduped pool)
+Wrote 12063 validation rows (manifest_val.csv, ~15%)
+Wrote 12063 TEST rows (manifest_test.csv, ~15%, held out entirely)
+EXIT_CODE=0
